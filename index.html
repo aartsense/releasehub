@@ -6,177 +6,123 @@
 <title>Aart Sense — Release Hub</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg: #05080f;
-  --panel: rgba(13,20,36,.72);
-  --panel-soft: rgba(13,20,36,.48);
-  --panel-hard: #0d1424;
-  --border: rgba(255,255,255,.09);
-  --border2: rgba(255,255,255,.14);
-  --green: #35e485;
-  --green-soft: #91ffc2;
-  --green-dim: rgba(53,228,133,.10);
-  --green-dim2: rgba(53,228,133,.06);
-  --green-glow: rgba(53,228,133,.18);
-  --text: #ffffff;
-  --muted: #9aa3b2;
-  --soft: #737f91;
-  --amber: #f5a623;
-  --amber-dim: rgba(245,166,35,.10);
-  --red: #ff5c5c;
-  --red-dim: rgba(255,92,92,.10);
-  --blue: #6b9cf0;
-  --purple: #a78bfa;
-}
+:root{--bg:#05080f;--panel-soft:rgba(13,20,36,.48);--panel-hard:#0d1424;--border:rgba(255,255,255,.09);--border2:rgba(255,255,255,.14);--green:#35e485;--green-soft:#91ffc2;--green-dim:rgba(53,228,133,.10);--green-dim2:rgba(53,228,133,.06);--green-glow:rgba(53,228,133,.18);--text:#ffffff;--muted:#9aa3b2;--soft:#737f91;--amber:#f5a623;--amber-dim:rgba(245,166,35,.10);--red:#ff5c5c;--red-dim:rgba(255,92,92,.10);--blue:#6b9cf0;--purple:#a78bfa;}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;overflow:hidden}
 body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);font-size:13px;line-height:1.5}
-::-webkit-scrollbar{width:3px;height:3px}
-::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:3px}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:3px}
+.shell{display:flex;height:100vh;overflow:hidden}
+.shell::before{content:'';position:fixed;inset:0;background:radial-gradient(circle at 50% 0%,rgba(53,228,133,.12),transparent 40%),radial-gradient(circle at 88% 85%,rgba(70,88,255,.09),transparent 30%);pointer-events:none;z-index:0}
 
-/* THREE PANEL SHELL */
-.shell{display:flex;height:100vh;overflow:hidden;position:relative}
-.shell::before{
-  content:'';position:fixed;inset:0;
-  background:radial-gradient(circle at 50% 0%,rgba(53,228,133,.12),transparent 40%),
-             radial-gradient(circle at 88% 85%,rgba(70,88,255,.09),transparent 30%);
-  pointer-events:none;z-index:0;
-}
+/* AUTH */
+.auth-screen{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:500;background:radial-gradient(circle at 50% 0%,rgba(53,228,133,.13),transparent 40%),radial-gradient(circle at 88% 85%,rgba(70,88,255,.10),transparent 30%),var(--bg)}
+.auth-card{background:rgba(13,20,36,.92);border:1px solid var(--border2);border-radius:24px;padding:40px;width:400px;max-width:94vw;text-align:center;box-shadow:0 40px 100px rgba(0,0,0,.5)}
+.auth-logo{font-size:22px;font-weight:900;letter-spacing:-.6px;margin-bottom:24px}
+.auth-logo span{color:var(--green)}
+.auth-title{font-size:24px;font-weight:900;letter-spacing:-.8px;margin-bottom:8px}
+.auth-sub{font-size:13px;color:var(--muted);margin-bottom:28px;line-height:1.6}
+.auth-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:13px 20px;background:var(--green);color:#05080f;border:none;border-radius:999px;font-family:'Inter',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all 0.15s;box-shadow:0 8px 24px var(--green-glow)}
+.auth-btn:hover{background:var(--green-soft)}
+.auth-note{font-size:11px;color:var(--soft);margin-top:16px;line-height:1.5}
+
+/* SYNC BADGE */
+.sync-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font-size:10px;font-weight:700}
+.sync-ok{background:var(--green-dim);color:var(--green);border:1px solid rgba(53,228,133,.2)}
+.sync-saving{background:var(--amber-dim);color:var(--amber);border:1px solid rgba(245,166,35,.2)}
+.sync-err{background:var(--red-dim);color:var(--red);border:1px solid rgba(255,92,92,.2)}
+.sync-dot{width:6px;height:6px;border-radius:50%;background:currentColor}
 
 /* LEFT SIDEBAR */
-.lsidebar{
-  width:220px;flex-shrink:0;z-index:10;
-  background:rgba(8,12,22,.85);
-  border-right:1px solid var(--border);
-  backdrop-filter:blur(20px);
-  display:flex;flex-direction:column;
-  height:100vh;overflow-y:auto;
-}
+.lsidebar{width:220px;flex-shrink:0;z-index:10;background:rgba(8,12,22,.85);border-right:1px solid var(--border);backdrop-filter:blur(20px);display:flex;flex-direction:column;height:100vh;overflow-y:auto}
 .logo{padding:20px 16px 16px;border-bottom:1px solid var(--border)}
 .logo-mark{font-size:18px;font-weight:900;letter-spacing:-0.6px}
 .logo-mark span{color:var(--green)}
 .logo-sub{font-size:9px;color:var(--soft);margin-top:2px;letter-spacing:.06em;font-weight:600;text-transform:uppercase}
+.logo-user{font-size:10px;color:var(--muted);margin-top:6px;display:flex;align-items:center;gap:6px}
+.logo-user-dot{width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0}
 .lsec-label{padding:14px 16px 5px;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--soft);font-weight:700}
-.nav-btn{
-  display:flex;align-items:center;gap:8px;
-  width:calc(100% - 12px);margin:1px 6px;padding:8px 10px;
-  border:none;background:transparent;color:var(--muted);
-  cursor:pointer;border-radius:10px;font-size:12px;
-  font-family:'Inter',sans-serif;font-weight:500;
-  text-align:left;transition:all 0.15s;
-}
+.nav-btn{display:flex;align-items:center;gap:8px;width:calc(100% - 12px);margin:1px 6px;padding:8px 10px;border:none;background:transparent;color:var(--muted);cursor:pointer;border-radius:10px;font-size:12px;font-family:'Inter',sans-serif;font-weight:500;text-align:left;transition:all 0.15s}
 .nav-btn:hover{background:rgba(255,255,255,.05);color:var(--text)}
 .nav-btn.active{background:var(--green-dim);color:var(--green)}
 .nav-btn svg{width:13px;height:13px;flex-shrink:0;stroke-width:2}
+.nav-pitch-badge{font-size:8px;padding:1px 6px;border-radius:999px;background:var(--green);color:#05080f;font-weight:800;margin-left:auto}
 .rel-list{padding:4px 10px;flex:1}
-.rel-item{
-  display:flex;align-items:center;gap:7px;
-  padding:7px 8px;border-radius:9px;cursor:pointer;
-  transition:all 0.15s;margin-bottom:2px;
-}
+.rel-item{display:flex;align-items:center;gap:7px;padding:7px 8px;border-radius:9px;cursor:pointer;transition:all 0.15s;margin-bottom:2px}
 .rel-item:hover{background:rgba(255,255,255,.04)}
 .rel-item.active{background:var(--green-dim)}
 .rel-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
 .rel-name{font-size:12px;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:500}
 .rel-item.active .rel-name{color:var(--green)}
 .rel-pct{font-size:9px;color:var(--soft);font-weight:700}
-.lsidebar-footer{padding:10px;border-top:1px solid var(--border);display:flex;gap:5px}
-.icon-btn{
-  flex:1;padding:7px 4px;
-  border:1px solid var(--border);background:rgba(255,255,255,.03);
-  color:var(--muted);border-radius:8px;cursor:pointer;
-  font-size:10px;font-family:'Inter',sans-serif;font-weight:600;
-  transition:all 0.15s;text-align:center;
-}
+.lsidebar-footer{padding:10px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:6px}
+.icon-btn{width:100%;padding:8px;border:1px solid var(--border);background:rgba(255,255,255,.03);color:var(--muted);border-radius:8px;cursor:pointer;font-size:11px;font-family:'Inter',sans-serif;font-weight:600;transition:all 0.15s;text-align:center}
 .icon-btn:hover{background:rgba(255,255,255,.06);color:var(--text)}
+.icon-btn.signout{color:var(--red);border-color:rgba(255,92,92,.2)}
+.icon-btn.signout:hover{background:var(--red-dim)}
 
 /* CENTER */
-.center{
-  flex:1;overflow-y:auto;z-index:5;
-  background:transparent;
-  min-width:0;
-}
+.center{flex:1;overflow-y:auto;z-index:5;min-width:0}
 .center-inner{padding:24px 28px;max-width:780px;margin:0 auto}
 
 /* RIGHT SIDEBAR */
-.rsidebar{
-  width:230px;flex-shrink:0;z-index:10;
-  background:rgba(8,12,22,.85);
-  border-left:1px solid var(--border);
-  backdrop-filter:blur(20px);
-  height:100vh;overflow-y:auto;
-  display:flex;flex-direction:column;
-}
+.rsidebar{width:230px;flex-shrink:0;z-index:10;background:rgba(8,12,22,.85);border-left:1px solid var(--border);backdrop-filter:blur(20px);height:100vh;overflow-y:auto;display:flex;flex-direction:column}
 .rsec-label{padding:16px 16px 6px;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--soft);font-weight:700;border-bottom:1px solid var(--border)}
-.section-block{
-  margin:6px 8px 0;border-radius:11px;overflow:hidden;
-}
-.sblock-header{
-  display:flex;align-items:center;gap:9px;
-  padding:9px 10px;cursor:pointer;
-  transition:background 0.15s;user-select:none;
-  border-radius:11px;
-}
+.sblock-header{display:flex;align-items:center;gap:9px;padding:9px 10px;cursor:pointer;transition:background 0.15s;user-select:none;border-radius:11px;margin:4px 8px 0}
 .sblock-header:hover{background:rgba(255,255,255,.04)}
 .sblock-header.selected{background:var(--green-dim)}
 .sblock-icon{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.sblock-name{font-size:11px;font-weight:700;flex:1;letter-spacing:-.1px}
+.sblock-name{font-size:11px;font-weight:700;flex:1}
 .sblock-header.selected .sblock-name{color:var(--green)}
 .sblock-pill{font-size:8px;padding:2px 6px;border-radius:999px;font-weight:700}
 .pill-done{background:rgba(53,228,133,.12);color:var(--green)}
 .pill-part{background:var(--amber-dim);color:var(--amber)}
 .pill-none{background:rgba(255,255,255,.06);color:var(--soft)}
 .rsidebar-bottom{margin-top:auto;padding:10px;border-top:1px solid var(--border)}
-.rsidebar-overview{
-  background:rgba(53,228,133,.06);border:1px solid rgba(53,228,133,.15);
-  border-radius:11px;padding:12px;
-}
+.rsidebar-overview{background:rgba(53,228,133,.06);border:1px solid rgba(53,228,133,.15);border-radius:11px;padding:12px}
 .overview-pct{font-size:22px;font-weight:900;color:var(--green);letter-spacing:-1px;line-height:1}
 .overview-lbl{font-size:9px;color:var(--soft);text-transform:uppercase;letter-spacing:.07em;font-weight:700;margin-top:3px}
 .overview-track{height:3px;background:rgba(255,255,255,.07);border-radius:2px;margin-top:8px;overflow:hidden}
 .overview-fill{height:100%;background:var(--green);border-radius:2px;transition:width 0.4s}
 
-/* PAGE: DASHBOARD */
+/* REL BAR */
+.rel-bar{display:flex;align-items:center;gap:10px;padding:10px 20px;background:rgba(8,12,22,.8);border-bottom:1px solid var(--border);backdrop-filter:blur(16px);flex-wrap:wrap;flex-shrink:0}
+.rb-label{font-size:8px;color:var(--soft);text-transform:uppercase;letter-spacing:.08em;font-weight:700}
+.rb-name{font-size:13px;font-weight:800;color:var(--green);letter-spacing:-.3px}
+.rb-date{font-size:10px;color:var(--muted)}
+.rb-spacer{flex:1}
+.days-badge{padding:3px 10px;border-radius:999px;font-size:10px;font-weight:700}
+.bar-btn{border:1px solid var(--border);background:rgba(255,255,255,.03);color:var(--muted);padding:5px 10px;border-radius:999px;font-size:10px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.15s}
+.bar-btn:hover{background:rgba(255,255,255,.06);color:var(--text)}
+.bar-btn.danger{color:var(--red);border-color:rgba(255,92,92,.2)}
+.bar-btn.danger:hover{background:var(--red-dim)}
+
+/* PAGE ELEMENTS */
+.eyebrow{display:inline-block;color:var(--green-soft);background:var(--green-dim2);border:1px solid rgba(53,228,133,.18);padding:4px 9px;border-radius:999px;font-size:8px;font-weight:800;letter-spacing:.07em;margin-bottom:10px;text-transform:uppercase}
 .page-title{font-size:22px;font-weight:900;letter-spacing:-.8px;margin-bottom:3px}
 .page-sub{font-size:12px;color:var(--muted);margin-bottom:20px}
-.eyebrow{display:inline-block;color:var(--green-soft);background:var(--green-dim2);border:1px solid rgba(53,228,133,.18);padding:4px 9px;border-radius:999px;font-size:8px;font-weight:800;letter-spacing:.07em;margin-bottom:10px;text-transform:uppercase}
-.metrics-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-bottom:18px}
+.card{background:rgba(13,20,36,.65);border:1px solid var(--border);border-radius:16px;padding:16px 18px;backdrop-filter:blur(14px)}
+.metrics-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:18px}
 .metric-card{background:rgba(13,20,36,.65);border:1px solid var(--border);border-radius:16px;padding:14px 16px;backdrop-filter:blur(14px);position:relative;overflow:hidden}
 .metric-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1.5px;border-radius:16px 16px 0 0}
-.mc-gold::before{background:var(--green)}
-.mc-green::before{background:#4cef9a}
-.mc-blue::before{background:var(--blue)}
-.mc-purple::before{background:var(--purple)}
+.mc-gold::before{background:var(--green)}.mc-green::before{background:#4cef9a}.mc-blue::before{background:var(--blue)}.mc-purple::before{background:var(--purple)}
 .metric-val{font-size:24px;font-weight:900;letter-spacing:-.8px;line-height:1}
 .metric-lbl{font-size:8px;color:var(--soft);margin-top:5px;text-transform:uppercase;letter-spacing:.08em;font-weight:700}
 .metric-sub{font-size:10px;color:var(--muted);margin-top:2px}
+.prog-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.prog-title{font-size:12px;font-weight:700}
+.prog-pct{font-size:20px;font-weight:900;color:var(--green);letter-spacing:-.8px}
+.prog-track{height:5px;background:rgba(255,255,255,.07);border-radius:3px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--green-soft));border-radius:3px;transition:width 0.5s}
 .sec-bars{display:flex;flex-direction:column;gap:6px;margin-top:14px}
 .sec-bar-row{display:flex;align-items:center;gap:8px}
 .sec-bar-label{font-size:10px;color:var(--muted);width:105px;flex-shrink:0;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sec-bar-track{flex:1;height:3px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden}
 .sec-bar-fill{height:100%;border-radius:2px;transition:width 0.4s}
 .sec-bar-num{font-size:9px;color:var(--soft);width:24px;text-align:right;font-weight:700}
-.prog-card{background:rgba(13,20,36,.65);border:1px solid var(--border);border-radius:16px;padding:16px 18px;backdrop-filter:blur(14px);margin-bottom:18px}
-.prog-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-.prog-title{font-size:12px;font-weight:700}
-.prog-pct{font-size:20px;font-weight:900;color:var(--green);letter-spacing:-.8px}
-.prog-track{height:5px;background:rgba(255,255,255,.07);border-radius:3px;overflow:hidden}
-.prog-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--green-soft));border-radius:3px;transition:width 0.5s}
 
-/* PAGE: SECTION DETAIL */
-.section-detail-header{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+/* TASKS */
 .sdh-icon{width:36px;height:36px;border-radius:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.sdh-title{font-size:20px;font-weight:900;letter-spacing:-.6px}
-.sdh-sub{font-size:11px;color:var(--muted);margin-top:1px}
-.task-row{
-  display:flex;align-items:center;gap:10px;
-  padding:10px 14px;
-  background:rgba(13,20,36,.5);
-  border:1px solid var(--border);
-  border-radius:11px;margin-bottom:6px;
-  transition:background 0.12s;cursor:pointer;
-}
+.task-row{display:flex;align-items:center;gap:10px;padding:10px 14px;background:rgba(13,20,36,.5);border:1px solid var(--border);border-radius:11px;margin-bottom:6px;transition:background 0.12s;cursor:pointer}
 .task-row:hover{background:rgba(13,20,36,.8)}
 .cb{width:16px;height:16px;border-radius:5px;border:1.5px solid rgba(255,255,255,.2);background:transparent;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.15s;cursor:pointer}
 .cb.checked{background:var(--green);border-color:var(--green)}
@@ -194,11 +140,39 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);font-
 .note-row textarea{width:100%;font-size:11px;padding:7px 10px;border-radius:9px;border:1px solid var(--border);background:rgba(255,255,255,.04);color:var(--text);font-family:'Inter',sans-serif;outline:none;resize:vertical;min-height:48px;line-height:1.5}
 .note-row textarea:focus{border-color:rgba(53,228,133,.25)}
 
-/* PAGE: ANALYTICS */
+/* PITCH PAGE */
+.pitch-tabs{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:16px}
+.ptab{padding:5px 12px;border-radius:999px;border:1px solid var(--border);background:rgba(255,255,255,.03);color:var(--muted);cursor:pointer;font-size:10px;font-family:'Inter',sans-serif;font-weight:700;transition:all 0.15s;position:relative}
+.ptab:hover{background:rgba(255,255,255,.06);color:var(--text)}
+.ptab.active{background:var(--green-dim);color:var(--green);border-color:rgba(53,228,133,.25)}
+.ptab-ready-dot{position:absolute;top:-2px;right:-2px;width:7px;height:7px;border-radius:50%;background:var(--green);border:1.5px solid var(--bg)}
+.pitch-banner{border-radius:12px;padding:11px 14px;margin-bottom:14px;display:flex;align-items:center;gap:10px;font-size:12px;font-weight:500}
+.pitch-banner.ready{background:var(--green-dim);border:1px solid rgba(53,228,133,.2);color:var(--green-soft)}
+.pitch-banner.ready strong{color:var(--green)}
+.pitch-banner.generating{background:var(--amber-dim);border:1px solid rgba(245,166,35,.2);color:var(--amber)}
+.pitch-out-card{background:rgba(13,20,36,.65);border:1px solid var(--border);border-radius:16px;padding:18px;backdrop-filter:blur(14px)}
+.pitch-out{font-size:12.5px;line-height:1.8;color:var(--text);white-space:pre-wrap;min-height:70px}
+.pitch-out.loading{color:var(--soft);font-style:italic;display:flex;align-items:center;gap:8px}
+.pitch-out.empty{color:var(--soft);font-style:italic}
+.pitch-actions{display:flex;gap:7px;margin-top:12px;padding-top:12px;border-top:1px solid var(--border);flex-wrap:wrap}
+.gen-progress-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:8px}
+.gen-item{display:flex;align-items:center;gap:6px;font-size:11px}
+.gen-item.done{color:var(--green)}
+.gen-item.active{color:var(--amber)}
+.gen-item.pending{color:var(--soft)}
+
+/* CONTEXT FORM */
+.context-form{background:rgba(13,20,36,.65);border:1px solid var(--border);border-radius:16px;padding:18px;margin-top:14px;backdrop-filter:blur(14px)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.form-row.full{grid-template-columns:1fr}
+label{display:block;font-size:8px;letter-spacing:.08em;text-transform:uppercase;color:var(--soft);margin-bottom:4px;font-weight:700}
+input[type=text],input[type=date],input[type=url],textarea{width:100%;padding:8px 10px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:9px;color:var(--text);font-family:'Inter',sans-serif;font-size:12px;outline:none;transition:border-color 0.15s}
+input:focus,textarea:focus{border-color:rgba(53,228,133,.3)}
+input::placeholder,textarea::placeholder{color:var(--soft)}
+textarea{resize:vertical;min-height:60px;line-height:1.5}
+
+/* ANALYTICS */
 .analytics-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
-.chart-card{background:rgba(13,20,36,.65);border:1px solid var(--border);border-radius:16px;padding:16px;backdrop-filter:blur(14px)}
-.chart-title{font-size:11px;font-weight:700;color:var(--text);margin-bottom:12px;letter-spacing:-.1px}
-.donut-wrap{display:flex;align-items:center;gap:16px}
 .legend-row{display:flex;align-items:center;gap:7px;font-size:11px;margin-bottom:5px}
 .legend-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
 .legend-name{color:var(--muted);flex:1;font-weight:500}
@@ -213,43 +187,25 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);font-
 .releases-table td{padding:10px;font-size:12px;border-bottom:1px solid rgba(255,255,255,.04)}
 .releases-table tr:last-child td{border-bottom:none}
 .releases-table tr:hover td{background:rgba(255,255,255,.02)}
-.status-badge{font-size:8px;padding:2px 7px;border-radius:999px;font-weight:700;letter-spacing:.04em}
+.status-badge{font-size:8px;padding:2px 7px;border-radius:999px;font-weight:700}
 
-/* PAGE: PITCH */
-.pitch-tabs{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:16px}
-.ptab{padding:5px 12px;border-radius:999px;border:1px solid var(--border);background:rgba(255,255,255,.03);color:var(--muted);cursor:pointer;font-size:10px;font-family:'Inter',sans-serif;font-weight:700;letter-spacing:.02em;transition:all 0.15s}
-.ptab:hover{background:rgba(255,255,255,.06);color:var(--text)}
-.ptab.active{background:var(--green-dim);color:var(--green);border-color:rgba(53,228,133,.25)}
-.form-card{background:rgba(13,20,36,.65);border:1px solid var(--border);border-radius:16px;padding:18px;margin-bottom:14px;backdrop-filter:blur(14px)}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
-.form-row.full{grid-template-columns:1fr}
-label{display:block;font-size:8px;letter-spacing:.08em;text-transform:uppercase;color:var(--soft);margin-bottom:4px;font-weight:700}
-input[type=text],input[type=date],input[type=url],select,textarea{width:100%;padding:8px 10px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:9px;color:var(--text);font-family:'Inter',sans-serif;font-size:12px;outline:none;transition:border-color 0.15s}
-input:focus,select:focus,textarea:focus{border-color:rgba(53,228,133,.3)}
-input::placeholder,textarea::placeholder{color:var(--soft)}
-textarea{resize:vertical;min-height:60px;line-height:1.5}
-.pitch-out-wrap{background:rgba(13,20,36,.65);border:1px solid var(--border);border-radius:16px;padding:18px;backdrop-filter:blur(14px)}
-.pitch-out{font-size:12.5px;line-height:1.8;color:var(--text);white-space:pre-wrap;min-height:70px}
-.pitch-out.loading{color:var(--soft);font-style:italic}
-.pitch-actions{display:flex;gap:7px;margin-top:12px;padding-top:12px;border-top:1px solid var(--border)}
-
-/* PAGE: NOTES */
+/* NOTES */
 .notes-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
 .note-card{background:rgba(13,20,36,.65);border:1px solid var(--border);border-radius:14px;padding:14px;backdrop-filter:blur(14px);display:flex;flex-direction:column;gap:8px}
-.note-card-title{font-size:11px;font-weight:700;color:var(--text)}
-.note-card textarea{flex:1;min-height:100px;font-size:11px;padding:8px 10px;border-radius:8px;border:1px solid var(--border);background:rgba(255,255,255,.04);color:var(--text);font-family:'Inter',sans-serif;outline:none;resize:vertical;line-height:1.6;width:100%}
+.note-card-title{font-size:11px;font-weight:700}
+.note-card textarea{min-height:90px;width:100%;font-size:11px;padding:7px 10px;border-radius:9px;border:1px solid var(--border);background:rgba(255,255,255,.04);color:var(--text);font-family:'Inter',sans-serif;outline:none;resize:vertical;line-height:1.5}
 .note-card textarea:focus{border-color:rgba(53,228,133,.25)}
 .free-notes-card{background:rgba(13,20,36,.65);border:1px solid var(--border);border-radius:14px;padding:16px;backdrop-filter:blur(14px);margin-bottom:14px}
-.free-notes-card textarea{width:100%;min-height:180px;font-size:12.5px;padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:rgba(255,255,255,.04);color:var(--text);font-family:'Inter',sans-serif;outline:none;resize:vertical;line-height:1.7}
+.free-notes-card textarea{min-height:160px;font-size:12.5px;padding:10px 12px;line-height:1.7;width:100%;border-radius:9px;border:1px solid var(--border);background:rgba(255,255,255,.04);color:var(--text);font-family:'Inter',sans-serif;outline:none;resize:vertical}
 .free-notes-card textarea:focus{border-color:rgba(53,228,133,.25)}
 
-/* PAGE: TIMELINE */
+/* TIMELINE */
 .timeline{position:relative;padding-left:20px}
 .timeline::before{content:'';position:absolute;left:5px;top:0;bottom:0;width:1px;background:var(--border)}
 .tl-item{position:relative;margin-bottom:12px}
 .tl-dot{position:absolute;left:-20px;top:4px;width:11px;height:11px;border-radius:50%;border:2px solid var(--bg)}
 .tl-card{background:rgba(13,20,36,.65);border:1px solid var(--border);border-radius:12px;padding:10px 12px;backdrop-filter:blur(14px)}
-.tl-date{font-size:9px;color:var(--soft);margin-bottom:2px;font-weight:600;letter-spacing:.03em}
+.tl-date{font-size:9px;color:var(--soft);margin-bottom:2px;font-weight:600}
 .tl-text{font-size:11.5px;color:var(--muted)}
 
 /* BUTTONS */
@@ -258,15 +214,15 @@ textarea{resize:vertical;min-height:60px;line-height:1.5}
 .btn-primary:hover{background:var(--green-soft)}
 .btn-ghost{background:rgba(255,255,255,.04);color:var(--muted);border:1px solid var(--border)}
 .btn-ghost:hover{background:rgba(255,255,255,.07);color:var(--text)}
-.btn-danger{background:var(--red-dim);color:var(--red);border:1px solid rgba(255,92,92,.2)}
 .btn-sm{padding:6px 12px;font-size:11px}
-.btn-xs{padding:4px 10px;font-size:10px}
+.btn:disabled{opacity:0.4;cursor:not-allowed}
 
 /* MODAL */
 .modal-bg{display:none;position:fixed;inset:0;background:rgba(5,8,15,.85);z-index:200;align-items:center;justify-content:center;backdrop-filter:blur(10px)}
 .modal-bg.open{display:flex}
 .modal{background:rgba(10,16,30,.96);border:1px solid var(--border2);border-radius:20px;padding:24px;width:440px;max-width:94vw;box-shadow:0 40px 100px rgba(0,0,0,.6)}
 .modal-title{font-size:18px;font-weight:900;letter-spacing:-.5px;margin-bottom:16px}
+.modal-note{font-size:11px;color:var(--muted);margin-bottom:14px;background:var(--green-dim);border:1px solid rgba(53,228,133,.15);border-radius:9px;padding:10px 12px}
 .modal-actions{display:flex;gap:8px;margin-top:16px;justify-content:flex-end}
 
 /* TOAST */
@@ -279,27 +235,33 @@ textarea{resize:vertical;min-height:60px;line-height:1.5}
 .empty-text{font-size:15px;font-weight:800;color:var(--muted);margin-bottom:5px;letter-spacing:-.3px}
 .empty-sub{font-size:12px;color:var(--soft);margin-bottom:18px}
 
-/* REL BAR */
-.rel-bar{display:flex;align-items:center;gap:10px;padding:10px 20px;background:rgba(8,12,22,.8);border-bottom:1px solid var(--border);backdrop-filter:blur(16px);flex-wrap:wrap;flex-shrink:0}
-.rb-label{font-size:8px;color:var(--soft);text-transform:uppercase;letter-spacing:.08em;font-weight:700}
-.rb-name{font-size:13px;font-weight:800;color:var(--green);letter-spacing:-.3px}
-.rb-date{font-size:10px;color:var(--muted)}
-.rb-spacer{flex:1}
-.days-badge{padding:3px 10px;border-radius:999px;font-size:10px;font-weight:700}
-.bar-btn{border:1px solid var(--border);background:rgba(255,255,255,.03);color:var(--muted);padding:5px 10px;border-radius:999px;font-size:10px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.15s}
-.bar-btn:hover{background:rgba(255,255,255,.06);color:var(--text)}
-.bar-btn.danger{color:var(--red);border-color:rgba(255,92,92,.2)}
-.bar-btn.danger:hover{background:var(--red-dim)}
+/* SPINNER */
+@keyframes spin{to{transform:rotate(360deg)}}
+.spinner{width:13px;height:13px;border:2px solid rgba(245,166,35,.3);border-top-color:var(--amber);border-radius:50%;animation:spin 0.7s linear infinite;flex-shrink:0}
 </style>
 </head>
 <body>
-
 <div id="toast"></div>
+
+<!-- AUTH SCREEN -->
+<div class="auth-screen" id="auth-screen">
+  <div class="auth-card">
+    <div class="auth-logo"><span>Aart Sense</span></div>
+    <div class="auth-title">Release Hub</div>
+    <div class="auth-sub">Sign in with Google to sync your releases across all devices automatically.</div>
+    <button class="auth-btn" onclick="signIn()">
+      <svg width="18" height="18" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+      Continue with Google
+    </button>
+    <div class="auth-note">Your data saves to a private file in your own Google Drive. Only you can access it.</div>
+  </div>
+</div>
 
 <!-- NEW RELEASE MODAL -->
 <div class="modal-bg" id="new-release-modal">
   <div class="modal">
     <div class="modal-title">New release</div>
+    <div class="modal-note">All 8 pitch templates will be auto-generated as soon as you create the release.</div>
     <div class="form-row">
       <div><label>Song / release title</label><input type="text" id="nr-title" placeholder="e.g. Chitthi"></div>
       <div><label>Artist</label><input type="text" id="nr-artist" value="Arjuna Harjai"></div>
@@ -308,23 +270,23 @@ textarea{resize:vertical;min-height:60px;line-height:1.5}
       <div><label>Release date</label><input type="date" id="nr-date"></div>
       <div><label>Genre</label><input type="text" id="nr-genre" placeholder="e.g. Indie folk"></div>
     </div>
-    <div class="form-row full">
-      <div><label>Distributor</label><input type="text" id="nr-dist" value="The Orchard"></div>
-    </div>
+    <div class="form-row full"><div><label>Distributor</label><input type="text" id="nr-dist" value="The Orchard"></div></div>
     <div class="modal-actions">
       <button class="btn btn-ghost btn-sm" onclick="closeModal()">Cancel</button>
-      <button class="btn btn-primary btn-sm" onclick="createRelease()">Create release</button>
+      <button class="btn btn-primary btn-sm" id="create-btn" onclick="createRelease()">Create + generate pitches</button>
     </div>
   </div>
 </div>
 
-<div class="shell">
+<!-- MAIN SHELL -->
+<div class="shell" id="main-shell" style="display:none">
 
   <!-- LEFT SIDEBAR -->
   <div class="lsidebar">
     <div class="logo">
       <div class="logo-mark"><span>Aart Sense</span></div>
       <div class="logo-sub">Release Hub</div>
+      <div class="logo-user"><div class="logo-user-dot"></div><span id="user-name">Signed in</span></div>
     </div>
     <div style="padding:2px 4px">
       <div class="lsec-label">Views</div>
@@ -336,7 +298,7 @@ textarea{resize:vertical;min-height:60px;line-height:1.5}
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
         Analytics
       </button>
-      <button class="nav-btn" onclick="showView('pitch',this)">
+      <button class="nav-btn" id="pitch-nav-btn" onclick="showView('pitch',this)">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 2L11 13"/><path d="M22 2L15 22 11 13 2 9l20-7z"/></svg>
         Pitch generator
       </button>
@@ -350,173 +312,185 @@ textarea{resize:vertical;min-height:60px;line-height:1.5}
       </button>
     </div>
     <div class="lsec-label" style="margin-top:8px">Releases</div>
-    <div class="rel-list" id="rel-list">
-      <div style="font-size:11px;color:var(--soft);padding:4px 8px">No releases yet</div>
-    </div>
+    <div class="rel-list" id="rel-list"><div style="font-size:11px;color:var(--soft);padding:4px 8px">No releases yet</div></div>
     <div class="lsidebar-footer">
-      <button class="icon-btn" onclick="openModal()">+ New</button>
-      <button class="icon-btn" onclick="exportData()">Export</button>
-      <button class="icon-btn" onclick="importData()">Import</button>
+      <button class="icon-btn" onclick="openModal()">+ New release</button>
+      <button class="icon-btn signout" onclick="signOut()">Sign out</button>
     </div>
   </div>
 
   <!-- CENTER -->
   <div class="center" id="center">
-    <!-- rel bar injected here -->
     <div class="rel-bar" id="rel-bar" style="display:none">
       <span class="rb-label">Release</span>
       <span class="rb-name" id="rb-name">—</span>
       <span class="rb-date" id="rb-date"></span>
       <div class="rb-spacer"></div>
       <span class="days-badge" id="rb-days"></span>
+      <span id="sync-badge" class="sync-badge sync-ok"><span class="sync-dot"></span>Synced</span>
       <button class="bar-btn" onclick="openModal()">+ New</button>
       <button class="bar-btn danger" onclick="deleteCurrentRelease()">Delete</button>
     </div>
-    <div class="center-inner" id="center-inner">
-      <!-- content rendered here -->
-    </div>
+    <div class="center-inner" id="center-inner"></div>
   </div>
 
   <!-- RIGHT SIDEBAR -->
-  <div class="rsidebar" id="rsidebar">
+  <div class="rsidebar">
     <div class="rsec-label">Checklist sections</div>
     <div id="section-blocks" style="padding-bottom:8px"></div>
     <div class="rsidebar-bottom" id="rsidebar-bottom"></div>
   </div>
-
 </div>
 
-<input type="file" id="import-file" accept=".json" style="display:none" onchange="handleImport(event)">
-
 <script>
+const CLIENT_ID='2394932324-bdvemieoet5gvs7dtklshlu0938cumdq.apps.googleusercontent.com';
+const SCOPES='https://www.googleapis.com/auth/drive.file';
+const FILE_NAME='aart-sense-hub-data.json';
+const PITCH_TYPES=['bbc_playlist','bbc_intro','bbc_radio','press','curator','sync','blog','spotify'];
+const PITCH_LABELS={bbc_playlist:'BBC Asian Network',bbc_intro:'BBC Introducing',bbc_radio:'BBC Radio 1/2',press:'Press',curator:'Curator',sync:'Sync licensing',blog:'Music blog',spotify:'Spotify editorial'};
+
 const SECTIONS=[
-  {id:'distribution',name:'Distribution',color:'#6b9cf0',items:[
-    {id:'d1',label:'Song master delivered to distributor (The Orchard)'},
-    {id:'d2',label:'ISRC code confirmed'},
-    {id:'d3',label:'Metadata locked — title, artist, featuring, genre, language'},
-    {id:'d4',label:'Streaming pre-save links live'},
-    {id:'d5',label:'YouTube Content ID registered'},
-    {id:'d6',label:'Sony Music Publishing registration submitted'},
-  ]},
-  {id:'assets',name:'Creative assets',color:'#a78bfa',items:[
-    {id:'a1',label:'Album art finalised (3000x3000px, RGB)'},
-    {id:'a2',label:'Press photo / EPK image ready'},
-    {id:'a3',label:'Lyric video or visualiser delivered'},
-    {id:'a4',label:'Official music video delivered'},
-    {id:'a5',label:'Short-form reel (15s-30s) ready for Instagram / TikTok'},
-    {id:'a6',label:'Vertical story asset ready'},
-    {id:'a7',label:'Behind-the-scenes content shot (RAP Ville / Deadline Day Films)'},
-  ]},
-  {id:'social',name:'Content & social',color:'#f472b6',items:[
-    {id:'c1',label:'Instagram content calendar mapped for 4 weeks post-release'},
-    {id:'c2',label:'Reels shot and edited'},
-    {id:'c3',label:'Carousel posts designed (cinematic aesthetic)'},
-    {id:'c4',label:'Caption copy written for all posts'},
-    {id:'c5',label:'Hashtag sets prepared — UK, US, CA, AU South Asian diaspora'},
-    {id:'c6',label:'DM automation numerology sequence set up'},
-    {id:'c7',label:'YouTube community post drafted'},
-  ]},
-  {id:'promo',name:'Promo strategy',color:'#f5a623',items:[
-    {id:'p1',label:'Meta ads campaign structured — awareness and retargeting'},
-    {id:'p2',label:'Ad creatives A/B tested (min 2 variants)'},
-    {id:'p3',label:'Target audience defined and saved in Ads Manager'},
-    {id:'p4',label:'Groover curator outreach submitted (min 15 curators)'},
-    {id:'p5',label:'Spotify editorial pitch submitted (7 days pre-release minimum)'},
-    {id:'p6',label:'Apple Music pitch submitted'},
-    {id:'p7',label:'Press release written and distributed'},
-    {id:'p8',label:'Music blogs and digital press pitched'},
-  ]},
-  {id:'bbc',name:'BBC & radio',color:'#35e485',items:[
-    {id:'b1',label:'BBC Asian Network playlisting pitch sent'},
-    {id:'b2',label:'BBC Introducing submission live'},
-    {id:'b3',label:'BBC Radio 1 / Radio 2 pitch sent via label contact'},
-    {id:'b4',label:'Community radio contacted — Lyca Radio, Sunrise Radio'},
-    {id:'b5',label:'Radio promo serviced (physical or digital)'},
-    {id:'b6',label:'Follow-up sent to BBC contact (7 days after initial pitch)'},
-  ]},
-  {id:'pr',name:'PR & press',color:'#38bdf8',items:[
-    {id:'pr1',label:'EPK (electronic press kit) updated'},
-    {id:'pr2',label:'Press release approved and formatted'},
-    {id:'pr3',label:'Journalist and blogger outreach list built'},
-    {id:'pr4',label:'Interviews secured (online or broadcast)'},
-    {id:'pr5',label:'Wikipedia article updated with new release info'},
-    {id:'pr6',label:'Google Knowledge Panel updated'},
-  ]},
-  {id:'releaseday',name:'Release day',color:'#fb7185',items:[
-    {id:'r1',label:'All streaming links live and verified'},
-    {id:'r2',label:'Pinned post updated on all socials'},
-    {id:'r3',label:'Story countdown published'},
-    {id:'r4',label:'Release day reel posted'},
-    {id:'r5',label:'SMS / WhatsApp blast to fan contacts'},
-    {id:'r6',label:'Team notified — distributor, PR, content agency'},
-  ]},
-  {id:'postrelease',name:'Post-release',color:'#c8a96e',items:[
-    {id:'po1',label:'Streaming numbers reviewed at 48 hours'},
-    {id:'po2',label:'Meta ads performance reviewed and budget adjusted'},
-    {id:'po3',label:'Audience demographic data pulled and logged'},
-    {id:'po4',label:'Fan comments and DMs reviewed for sentiment'},
-    {id:'po5',label:'Press coverage logged and shared'},
-    {id:'po6',label:'Next single or release planning started'},
-  ]},
+  {id:'distribution',name:'Distribution',color:'#6b9cf0',items:[{id:'d1',label:'Song master delivered to distributor (The Orchard)'},{id:'d2',label:'ISRC code confirmed'},{id:'d3',label:'Metadata locked — title, artist, featuring, genre, language'},{id:'d4',label:'Streaming pre-save links live'},{id:'d5',label:'YouTube Content ID registered'},{id:'d6',label:'Sony Music Publishing registration submitted'}]},
+  {id:'assets',name:'Creative assets',color:'#a78bfa',items:[{id:'a1',label:'Album art finalised (3000x3000px, RGB)'},{id:'a2',label:'Press photo / EPK image ready'},{id:'a3',label:'Lyric video or visualiser delivered'},{id:'a4',label:'Official music video delivered'},{id:'a5',label:'Short-form reel (15s-30s) ready for Instagram / TikTok'},{id:'a6',label:'Vertical story asset ready'},{id:'a7',label:'Behind-the-scenes content shot (RAP Ville / Deadline Day Films)'}]},
+  {id:'social',name:'Content & social',color:'#f472b6',items:[{id:'c1',label:'Instagram content calendar mapped for 4 weeks post-release'},{id:'c2',label:'Reels shot and edited'},{id:'c3',label:'Carousel posts designed (cinematic aesthetic)'},{id:'c4',label:'Caption copy written for all posts'},{id:'c5',label:'Hashtag sets prepared — UK, US, CA, AU South Asian diaspora'},{id:'c6',label:'DM automation numerology sequence set up'},{id:'c7',label:'YouTube community post drafted'}]},
+  {id:'promo',name:'Promo strategy',color:'#f5a623',items:[{id:'p1',label:'Meta ads campaign structured — awareness and retargeting'},{id:'p2',label:'Ad creatives A/B tested (min 2 variants)'},{id:'p3',label:'Target audience defined and saved in Ads Manager'},{id:'p4',label:'Groover curator outreach submitted (min 15 curators)'},{id:'p5',label:'Spotify editorial pitch submitted (7 days pre-release minimum)'},{id:'p6',label:'Apple Music pitch submitted'},{id:'p7',label:'Press release written and distributed'},{id:'p8',label:'Music blogs and digital press pitched'}]},
+  {id:'bbc',name:'BBC & radio',color:'#35e485',items:[{id:'b1',label:'BBC Asian Network playlisting pitch sent'},{id:'b2',label:'BBC Introducing submission live'},{id:'b3',label:'BBC Radio 1 / Radio 2 pitch sent via label contact'},{id:'b4',label:'Community radio contacted — Lyca Radio, Sunrise Radio'},{id:'b5',label:'Radio promo serviced (physical or digital)'},{id:'b6',label:'Follow-up sent to BBC contact (7 days after initial pitch)'}]},
+  {id:'pr',name:'PR & press',color:'#38bdf8',items:[{id:'pr1',label:'EPK (electronic press kit) updated'},{id:'pr2',label:'Press release approved and formatted'},{id:'pr3',label:'Journalist and blogger outreach list built'},{id:'pr4',label:'Interviews secured (online or broadcast)'},{id:'pr5',label:'Wikipedia article updated with new release info'},{id:'pr6',label:'Google Knowledge Panel updated'}]},
+  {id:'releaseday',name:'Release day',color:'#fb7185',items:[{id:'r1',label:'All streaming links live and verified'},{id:'r2',label:'Pinned post updated on all socials'},{id:'r3',label:'Story countdown published'},{id:'r4',label:'Release day reel posted'},{id:'r5',label:'SMS / WhatsApp blast to fan contacts'},{id:'r6',label:'Team notified — distributor, PR, content agency'}]},
+  {id:'postrelease',name:'Post-release',color:'#c8a96e',items:[{id:'po1',label:'Streaming numbers reviewed at 48 hours'},{id:'po2',label:'Meta ads performance reviewed and budget adjusted'},{id:'po3',label:'Audience demographic data pulled and logged'},{id:'po4',label:'Fan comments and DMs reviewed for sentiment'},{id:'po5',label:'Press coverage logged and shared'},{id:'po6',label:'Next single or release planning started'}]},
 ];
 
+let tokenClient,accessToken=null,driveFileId=null,saveTimer=null;
 let db={releases:[],activeId:null};
-let currentView='dashboard';
-let selectedSection=null;
-let pitchType='bbc_playlist';
+let currentView='dashboard',selectedSection=null,activePitchType='bbc_playlist';
 
-function load(){try{const d=localStorage.getItem('aart_hub_v4');if(d)db=JSON.parse(d);}catch(e){}}
-function save(){try{localStorage.setItem('aart_hub_v4',JSON.stringify(db));}catch(e){}}
-function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2200);}
+function toast(msg,d=2400){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),d);}
 function getActive(){return db.releases.find(r=>r.id===db.activeId)||null;}
-function setActive(id){db.activeId=id;save();renderAll();}
+function setActive(id){db.activeId=id;scheduleSave();renderAll();}
 function openModal(){document.getElementById('new-release-modal').classList.add('open');}
 function closeModal(){document.getElementById('new-release-modal').classList.remove('open');}
+function calcPct(rel){const t=SECTIONS.flatMap(s=>s.items).length;const d=Object.values(rel.state||{}).filter(Boolean).length;return t?Math.round(d/t*100):0;}
+function calcSecPct(rel,sec){const d=sec.items.filter(i=>(rel.state||{})[i.id]).length;return sec.items.length?Math.round(d/sec.items.length*100):0;}
+function daysUntil(d){if(!d)return null;return Math.ceil((new Date(d)-new Date())/86400000);}
+function pitchCount(rel){if(!rel?.pitches)return 0;return PITCH_TYPES.filter(t=>rel.pitches[t]&&rel.pitches[t].length>10).length;}
+function allPitchesReady(rel){return pitchCount(rel)===PITCH_TYPES.length;}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
-function createRelease(){
+/* GOOGLE AUTH */
+function initGoogle(){
+  tokenClient=google.accounts.oauth2.initTokenClient({client_id:CLIENT_ID,scope:SCOPES,callback:resp=>{
+    if(resp.error){toast('Sign in failed');return;}
+    accessToken=resp.access_token;
+    showApp();loadFromDrive();
+  }});
+}
+function signIn(){tokenClient.requestAccessToken();}
+function signOut(){if(accessToken)google.accounts.oauth2.revoke(accessToken,()=>{});accessToken=null;driveFileId=null;db={releases:[],activeId:null};document.getElementById('main-shell').style.display='none';document.getElementById('auth-screen').style.display='flex';toast('Signed out');}
+function showApp(){document.getElementById('auth-screen').style.display='none';document.getElementById('main-shell').style.display='flex';}
+
+/* DRIVE SYNC */
+function setSyncBadge(s){const el=document.getElementById('sync-badge');if(!el)return;const map={saving:'sync-saving',ok:'sync-ok',err:'sync-err'};const txt={saving:'Saving…',ok:'Synced',err:'Sync error'};el.className='sync-badge '+(map[s]||'sync-ok');el.innerHTML=`<span class="sync-dot"></span>${txt[s]||'Synced'}`;}
+async function loadFromDrive(){
+  try{
+    setSyncBadge('saving');
+    const res=await fetch(`https://www.googleapis.com/drive/v3/files?q=name='${FILE_NAME}'+and+trashed=false&spaces=drive&fields=files(id,name)`,{headers:{Authorization:'Bearer '+accessToken}});
+    const data=await res.json();
+    if(data.files?.length){driveFileId=data.files[0].id;const f=await fetch(`https://www.googleapis.com/drive/v3/files/${driveFileId}?alt=media`,{headers:{Authorization:'Bearer '+accessToken}});const j=await f.json();if(j.releases)db=j;}
+    setSyncBadge('ok');renderAll();
+  }catch(e){setSyncBadge('err');toast('Could not load from Drive');renderAll();}
+}
+function scheduleSave(){setSyncBadge('saving');if(saveTimer)clearTimeout(saveTimer);saveTimer=setTimeout(saveToDrive,1400);}
+async function saveToDrive(){
+  if(!accessToken)return;
+  try{
+    const form=new FormData();
+    form.append('metadata',new Blob([JSON.stringify({name:FILE_NAME,mimeType:'application/json'})],{type:'application/json'}));
+    form.append('file',new Blob([JSON.stringify(db)],{type:'application/json'}));
+    const r=await fetch(driveFileId?`https://www.googleapis.com/upload/drive/v3/files/${driveFileId}?uploadType=multipart`:'https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart',{method:driveFileId?'PATCH':'POST',headers:{Authorization:'Bearer '+accessToken},body:form});
+    const j=await r.json();if(j.id)driveFileId=j.id;
+    setSyncBadge('ok');
+  }catch(e){setSyncBadge('err');}
+}
+
+/* PITCH GENERATION */
+function buildPrompt(type,d){
+  const base=`Song: "${d.song}" by ${d.artist}. Genre: ${d.genre||'Indie folk, South Asian diaspora'}. Release date: ${d.release||'upcoming'}. Label: Aart Sense Records, distributed via The Orchard (Sony Music).${d.link?' Link: '+d.link:''}${d.notes?' Context: '+d.notes:''}`;
+  const p={
+    bbc_playlist:`Write a professional BBC Asian Network playlisting pitch email. ${base}\n\nStrong subject line. Confident opening — no grovelling. Introduce Arjuna Harjai as a UK-based independent artist with South Asian diaspora roots, distributed via The Orchard (Sony Music). Describe the song's sound, emotional core and cultural relevance to the BBC Asian Network audience. Make a clear case for playlisting with a direct ask. 200-240 words. Return subject line + email body only.`,
+    bbc_intro:`Write a BBC Introducing submission pitch. ${base}\n\nHighlight the UK connection, unique sound and readiness for BBC Introducing. Under 200 words. Return pitch text only.`,
+    bbc_radio:`Write a BBC Radio 1 / Radio 2 pitch email to be sent via label contact. ${base}\n\nSubject line, artist positioning, song description, clear ask. Under 220 words. Return subject + body only.`,
+    press:`Write a press pitch email for music journalists and editors. ${base}\n\nSubject line, artist angle, song story, clear ask (review/feature/premiere). Under 220 words. Return subject + body only.`,
+    curator:`Write a Spotify playlist curator pitch. ${base}\n\nShort, punchy, under 150 words. Describe vibe, mood, tempo, playlist fit. Return pitch text only.`,
+    sync:`Write a sync licensing pitch for music supervisors. ${base}\n\nMood, tempo, lyrical themes, ideal sync use cases (film/TV/advertising). Under 180 words. Return pitch text only.`,
+    blog:`Write a music blog outreach pitch. ${base}\n\nSubject line + short pitch for premiere/review/feature. Conversational tone. Under 180 words. Return subject + body only.`,
+    spotify:`Write a Spotify editorial pitch (via Spotify for Artists). ${base}\n\nMood, instrumentation, listener context, cultural relevance. Under 200 words. Direct and factual. Return pitch text only.`,
+  };
+  return p[type]||p.press;
+}
+async function genOne(type,d){
+  const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:900,messages:[{role:'user',content:buildPrompt(type,d)}]})});
+  const j=await r.json();
+  return j.content?.filter(b=>b.type==='text').map(b=>b.text).join('')||'';
+}
+async function runPitchGeneration(rel,extraD={}){
+  if(!rel)return;
+  const d={song:rel.title,artist:rel.artist,genre:rel.genre||'',release:rel.date?new Date(rel.date+'T00:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'}):'',link:extraD.link||'',notes:extraD.notes||''};
+  rel.pitches=rel.pitches||{};
+  rel.pitchesGenerating=true;
+  scheduleSave();
+  if(currentView==='pitch')renderCenter();
+  for(const type of PITCH_TYPES){
+    try{rel.pitches[type]=await genOne(type,d);}catch(e){rel.pitches[type]='Generation failed — click Regenerate to retry.';}
+    scheduleSave();
+    if(currentView==='pitch'||currentView==='dashboard')renderCenter();
+  }
+  rel.pitchesGenerating=false;
+  rel.pitchesGeneratedAt=Date.now();
+  scheduleSave();
+  renderAll();
+  toast('All pitches ready for "'+rel.title+'"');
+  updatePitchBadge();
+}
+function updatePitchBadge(){
+  const rel=getActive();const btn=document.getElementById('pitch-nav-btn');if(!btn)return;
+  const existing=btn.querySelector('.nav-pitch-badge');if(existing)existing.remove();
+  if(rel&&allPitchesReady(rel)){const b=document.createElement('span');b.className='nav-pitch-badge';b.textContent='Ready';btn.appendChild(b);}
+}
+
+/* RELEASE CRUD */
+async function createRelease(){
   const title=document.getElementById('nr-title').value.trim();
   if(!title){toast('Enter a release title');return;}
-  const rel={
-    id:'r_'+Date.now(),title,
-    artist:document.getElementById('nr-artist').value.trim()||'Arjuna Harjai',
-    date:document.getElementById('nr-date').value||'',
-    genre:document.getElementById('nr-genre').value.trim()||'',
-    dist:document.getElementById('nr-dist').value.trim()||'The Orchard',
-    state:{},notes:{},dates:{},
-    releaseNotes:'',
-    sectionNotes:{},
-    freeNote:'',
-    created:Date.now(),activity:[],
-  };
+  const btn=document.getElementById('create-btn');
+  btn.disabled=true;btn.textContent='Creating…';
+  const rel={id:'r_'+Date.now(),title,artist:document.getElementById('nr-artist').value.trim()||'Arjuna Harjai',date:document.getElementById('nr-date').value||'',genre:document.getElementById('nr-genre').value.trim()||'',dist:document.getElementById('nr-dist').value.trim()||'The Orchard',state:{},notes:{},dates:{},freeNote:'',sectionNotes:{},pitches:{},pitchesGenerating:false,created:Date.now(),activity:[]};
   db.releases.push(rel);db.activeId=rel.id;
   closeModal();document.getElementById('nr-title').value='';
-  save();renderAll();toast('"'+title+'" created');
+  btn.disabled=false;btn.textContent='Create + generate pitches';
+  scheduleSave();renderAll();
+  toast('"'+title+'" created — generating pitches…',3500);
+  runPitchGeneration(rel);
 }
 function deleteCurrentRelease(){
   const rel=getActive();if(!rel)return;
   if(!confirm('Delete "'+rel.title+'"? Cannot be undone.'))return;
   db.releases=db.releases.filter(r=>r.id!==rel.id);
   db.activeId=db.releases.length?db.releases[db.releases.length-1].id:null;
-  save();renderAll();toast('Release deleted');
+  scheduleSave();renderAll();toast('Release deleted');
 }
 function toggleTask(relId,taskId){
   const rel=db.releases.find(r=>r.id===relId);if(!rel)return;
   const was=!!rel.state[taskId];rel.state[taskId]=!was;
-  if(!was){
-    const task=SECTIONS.flatMap(s=>s.items).find(i=>i.id===taskId);
-    rel.activity=rel.activity||[];
-    rel.activity.push({ts:Date.now(),taskId,label:task?task.label:'Task completed'});
-  }
-  save();renderAll();
+  if(!was){const task=SECTIONS.flatMap(s=>s.items).find(i=>i.id===taskId);rel.activity=rel.activity||[];rel.activity.push({ts:Date.now(),taskId,label:task?task.label:'Task completed'});}
+  scheduleSave();renderAll();
 }
-function setTaskDate(relId,taskId,val){const rel=db.releases.find(r=>r.id===relId);if(rel){rel.dates[taskId]=val;save();}}
-function setTaskNote(relId,taskId,val){const rel=db.releases.find(r=>r.id===relId);if(rel){rel.notes[taskId]=val;save();}}
+function setTaskDate(rId,tId,v){const rel=db.releases.find(r=>r.id===rId);if(rel){rel.dates[tId]=v;scheduleSave();}}
+function setTaskNote(rId,tId,v){const rel=db.releases.find(r=>r.id===rId);if(rel){rel.notes[tId]=v;scheduleSave();}}
 function toggleNoteRow(id){const el=document.getElementById('nr-'+id);if(el)el.classList.toggle('open');}
-function saveRelNote(relId,key,val){const rel=db.releases.find(r=>r.id===relId);if(rel){rel[key]=val;save();}}
-function calcPct(rel){const total=SECTIONS.flatMap(s=>s.items).length;const done=Object.values(rel.state).filter(Boolean).length;return total?Math.round(done/total*100):0;}
-function calcSecPct(rel,sec){const done=sec.items.filter(i=>rel.state[i.id]).length;return sec.items.length?Math.round(done/sec.items.length*100):0;}
-function daysUntil(d){if(!d)return null;return Math.ceil((new Date(d)-new Date())/(86400000));}
+function saveRelNote(rId,key,v){const rel=db.releases.find(r=>r.id===rId);if(rel){rel[key]=v;scheduleSave();}}
+function saveSectionNote(rId,sId,v){const rel=db.releases.find(r=>r.id===rId);if(rel){rel.sectionNotes=rel.sectionNotes||{};rel.sectionNotes[sId]=v;scheduleSave();}}
 
+/* RENDER HELPERS */
 function renderRelBar(){
   const rel=getActive();const bar=document.getElementById('rel-bar');
   if(!rel){bar.style.display='none';return;}
@@ -524,120 +498,39 @@ function renderRelBar(){
   document.getElementById('rb-name').textContent=rel.title+' — '+rel.artist;
   document.getElementById('rb-date').textContent=rel.date?new Date(rel.date+'T00:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}):'No date set';
   const days=daysUntil(rel.date);const badge=document.getElementById('rb-days');
-  if(days!==null){
-    badge.textContent=days>0?days+' days to release':days===0?'Release day!':Math.abs(days)+' days post-release';
-    badge.style.background=days>14?'rgba(107,156,240,.12)':days>0?'rgba(245,166,35,.12)':'rgba(53,228,133,.10)';
-    badge.style.color=days>14?'#6b9cf0':days>0?'#f5a623':'#35e485';
-  }else{badge.textContent='';}
+  if(days!==null){badge.textContent=days>0?days+' days to release':days===0?'Release day!':Math.abs(days)+' days post-release';badge.style.cssText=`background:${days>14?'rgba(107,156,240,.12)':days>0?'rgba(245,166,35,.12)':'rgba(53,228,133,.10)'};color:${days>14?'#6b9cf0':days>0?'#f5a623':'#35e485'}`;}else{badge.textContent='';}
 }
-
 function renderLeftSidebar(){
   const el=document.getElementById('rel-list');
   if(!db.releases.length){el.innerHTML='<div style="font-size:11px;color:var(--soft);padding:4px 8px">No releases yet</div>';return;}
-  el.innerHTML=db.releases.map(r=>{
-    const pct=calcPct(r);
-    const col=pct===100?'var(--green)':pct>0?'var(--amber)':'var(--soft)';
-    return`<div class="rel-item ${r.id===db.activeId?'active':''}" onclick="setActive('${r.id}')">
-      <div class="rel-dot" style="background:${col}"></div>
-      <span class="rel-name">${r.title}</span>
-      <span class="rel-pct">${pct}%</span>
-    </div>`;
-  }).join('');
+  el.innerHTML=db.releases.map(r=>{const pct=calcPct(r);const col=pct===100?'var(--green)':pct>0?'var(--amber)':'var(--soft)';return`<div class="rel-item ${r.id===db.activeId?'active':''}" onclick="setActive('${r.id}')"><div class="rel-dot" style="background:${col}"></div><span class="rel-name">${esc(r.title)}</span><span class="rel-pct">${pct}%</span></div>`;}).join('');
+  updatePitchBadge();
 }
-
 function renderRightSidebar(){
-  const rel=getActive();
-  const el=document.getElementById('section-blocks');
-  const bottom=document.getElementById('rsidebar-bottom');
-  if(!rel){
-    el.innerHTML='<div style="font-size:11px;color:var(--soft);padding:12px 16px">Select a release to see sections</div>';
-    bottom.innerHTML='';return;
-  }
-  el.innerHTML=SECTIONS.map(sec=>{
-    const done=sec.items.filter(i=>rel.state[i.id]).length;
-    const total=sec.items.length;
-    const pct=Math.round(done/total*100);
-    const pillCls=done===total?'pill-done':done>0?'pill-part':'pill-none';
-    const isSelected=selectedSection===sec.id;
-    return`<div class="section-block">
-      <div class="sblock-header ${isSelected?'selected':''}" onclick="selectSection('${sec.id}')">
-        <div class="sblock-icon" style="background:${sec.color}15">
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="${sec.color}" stroke-width="2.5"><circle cx="12" cy="12" r="9"/></svg>
-        </div>
-        <span class="sblock-name">${sec.name}</span>
-        <span class="sblock-pill ${pillCls}">${done}/${total}</span>
-      </div>
-    </div>`;
-  }).join('');
-  const totalAll=SECTIONS.flatMap(s=>s.items).length;
-  const doneAll=Object.values(rel.state).filter(Boolean).length;
-  const pctAll=Math.round(doneAll/totalAll*100);
-  bottom.innerHTML=`<div class="rsidebar-overview">
-    <div class="overview-pct">${pctAll}%</div>
-    <div class="overview-lbl">${rel.title}</div>
-    <div class="overview-track"><div class="overview-fill" style="width:${pctAll}%"></div></div>
-    <div style="font-size:9px;color:var(--soft);margin-top:6px;font-weight:600">${doneAll} of ${totalAll} tasks done</div>
-  </div>`;
+  const rel=getActive();const el=document.getElementById('section-blocks');const bot=document.getElementById('rsidebar-bottom');
+  if(!rel){el.innerHTML='<div style="font-size:11px;color:var(--soft);padding:12px 16px">Select a release</div>';bot.innerHTML='';return;}
+  el.innerHTML=SECTIONS.map(sec=>{const done=sec.items.filter(i=>(rel.state||{})[i.id]).length;const t=sec.items.length;const pc=done===t?'pill-done':done>0?'pill-part':'pill-none';return`<div class="sblock-header ${selectedSection===sec.id?'selected':''}" onclick="selectSection('${sec.id}')"><div class="sblock-icon" style="background:${sec.color}15"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="${sec.color}" stroke-width="2.5"><circle cx="12" cy="12" r="9"/></svg></div><span class="sblock-name">${sec.name}</span><span class="sblock-pill ${pc}">${done}/${t}</span></div>`;}).join('');
+  const tot=SECTIONS.flatMap(s=>s.items).length;const don=Object.values(rel.state||{}).filter(Boolean).length;const pct=Math.round(don/tot*100);
+  bot.innerHTML=`<div class="rsidebar-overview"><div class="overview-pct">${pct}%</div><div class="overview-lbl">${esc(rel.title)}</div><div class="overview-track"><div class="overview-fill" style="width:${pct}%"></div></div><div style="font-size:9px;color:var(--soft);margin-top:6px;font-weight:600">${don} of ${tot} tasks done</div></div>`;
 }
-
-function selectSection(id){
-  selectedSection=id;
-  currentView='section';
-  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
-  renderAll();
-}
-
-function showView(id,btn){
-  currentView=id;selectedSection=null;
-  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
-  if(btn)btn.classList.add('active');
-  renderCenter();renderRightSidebar();
-}
-
-function renderCenter(){
-  if(currentView==='section'&&selectedSection)renderSectionDetail();
-  else if(currentView==='dashboard')renderDash();
-  else if(currentView==='analytics')renderAnalytics();
-  else if(currentView==='pitch')renderPitchPage();
-  else if(currentView==='notes')renderNotesPage();
-  else if(currentView==='timeline')renderTimeline();
-}
-
-function renderAll(){
-  renderRelBar();
-  renderLeftSidebar();
-  renderRightSidebar();
-  renderCenter();
-}
+function selectSection(id){selectedSection=id;currentView='section';document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));renderAll();}
+function showView(id,btn){currentView=id;selectedSection=null;document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));if(btn)btn.classList.add('active');renderCenter();renderRightSidebar();}
+function renderCenter(){if(currentView==='section'&&selectedSection)renderSectionDetail();else if(currentView==='dashboard')renderDash();else if(currentView==='analytics')renderAnalytics();else if(currentView==='pitch')renderPitchPage();else if(currentView==='notes')renderNotesPage();else if(currentView==='timeline')renderTimeline();}
+function renderAll(){renderRelBar();renderLeftSidebar();renderRightSidebar();renderCenter();}
 
 /* DASHBOARD */
 function renderDash(){
   const rel=getActive();const el=document.getElementById('center-inner');
-  if(!rel){
-    el.innerHTML=`<div class="empty-state"><div class="empty-icon">🎵</div><div class="empty-text">No releases yet</div><div class="empty-sub">Create your first release to get started</div><button class="btn btn-primary" onclick="openModal()">Create release</button></div>`;
-    return;
-  }
-  const total=SECTIONS.flatMap(s=>s.items).length;
-  const done=Object.values(rel.state).filter(Boolean).length;
-  const pct=Math.round(done/total*100);
-  const days=daysUntil(rel.date);
+  if(!rel){el.innerHTML=`<div class="empty-state"><div class="empty-icon">🎵</div><div class="empty-text">No releases yet</div><div class="empty-sub">Create your first release to get started</div><button class="btn btn-primary" onclick="openModal()">Create release</button></div>`;return;}
+  const tot=SECTIONS.flatMap(s=>s.items).length;const don=Object.values(rel.state||{}).filter(Boolean).length;const pct=Math.round(don/tot*100);const days=daysUntil(rel.date);
   const secBars=SECTIONS.map(s=>{const p=calcSecPct(rel,s);return`<div class="sec-bar-row"><span class="sec-bar-label">${s.name}</span><div class="sec-bar-track"><div class="sec-bar-fill" style="width:${p}%;background:${s.color}"></div></div><span class="sec-bar-num">${p}%</span></div>`;}).join('');
-  el.innerHTML=`
-    <div class="eyebrow">Release management</div>
-    <div class="page-title">${rel.title}</div>
-    <div class="page-sub">${rel.artist} · ${rel.dist}${rel.genre?' · '+rel.genre:''}</div>
-    <div class="metrics-grid">
-      <div class="metric-card mc-gold"><div class="metric-val" style="color:var(--green)">${pct}%</div><div class="metric-lbl">Overall complete</div><div class="metric-sub">${done} of ${total} tasks</div></div>
-      <div class="metric-card mc-green"><div class="metric-val">${done}</div><div class="metric-lbl">Tasks done</div><div class="metric-sub">${total-done} remaining</div></div>
-      <div class="metric-card mc-blue"><div class="metric-val">${days!==null?Math.abs(days):'—'}</div><div class="metric-lbl">${days!==null?(days>=0?'Days to release':'Days post-release'):'No date set'}</div><div class="metric-sub">${rel.date?new Date(rel.date+'T00:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}):'—'}</div></div>
-      <div class="metric-card mc-purple"><div class="metric-val">${SECTIONS.filter(s=>calcSecPct(rel,s)===100).length}/${SECTIONS.length}</div><div class="metric-lbl">Sections complete</div><div class="metric-sub">${SECTIONS.filter(s=>calcSecPct(rel,s)>0&&calcSecPct(rel,s)<100).length} in progress</div></div>
-    </div>
-    <div class="prog-card">
-      <div class="prog-header"><span class="prog-title">Overall progress</span><span class="prog-pct">${pct}%</span></div>
-      <div class="prog-track"><div class="prog-fill" style="width:${pct}%"></div></div>
-      <div class="sec-bars" style="margin-top:12px">${secBars}</div>
-    </div>
-    <div style="font-size:11px;color:var(--soft);text-align:center;padding:8px 0">Select a section from the right panel to view tasks →</div>`;
+  const pc=pitchCount(rel);const pt=PITCH_TYPES.length;
+  const pitchStatus=rel.pitchesGenerating
+    ?`<div style="display:flex;align-items:center;gap:8px;margin-top:12px;padding:10px 14px;background:var(--amber-dim);border:1px solid rgba(245,166,35,.2);border-radius:10px"><div class="spinner"></div><span style="font-size:11px;color:var(--amber);font-weight:600">Generating pitches… ${pc}/${pt} ready</span></div>`
+    :pc===pt
+      ?`<div style="display:flex;align-items:center;gap:8px;margin-top:12px;padding:10px 14px;background:var(--green-dim);border:1px solid rgba(53,228,133,.2);border-radius:10px"><span style="font-size:16px">✓</span><span style="font-size:11px;color:var(--green);font-weight:600">All ${pt} pitch templates ready — <span style="cursor:pointer;text-decoration:underline" onclick="showView('pitch',null)">open Pitch generator</span></span></div>`
+      :`<div style="display:flex;align-items:center;gap:8px;margin-top:12px;padding:10px 14px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:10px"><span style="font-size:11px;color:var(--soft)">${pc}/${pt} pitches generated</span></div>`;
+  el.innerHTML=`<div class="eyebrow">Release management</div><div class="page-title">${esc(rel.title)}</div><div class="page-sub">${esc(rel.artist)} · ${esc(rel.dist)}${rel.genre?' · '+esc(rel.genre):''}</div><div class="metrics-grid"><div class="metric-card mc-gold"><div class="metric-val" style="color:var(--green)">${pct}%</div><div class="metric-lbl">Overall complete</div><div class="metric-sub">${don} of ${tot} tasks</div></div><div class="metric-card mc-green"><div class="metric-val">${don}</div><div class="metric-lbl">Tasks done</div><div class="metric-sub">${tot-don} remaining</div></div><div class="metric-card mc-blue"><div class="metric-val">${days!==null?Math.abs(days):'—'}</div><div class="metric-lbl">${days!==null?(days>=0?'Days to release':'Days post-release'):'No date set'}</div><div class="metric-sub">${rel.date?new Date(rel.date+'T00:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}):'—'}</div></div><div class="metric-card mc-purple"><div class="metric-val">${pc}/${pt}</div><div class="metric-lbl">Pitches ready</div><div class="metric-sub">${rel.pitchesGenerating?'Generating…':pc===pt?'All ready':'Pending'}</div></div></div><div class="card" style="margin-bottom:18px"><div class="prog-header"><span class="prog-title">Overall progress</span><span class="prog-pct">${pct}%</span></div><div class="prog-track"><div class="prog-fill" style="width:${pct}%"></div></div><div class="sec-bars">${secBars}</div></div>${pitchStatus}<div style="font-size:11px;color:var(--soft);text-align:center;padding:12px 0">Select a section from the right panel →</div>`;
 }
 
 /* SECTION DETAIL */
@@ -645,204 +538,61 @@ function renderSectionDetail(){
   const rel=getActive();const el=document.getElementById('center-inner');
   if(!rel||!selectedSection){renderDash();return;}
   const sec=SECTIONS.find(s=>s.id===selectedSection);if(!sec)return;
-  const done=sec.items.filter(i=>rel.state[i.id]).length;
-  const pct=Math.round(done/sec.items.length*100);
-  const tasks=sec.items.map(item=>{
-    const checked=!!rel.state[item.id];
-    const dateVal=rel.dates[item.id]||'';
-    const noteVal=rel.notes[item.id]||'';
-    return`<div>
-      <div class="task-row" onclick="toggleTask('${rel.id}','${item.id}')">
-        <div class="cb ${checked?'checked':''}" onclick="event.stopPropagation();toggleTask('${rel.id}','${item.id}')">
-          <svg width="9" height="9" viewBox="0 0 9 9" fill="none" stroke="${checked?'#05080f':'white'}" stroke-width="2"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg>
-        </div>
-        <span class="task-lbl ${checked?'done':''}">${item.label}</span>
-        <div class="task-acts" onclick="event.stopPropagation()">
-          <input class="date-in" type="date" value="${dateVal}" onchange="setTaskDate('${rel.id}','${item.id}',this.value)">
-          <button class="note-tog" onclick="toggleNoteRow('${item.id}-${rel.id}')">${noteVal?'Note ✎':'Note'}</button>
-        </div>
-      </div>
-      <div class="note-row ${noteVal?'open':''}" id="nr-${item.id}-${rel.id}">
-        <textarea placeholder="Notes, links, contacts…" onchange="setTaskNote('${rel.id}','${item.id}',this.value)">${noteVal}</textarea>
-      </div>
-    </div>`;
-  }).join('');
-  el.innerHTML=`
-    <div class="section-detail-header">
-      <div class="sdh-icon" style="background:${sec.color}18">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="${sec.color}" stroke-width="2.5"><circle cx="12" cy="12" r="9"/></svg>
-      </div>
-      <div>
-        <div class="sdh-title">${sec.name}</div>
-        <div class="sdh-sub">${done} of ${sec.items.length} tasks complete · ${pct}%</div>
-      </div>
-    </div>
-    <div class="prog-card" style="margin-bottom:16px">
-      <div class="prog-header"><span class="prog-title">Section progress</span><span class="prog-pct">${pct}%</span></div>
-      <div class="prog-track"><div class="prog-fill" style="width:${pct}%;background:${sec.color}"></div></div>
-    </div>
-    ${tasks}`;
+  const done=sec.items.filter(i=>(rel.state||{})[i.id]).length;const pct=Math.round(done/sec.items.length*100);
+  const tasks=sec.items.map(item=>{const chk=!!(rel.state||{})[item.id];const dv=(rel.dates||{})[item.id]||'';const nv=(rel.notes||{})[item.id]||'';return`<div><div class="task-row" onclick="toggleTask('${rel.id}','${item.id}')"><div class="cb ${chk?'checked':''}" onclick="event.stopPropagation();toggleTask('${rel.id}','${item.id}')"><svg width="9" height="9" viewBox="0 0 9 9" fill="none" stroke="${chk?'#05080f':'white'}" stroke-width="2"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg></div><span class="task-lbl ${chk?'done':''}">${esc(item.label)}</span><div class="task-acts" onclick="event.stopPropagation()"><input class="date-in" type="date" value="${dv}" onchange="setTaskDate('${rel.id}','${item.id}',this.value)"><button class="note-tog" onclick="toggleNoteRow('${item.id}-${rel.id}')">${nv?'Note ✎':'Note'}</button></div></div><div class="note-row ${nv?'open':''}" id="nr-${item.id}-${rel.id}"><textarea placeholder="Notes, links, contacts…" onchange="setTaskNote('${rel.id}','${item.id}',this.value)">${esc(nv)}</textarea></div></div>`;}).join('');
+  el.innerHTML=`<div style="display:flex;align-items:center;gap:12px;margin-bottom:20px"><div class="sdh-icon" style="background:${sec.color}18"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="${sec.color}" stroke-width="2.5"><circle cx="12" cy="12" r="9"/></svg></div><div><div style="font-size:20px;font-weight:900;letter-spacing:-.6px">${sec.name}</div><div style="font-size:11px;color:var(--muted);margin-top:1px">${done} of ${sec.items.length} tasks · ${pct}%</div></div></div><div class="card" style="margin-bottom:16px"><div class="prog-header"><span class="prog-title">Section progress</span><span class="prog-pct">${pct}%</span></div><div class="prog-track"><div class="prog-fill" style="width:${pct}%;background:${sec.color}"></div></div></div>${tasks}`;
+}
+
+/* PITCH PAGE */
+function renderPitchPage(){
+  const rel=getActive();const el=document.getElementById('center-inner');
+  if(!rel){el.innerHTML=`<div class="empty-state"><div class="empty-icon">✉️</div><div class="empty-text">No release selected</div><div class="empty-sub">Create or select a release</div></div>`;return;}
+  const pc=pitchCount(rel);const pt=PITCH_TYPES.length;const isGen=rel.pitchesGenerating;
+  const genItems=PITCH_TYPES.map(t=>{const ready=rel.pitches?.[t]?.length>10;const active=isGen&&!ready;return`<div class="gen-item ${ready?'done':active?'active':'pending'}">${ready?'✓':active?'…':'○'} ${PITCH_LABELS[t]}</div>`;}).join('');
+  const banner=isGen
+    ?`<div class="pitch-banner generating"><div class="spinner"></div><div><div class="gen-progress-grid">${genItems}</div></div></div>`
+    :pc===pt
+      ?`<div class="pitch-banner ready"><span style="font-size:16px">✓</span><div><strong>All ${pt} pitches ready for "${esc(rel.title)}"</strong> — add context below and regenerate anytime for deeper, more personalised versions.</div></div>`
+      :`<div class="pitch-banner" style="background:rgba(255,255,255,.04);border:1px solid var(--border)">${pc}/${pt} pitches generated${!isGen?` — <span style="cursor:pointer;color:var(--green);text-decoration:underline" onclick="runPitchGeneration(getActive())">generate remaining</span>`:''}</div>`;
+  const tabs=PITCH_TYPES.map(t=>{const ready=rel.pitches?.[t]?.length>10;return`<button class="ptab ${activePitchType===t?'active':''}" onclick="setPitchTab('${t}')">${ready?'<span class="ptab-ready-dot"></span>':''}${PITCH_LABELS[t]}</button>`;}).join('');
+  const cur=rel.pitches?.[activePitchType]||'';
+  const content=isGen&&!cur?`<div class="pitch-out loading"><div class="spinner"></div><span>Writing ${PITCH_LABELS[activePitchType]} pitch…</span></div>`:cur?`<div class="pitch-out">${esc(cur)}</div>`:`<div class="pitch-out empty">Not generated yet.</div>`;
+  el.innerHTML=`<div class="eyebrow">AI-powered</div><div class="page-title">Pitch generator</div><div class="page-sub" style="margin-bottom:14px">${esc(rel.title)}</div>${banner}<div class="pitch-tabs">${tabs}</div><div class="pitch-out-card"><div style="font-size:9px;font-weight:700;color:var(--soft);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px">${PITCH_LABELS[activePitchType]}</div>${content}<div class="pitch-actions"><button class="btn btn-ghost btn-sm" onclick="copyCurrentPitch()" ${!cur?'disabled':''}>Copy to clipboard</button><button class="btn btn-ghost btn-sm" onclick="toggleRegenForm()">Add context + regenerate all</button></div></div><div id="regen-wrap"></div>`;
+}
+function setPitchTab(t){activePitchType=t;renderPitchPage();}
+function copyCurrentPitch(){const rel=getActive();if(!rel?.pitches)return;const t=(rel.pitches[activePitchType]||'').trim();if(!t){toast('No pitch to copy');return;}navigator.clipboard.writeText(t).then(()=>toast('Copied to clipboard'));}
+function toggleRegenForm(){
+  const wrap=document.getElementById('regen-wrap');if(!wrap)return;
+  if(wrap.innerHTML){wrap.innerHTML='';return;}
+  const rel=getActive();if(!rel)return;
+  wrap.innerHTML=`<div class="context-form"><div style="font-size:13px;font-weight:700;margin-bottom:4px">Add more context</div><div style="font-size:11px;color:var(--muted);margin-bottom:14px">Regenerate all 8 pitches with richer, more personalised content.</div><div class="form-row"><div><label>Streaming / promo link</label><input type="url" id="rg-link" placeholder="https://..."></div><div><label>Song meaning / story</label><input type="text" id="rg-story" placeholder="What is the song about?"></div></div><div class="form-row full"><div><label>Additional context</label><textarea id="rg-notes" placeholder="Cultural context, achievements, press quotes, anything relevant…"></textarea></div></div><div style="display:flex;gap:8px;margin-top:4px"><button class="btn btn-primary btn-sm" onclick="doRegen()">Regenerate all pitches</button><button class="btn btn-ghost btn-sm" onclick="document.getElementById('regen-wrap').innerHTML=''">Cancel</button></div></div>`;
+}
+function doRegen(){
+  const rel=getActive();if(!rel)return;
+  const link=document.getElementById('rg-link')?.value||'';
+  const story=document.getElementById('rg-story')?.value||'';
+  const notes=document.getElementById('rg-notes')?.value||'';
+  document.getElementById('regen-wrap').innerHTML='';
+  runPitchGeneration(rel,{link,notes:[story,notes].filter(Boolean).join(' ')});
 }
 
 /* ANALYTICS */
 function renderAnalytics(){
   const el=document.getElementById('center-inner');
-  if(!db.releases.length){el.innerHTML=`<div class="empty-state"><div class="empty-icon">📊</div><div class="empty-text">No data yet</div><div class="empty-sub">Create a release and start checking off tasks</div></div>`;return;}
-  const allTotal=SECTIONS.flatMap(s=>s.items).length;
-  const rel=getActive();
-  const rows=db.releases.map(r=>{
-    const done=Object.values(r.state).filter(Boolean).length;
-    const pct=Math.round(done/allTotal*100);
-    const days=daysUntil(r.date);
-    const st=pct===100?'Complete':days!==null&&days<0?'Post-release':days!==null&&days<=7?'Imminent':'In progress';
-    const sc=pct===100?'#35e485':days!==null&&days<0?'#6b9cf0':days!==null&&days<=7?'#f5a623':'#9aa3b2';
-    const sb=pct===100?'rgba(53,228,133,.10)':days!==null&&days<0?'rgba(107,156,240,.10)':days!==null&&days<=7?'rgba(245,166,35,.10)':'rgba(255,255,255,.05)';
-    return`<tr><td><strong style="font-weight:700">${r.title}</strong><br><span style="font-size:10px;color:var(--soft)">${r.artist}</span></td>
-    <td>${r.date?new Date(r.date+'T00:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}):'—'}</td>
-    <td><div style="display:flex;align-items:center;gap:7px"><div style="flex:1;height:3px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden"><div style="height:100%;width:${pct}%;background:var(--green);border-radius:2px"></div></div><span style="font-size:10px;font-weight:800;color:var(--green);width:28px">${pct}%</span></div></td>
-    <td><span class="status-badge" style="background:${sb};color:${sc}">${st}</span></td>
-    <td style="font-size:10px;color:var(--muted);font-weight:600">${done}/${allTotal}</td></tr>`;
-  }).join('');
-  let secBreakdown='';
-  if(rel)secBreakdown=SECTIONS.map(s=>{const p=calcSecPct(rel,s);return`<div class="hbar-row"><span class="hbar-label">${s.name}</span><div class="hbar-track"><div class="hbar-fill" style="width:${p}%;background:${s.color}"></div></div><span class="hbar-val">${p}%</span></div>`;}).join('');
-  const relDone=rel?Object.values(rel.state).filter(Boolean).length:0;
-  const r2=44,cx=52,cy=52,circ=2*Math.PI*r2;
-  const frac=rel?relDone/allTotal:0;
-  const da=`${frac*circ} ${circ}`;
-  el.innerHTML=`
-    <div class="eyebrow">Progress tracking</div>
-    <div class="page-title">Analytics</div>
-    <div class="page-sub" style="margin-bottom:18px">Breakdown across all releases</div>
-    <div class="analytics-grid">
-      ${rel?`<div class="chart-card"><div class="chart-title">Active — ${rel.title}</div><div class="donut-wrap">
-        <svg width="104" height="104" viewBox="0 0 104 104" style="flex-shrink:0">
-          <circle cx="${cx}" cy="${cy}" r="${r2}" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="9"/>
-          <circle cx="${cx}" cy="${cy}" r="${r2}" fill="none" stroke="var(--green)" stroke-width="9" stroke-dasharray="${da}" stroke-linecap="round" transform="rotate(-90 ${cx} ${cy})"/>
-          <text x="${cx}" y="${cy}" text-anchor="middle" dy=".35em" font-family="Inter" font-weight="900" font-size="15" fill="white">${Math.round(frac*100)}%</text>
-        </svg>
-        <div>
-          <div class="legend-row"><div class="legend-dot" style="background:var(--green)"></div><span class="legend-name">Done</span><span class="legend-val">${relDone}</span></div>
-          <div class="legend-row"><div class="legend-dot" style="background:rgba(255,255,255,.1)"></div><span class="legend-name">Remaining</span><span class="legend-val">${allTotal-relDone}</span></div>
-        </div>
-      </div></div>`:''}
-      ${rel?`<div class="chart-card"><div class="chart-title">By section</div>${secBreakdown}</div>`:''}
-    </div>
-    <div class="chart-card"><div class="chart-title">All releases</div>
-      <table class="releases-table">
-        <thead><tr><th>Release</th><th>Date</th><th>Progress</th><th>Status</th><th>Tasks</th></tr></thead>
-        <tbody>${rows}</tbody>
-      </table>
-    </div>`;
+  if(!db.releases.length){el.innerHTML=`<div class="empty-state"><div class="empty-icon">📊</div><div class="empty-text">No data yet</div><div class="empty-sub">Create a release and check off tasks</div></div>`;return;}
+  const allTot=SECTIONS.flatMap(s=>s.items).length;const rel=getActive();
+  const rows=db.releases.map(r=>{const don=Object.values(r.state||{}).filter(Boolean).length;const pct=Math.round(don/allTot*100);const days=daysUntil(r.date);const st=pct===100?'Complete':days!==null&&days<0?'Post-release':days!==null&&days<=7?'Imminent':'In progress';const sc=pct===100?'#35e485':days!==null&&days<0?'#6b9cf0':days!==null&&days<=7?'#f5a623':'#9aa3b2';const sb=pct===100?'rgba(53,228,133,.10)':days!==null&&days<0?'rgba(107,156,240,.10)':days!==null&&days<=7?'rgba(245,166,35,.10)':'rgba(255,255,255,.05)';return`<tr><td><strong style="font-weight:700">${esc(r.title)}</strong><br><span style="font-size:10px;color:var(--soft)">${esc(r.artist)}</span></td><td>${r.date?new Date(r.date+'T00:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}):'—'}</td><td><div style="display:flex;align-items:center;gap:7px"><div style="flex:1;height:3px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden"><div style="height:100%;width:${pct}%;background:var(--green);border-radius:2px"></div></div><span style="font-size:10px;font-weight:800;color:var(--green);width:28px">${pct}%</span></div></td><td><span class="status-badge" style="background:${sb};color:${sc}">${st}</span></td><td style="font-size:10px;color:var(--muted);font-weight:600">${don}/${allTot}</td></tr>`;}).join('');
+  let secBars='';if(rel)secBars=SECTIONS.map(s=>{const p=calcSecPct(rel,s);return`<div class="hbar-row"><span class="hbar-label">${s.name}</span><div class="hbar-track"><div class="hbar-fill" style="width:${p}%;background:${s.color}"></div></div><span class="hbar-val">${p}%</span></div>`;}).join('');
+  const rDon=rel?Object.values(rel.state||{}).filter(Boolean).length:0;const r2=44,cx=52,cy=52,circ=2*Math.PI*r2;const frac=rel?rDon/allTot:0;const da=`${frac*circ} ${circ}`;
+  el.innerHTML=`<div class="eyebrow">Progress tracking</div><div class="page-title">Analytics</div><div class="page-sub" style="margin-bottom:18px">All releases</div><div class="analytics-grid">${rel?`<div class="card"><div style="font-size:11px;font-weight:700;margin-bottom:12px">Active — ${esc(rel.title)}</div><div style="display:flex;align-items:center;gap:16px"><svg width="104" height="104" viewBox="0 0 104 104" style="flex-shrink:0"><circle cx="${cx}" cy="${cy}" r="${r2}" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="9"/><circle cx="${cx}" cy="${cy}" r="${r2}" fill="none" stroke="var(--green)" stroke-width="9" stroke-dasharray="${da}" stroke-linecap="round" transform="rotate(-90 ${cx} ${cy})"/><text x="${cx}" y="${cy}" text-anchor="middle" dy=".35em" font-family="Inter" font-weight="900" font-size="15" fill="white">${Math.round(frac*100)}%</text></svg><div><div class="legend-row"><div class="legend-dot" style="background:var(--green)"></div><span class="legend-name">Done</span><span class="legend-val">${rDon}</span></div><div class="legend-row"><div class="legend-dot" style="background:rgba(255,255,255,.1)"></div><span class="legend-name">Remaining</span><span class="legend-val">${allTot-rDon}</span></div></div></div></div>`:''}${rel?`<div class="card"><div style="font-size:11px;font-weight:700;margin-bottom:12px">By section</div>${secBars}</div>`:''}</div><div class="card"><div style="font-size:11px;font-weight:700;margin-bottom:12px">All releases</div><table class="releases-table"><thead><tr><th>Release</th><th>Date</th><th>Progress</th><th>Status</th><th>Tasks</th></tr></thead><tbody>${rows}</tbody></table></div>`;
 }
-
-/* PITCH */
-const PROMPTS={
-  bbc_playlist:d=>`Write a professional BBC Asian Network playlisting pitch email for "${d.song}" by ${d.artist}. Genre: ${d.genre}. Release: ${d.release||'upcoming'}. Label: ${d.label}. ${d.link?'Link: '+d.link:''} ${d.notes?'Context: '+d.notes:''}\n\nRequirements: Strong subject line. Open confidently. Introduce Arjuna Harjai as UK-based independent artist, South Asian diaspora background, distributed via The Orchard (Sony Music). Describe sound, emotional core and cultural relevance to BBC Asian Network. Clear playlisting case. Direct ask. 200-240 words. Return subject + body only.`,
-  bbc_intro:d=>`Write a BBC Introducing pitch for "${d.song}" by ${d.artist}. Genre: ${d.genre}. Release: ${d.release||'upcoming'}. Label: ${d.label}. ${d.link?'Link: '+d.link:''} ${d.notes?'Context: '+d.notes:''}\n\nHighlight UK connection, unique sound, BBC Introducing readiness. Under 200 words. Return pitch text only.`,
-  bbc_radio:d=>`Write a BBC Radio 1/2 pitch for "${d.song}" by ${d.artist}. Genre: ${d.genre}. Release: ${d.release||'upcoming'}. Label: ${d.label}. ${d.link?'Link: '+d.link:''} ${d.notes?'Context: '+d.notes:''}\n\nSubject line, artist positioning, song description, clear ask. Under 220 words. Return subject + body only.`,
-  press:d=>`Write a press pitch email for "${d.song}" by ${d.artist}. Genre: ${d.genre}. Release: ${d.release||'upcoming'}. Label: ${d.label}. ${d.link?'Link: '+d.link:''} ${d.notes?'Context: '+d.notes:''}\n\nSubject line, artist angle, song story, clear ask (review/feature/premiere). Under 220 words. Return subject + body only.`,
-  curator:d=>`Write a Spotify curator pitch for "${d.song}" by ${d.artist}. Genre: ${d.genre}. ${d.link?'Link: '+d.link:''} ${d.notes?'Context: '+d.notes:''}\n\nShort, punchy, under 150 words. Vibe, mood, tempo, playlist fit. Return pitch text only.`,
-  sync:d=>`Write a sync licensing pitch for "${d.song}" by ${d.artist}. Genre: ${d.genre}. ${d.link?'Link: '+d.link:''} ${d.notes?'Context: '+d.notes:''}\n\nMood, tempo, lyrical themes, ideal sync use cases. Contact: ${d.label}. Under 180 words. Return pitch text only.`,
-  blog:d=>`Write a music blog pitch for "${d.song}" by ${d.artist}. Genre: ${d.genre}. Release: ${d.release||'upcoming'}. Label: ${d.label}. ${d.link?'Link: '+d.link:''} ${d.notes?'Context: '+d.notes:''}\n\nSubject line + short pitch for premiere/review/feature. Under 180 words. Return subject + body only.`,
-  spotify:d=>`Write a Spotify editorial pitch for "${d.song}" by ${d.artist}. Genre: ${d.genre}. Release: ${d.release||'upcoming'}. ${d.link?'Link: '+d.link:''} ${d.notes?'Context: '+d.notes:''}\n\nMood, instrumentation, listener context, cultural relevance. Under 200 words. Return pitch text only.`,
-};
-const PLABELS={bbc_playlist:'BBC Asian Network playlisting pitch',bbc_intro:'BBC Introducing pitch',bbc_radio:'BBC Radio 1/2 pitch',press:'Press pitch',curator:'Playlist curator pitch',sync:'Sync licensing pitch',blog:'Music blog pitch',spotify:'Spotify editorial pitch'};
-
-function renderPitchPage(){
-  const el=document.getElementById('center-inner');
-  el.innerHTML=`
-    <div class="eyebrow">AI-powered</div>
-    <div class="page-title">Pitch generator</div>
-    <div class="page-sub" style="margin-bottom:16px">BBC, press, curators, sync and more</div>
-    <div class="pitch-tabs" id="pitch-tabs">
-      <button class="ptab active" onclick="setPitch('bbc_playlist',this)">BBC Asian Network</button>
-      <button class="ptab" onclick="setPitch('bbc_intro',this)">BBC Introducing</button>
-      <button class="ptab" onclick="setPitch('bbc_radio',this)">BBC Radio 1/2</button>
-      <button class="ptab" onclick="setPitch('press',this)">Press</button>
-      <button class="ptab" onclick="setPitch('curator',this)">Curator</button>
-      <button class="ptab" onclick="setPitch('sync',this)">Sync</button>
-      <button class="ptab" onclick="setPitch('blog',this)">Music blog</button>
-      <button class="ptab" onclick="setPitch('spotify',this)">Spotify editorial</button>
-    </div>
-    <div class="form-card">
-      <div class="form-row">
-        <div><label>Song title</label><input type="text" id="p-song" placeholder="e.g. Chitthi"></div>
-        <div><label>Artist</label><input type="text" id="p-artist" value="Arjuna Harjai"></div>
-      </div>
-      <div class="form-row">
-        <div><label>Genre / sound</label><input type="text" id="p-genre" placeholder="Indie folk, South Asian diaspora"></div>
-        <div><label>Release date</label><input type="text" id="p-release" placeholder="e.g. 15 June 2025"></div>
-      </div>
-      <div class="form-row">
-        <div><label>Streaming / promo link</label><input type="url" id="p-link" placeholder="https://..."></div>
-        <div><label>Label / management</label><input type="text" id="p-label" value="Aart Sense Records"></div>
-      </div>
-      <div class="form-row full">
-        <div><label>Talking points / story</label><textarea id="p-notes" placeholder="Artist background, song meaning, cultural context…"></textarea></div>
-      </div>
-      <div style="display:flex;gap:7px;margin-top:4px">
-        <button class="btn btn-primary btn-sm" onclick="generatePitch()">Generate pitch</button>
-        <button class="btn btn-ghost btn-sm" onclick="fillFromRelease()">Fill from active release</button>
-      </div>
-    </div>
-    <div class="pitch-out-wrap" id="pitch-out-wrap" style="display:none">
-      <div style="font-size:11px;font-weight:700;margin-bottom:10px;color:var(--text)" id="pitch-out-label"></div>
-      <div class="pitch-out" id="pitch-out"></div>
-      <div class="pitch-actions">
-        <button class="btn btn-ghost btn-sm" onclick="copyPitch()">Copy to clipboard</button>
-        <button class="btn btn-ghost btn-sm" onclick="generatePitch()">Regenerate</button>
-      </div>
-    </div>`;
-}
-
-function setPitch(t,btn){pitchType=t;document.querySelectorAll('.ptab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
-function fillFromRelease(){
-  const rel=getActive();if(!rel){toast('No active release');return;}
-  const s=document.getElementById('p-song');const a=document.getElementById('p-artist');const g=document.getElementById('p-genre');const r=document.getElementById('p-release');
-  if(s)s.value=rel.title||'';if(a)a.value=rel.artist||'';if(g)g.value=rel.genre||'';
-  if(r&&rel.date)r.value=new Date(rel.date+'T00:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
-  toast('Filled from '+rel.title);
-}
-async function generatePitch(){
-  const d={song:document.getElementById('p-song')?.value||'',artist:document.getElementById('p-artist')?.value||'Arjuna Harjai',genre:document.getElementById('p-genre')?.value||'',release:document.getElementById('p-release')?.value||'',link:document.getElementById('p-link')?.value||'',label:document.getElementById('p-label')?.value||'Aart Sense Records',notes:document.getElementById('p-notes')?.value||''};
-  if(!d.song){toast('Enter a song title');return;}
-  const wrap=document.getElementById('pitch-out-wrap');const out=document.getElementById('pitch-out');
-  document.getElementById('pitch-out-label').textContent=PLABELS[pitchType]||'Generated pitch';
-  wrap.style.display='block';out.className='pitch-out loading';out.textContent='Writing pitch…';
-  try{
-    const resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:PROMPTS[pitchType](d)}]})});
-    const data=await resp.json();
-    const text=data.content?.filter(b=>b.type==='text').map(b=>b.text).join('')||'No response.';
-    out.className='pitch-out';out.textContent=text;
-  }catch(e){out.className='pitch-out';out.textContent='Error. Please try again.';}
-}
-function copyPitch(){navigator.clipboard.writeText(document.getElementById('pitch-out')?.textContent||'').then(()=>toast('Copied to clipboard'));}
 
 /* NOTES */
 function renderNotesPage(){
   const rel=getActive();const el=document.getElementById('center-inner');
-  if(!rel){el.innerHTML=`<div class="empty-state"><div class="empty-icon">📝</div><div class="empty-text">No release selected</div><div class="empty-sub">Create or select a release to add notes</div></div>`;return;}
-  const sectionNoteCards=SECTIONS.map(sec=>{
-    const noteVal=(rel.sectionNotes||{})[sec.id]||'';
-    return`<div class="note-card">
-      <div class="note-card-title" style="color:${sec.color}">${sec.name}</div>
-      <textarea placeholder="Notes for ${sec.name}…" onchange="saveSectionNote('${rel.id}','${sec.id}',this.value)">${noteVal}</textarea>
-    </div>`;
-  }).join('');
-  el.innerHTML=`
-    <div class="eyebrow">Release notes</div>
-    <div class="page-title">Notes</div>
-    <div class="page-sub" style="margin-bottom:18px">${rel.title} — ${rel.artist}</div>
-    <div class="free-notes-card">
-      <div style="font-size:11px;font-weight:700;margin-bottom:8px;color:var(--text)">General release notes</div>
-      <textarea placeholder="Strategy, ideas, contacts, reminders, anything…" onchange="saveRelNote('${rel.id}','freeNote',this.value)">${rel.freeNote||''}</textarea>
-    </div>
-    <div style="font-size:10px;font-weight:700;color:var(--soft);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px">Notes by section</div>
-    <div class="notes-grid">${sectionNoteCards}</div>`;
-}
-function saveSectionNote(relId,secId,val){
-  const rel=db.releases.find(r=>r.id===relId);
-  if(rel){rel.sectionNotes=rel.sectionNotes||{};rel.sectionNotes[secId]=val;save();}
+  if(!rel){el.innerHTML=`<div class="empty-state"><div class="empty-icon">📝</div><div class="empty-text">No release selected</div></div>`;return;}
+  const scards=SECTIONS.map(sec=>{const nv=(rel.sectionNotes||{})[sec.id]||'';return`<div class="note-card"><div class="note-card-title" style="color:${sec.color}">${sec.name}</div><textarea placeholder="Notes for ${sec.name}…" onchange="saveSectionNote('${rel.id}','${sec.id}',this.value)">${esc(nv)}</textarea></div>`;}).join('');
+  el.innerHTML=`<div class="eyebrow">Release notes</div><div class="page-title">Notes</div><div class="page-sub" style="margin-bottom:18px">${esc(rel.title)} — ${esc(rel.artist)}</div><div class="free-notes-card"><div style="font-size:11px;font-weight:700;margin-bottom:8px">General release notes</div><textarea placeholder="Strategy, ideas, contacts, reminders…" onchange="saveRelNote('${rel.id}','freeNote',this.value)">${esc(rel.freeNote||'')}</textarea></div><div style="font-size:10px;font-weight:700;color:var(--soft);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px">Notes by section</div><div class="notes-grid">${scards}</div>`;
 }
 
 /* TIMELINE */
@@ -850,18 +600,10 @@ function renderTimeline(){
   const rel=getActive();const el=document.getElementById('center-inner');
   if(!rel||!(rel.activity||[]).length){el.innerHTML=`<div class="empty-state"><div class="empty-icon">📅</div><div class="empty-text">No activity yet</div><div class="empty-sub">Completed tasks will appear here</div></div>`;return;}
   const sorted=[...rel.activity].sort((a,b)=>b.ts-a.ts);
-  el.innerHTML=`
-    <div class="eyebrow">Activity log</div>
-    <div class="page-title">Timeline</div>
-    <div class="page-sub" style="margin-bottom:18px">${rel.title}</div>
-    <div class="timeline">${sorted.map(a=>{const d=new Date(a.ts);return`<div class="tl-item"><div class="tl-dot" style="background:var(--green)"></div><div class="tl-card"><div class="tl-date">${d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})} at ${d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}</div><div class="tl-text">${a.label}</div></div></div>`;}).join('')}</div>`;
+  el.innerHTML=`<div class="eyebrow">Activity log</div><div class="page-title">Timeline</div><div class="page-sub" style="margin-bottom:18px">${esc(rel.title)}</div><div class="timeline">${sorted.map(a=>{const d=new Date(a.ts);return`<div class="tl-item"><div class="tl-dot" style="background:var(--green)"></div><div class="tl-card"><div class="tl-date">${d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})} at ${d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}</div><div class="tl-text">${esc(a.label)}</div></div></div>`;}).join('')}</div>`;
 }
 
-function exportData(){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(db,null,2)],{type:'application/json'}));a.download='aart-sense-hub-'+Date.now()+'.json';a.click();toast('Backup exported');}
-function importData(){document.getElementById('import-file').click();}
-function handleImport(e){const file=e.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=ev=>{try{const d=JSON.parse(ev.target.result);if(!d.releases)throw 0;db=d;save();renderAll();toast(db.releases.length+' releases imported');}catch(err){toast('Invalid file');}};reader.readAsText(file);e.target.value='';}
-
-load();renderAll();
+window.onload=function(){const s=document.createElement('script');s.src='https://accounts.google.com/gsi/client';s.onload=initGoogle;document.head.appendChild(s);};
 </script>
 </body>
 </html>
