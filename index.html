@@ -3,9 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://accounts.google.com/gsi/ https://cdn.sheetjs.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://accounts.google.com/gsi/style; font-src https://fonts.gstatic.com; connect-src https://www.googleapis.com https://api.anthropic.com https://accounts.google.com/gsi/; frame-src https://www.instagram.com https://accounts.google.com/gsi/; img-src 'self' data: blob:; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
 <title>Aart Sense — Release Hub</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js" defer></script>
+<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js" integrity="sha384-EnyY0/GSHQGSxSgMwaIPzSESbqoOLSexfnSMN2AP+39Ckmn92stwABZynq1JyzdT" crossorigin="anonymous" defer></script>
 <style>
 :root{--bg:#05080f;--panel-soft:rgba(13,20,36,.48);--panel-hard:#0d1424;--border:rgba(255,255,255,.09);--border2:rgba(255,255,255,.14);--green:#ffffff;--green-soft:#ffffff;--green-dim:rgba(255,255,255,.10);--green-dim2:rgba(255,255,255,.06);--green-glow:rgba(255,255,255,.18);--text:#ffffff;--muted:#9aa3b2;--soft:#737f91;--amber:#f2f2f2;--amber-dim:rgba(255,255,255,.10);--red:#ff5c5c;--red-dim:rgba(255,92,92,.10);--blue:#c8c8cd;--purple:#9a9aa0;}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -703,8 +705,8 @@ function buildPrompt(type,d){
   return p[type]||p.press;
 }
 /* CLAUDE API (your own key, stored only in this browser) */
-function getSettings(){try{return JSON.parse(localStorage.getItem('rh_settings')||'{}');}catch(e){return {};}}
-function putSettings(s){try{localStorage.setItem('rh_settings',JSON.stringify(s));}catch(e){}}
+function getSettings(){try{const s=JSON.parse(localStorage.getItem('rh_settings')||'{}');if(!s.apiKey){const k=sessionStorage.getItem('rh_key');if(k)s.apiKey=k;}return s;}catch(e){return {};}}
+function putSettings(s){try{const keep={...s};if(!s.rememberKey){if(s.apiKey)sessionStorage.setItem('rh_key',s.apiKey);else sessionStorage.removeItem('rh_key');delete keep.apiKey;}else sessionStorage.removeItem('rh_key');localStorage.setItem('rh_settings',JSON.stringify(keep));}catch(e){}}
 async function askClaude(prompt,maxTokens=900){
   const s=getSettings();
   if(!s.apiKey)throw new Error('NO_KEY');
@@ -913,7 +915,7 @@ function openSettings(){
   const s=getSettings();
   const artists=(db.artists||[]).map(a=>a.name+' | '+a.bio).join('\n');
   document.getElementById('settings-body').innerHTML=`
-  <div class="form-row full"><div><label>Claude API key</label><input type="password" id="st-key" value="${escA(s.apiKey||'')}" placeholder="sk-ant-..."><div class="field-hint">Saved only in this browser, never in Drive. Get one at console.anthropic.com.</div></div></div>
+  <div class="form-row full"><div><label>Claude API key</label><input type="password" autocomplete="off" spellcheck="false" id="st-key" value="${escA(s.apiKey||'')}" placeholder="sk-ant-..."><label class="check-lbl" style="margin-top:8px"><input type="checkbox" id="st-remember" ${s.rememberKey?'checked':''}> Remember on this device</label><div class="field-hint">Never saved to Drive or GitHub. Unticked, the key is forgotten when you close the tab. Use a key made only for this app, with a monthly spend limit set in console.anthropic.com.</div></div></div>
   <div class="form-row full"><div><label>Model</label><input type="text" id="st-model" value="${escA(s.model||DEFAULT_MODEL)}"></div></div>
   <div class="form-row full"><div><label>Artist bios used in pitches (one per line: Name | bio)</label><textarea id="st-artists" rows="5" placeholder="Arjuna Harjai | UK based independent artist with South Asian diaspora roots...">${esc(artists)}</textarea></div></div>
   <div class="form-row full"><div><label>Your name for email sign off</label><input type="text" id="st-sender" value="${escA(db.sender||'')}" placeholder="Alex, Aart Sense Records"></div></div>`;
@@ -922,7 +924,7 @@ function openSettings(){
 function closeSettings(){document.getElementById('settings-modal').classList.remove('open');}
 function saveSettings(){
   const s=getSettings();
-  s.apiKey=document.getElementById('st-key').value.trim();
+  s.apiKey=document.getElementById('st-key').value.trim();s.rememberKey=document.getElementById('st-remember').checked;
   s.model=document.getElementById('st-model').value.trim()||DEFAULT_MODEL;
   putSettings(s);
   db.artists=document.getElementById('st-artists').value.split('\n').map(l=>l.split('|')).filter(p=>p[0]&&p[0].trim()).map(p=>({name:p[0].trim(),bio:(p.slice(1).join('|')||'').trim()}));
@@ -1132,7 +1134,7 @@ function renderOutreach(){
       ${o.drafting?'<div class="pitch-out loading ai-glow" style="border-radius:12px;padding:14px"><span class="ai-text">Writing a personal draft…</span></div>':`
       <input type="text" value="${escA(o.subject||'')}" placeholder="Subject" onchange="setOut('${o.id}','subject',this.value)" style="margin-bottom:6px">
       <textarea rows="6" placeholder="Email body" onchange="setOut('${o.id}','body',this.value)">${esc(o.body||'')}</textarea>`}
-      <div class="sec-actions" style="margin-top:8px"><button class="btn btn-ghost btn-sm" onclick="draftOne('${o.id}')">✦ ${o.body?'Rewrite':'Write draft'}</button><button class="btn btn-primary btn-sm" onclick="openGmail('${o.id}')" ${c.email?'':'disabled title="No email on this contact"'}>Open in Gmail</button>${c.phone?`<button class="btn btn-ghost btn-sm" onclick="window.open('https://wa.me/'+waDigits('${escA(c.phone)}')+'?text='+encodeURIComponent((getActive().outreach.find(x=>x.id==='${o.id}')||{}).body||''),'_blank')">${waIcon()} WhatsApp</button>`:''}
+      <div class="sec-actions" style="margin-top:8px"><button class="btn btn-ghost btn-sm" onclick="draftOne('${o.id}')">✦ ${o.body?'Rewrite':'Write draft'}</button><button class="btn btn-primary btn-sm" onclick="openGmail('${o.id}')" ${c.email?'':'disabled title="No email on this contact"'}>Open in Gmail</button>${c.phone?`<button class="btn btn-ghost btn-sm" onclick="window.open('https://wa.me/'+'${waDigits(c.phone)}'+'?text='+encodeURIComponent((getActive().outreach.find(x=>x.id==='${o.id}')||{}).body||''),'_blank')">${waIcon()} WhatsApp</button>`:''}
       <input type="text" class="note-in" value="${escA(o.result||'')}" placeholder="Result (playlist added, review date...)" onchange="setOut('${o.id}','result',this.value)"></div></div>`;}).join('');
   el.innerHTML=`<div class="eyebrow">Email pitching</div><div class="page-title">Outreach</div><div class="page-sub">${esc(rel.title)} — personal emails to curators, press, radio and brands</div>
   <div class="stat-row">${counts}</div>${picker}
@@ -1158,9 +1160,20 @@ async function saveVendors(){
     const r=await fetch(vendorFileId?`https://www.googleapis.com/upload/drive/v3/files/${vendorFileId}?uploadType=multipart`:'https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart',{method:vendorFileId?'PATCH':'POST',headers:{Authorization:'Bearer '+accessToken},body:form});
     const j=await r.json();if(j.id)vendorFileId=j.id;}catch(e){toast('Vendor data could not save');}
 }
+const HANDLE_RE=/^@?[a-z0-9._-]{1,60}$/;
+const str=(v,n=200)=>String(v??'').replace(/[\u0000-\u001f]/g,' ').slice(0,n);
+const num=v=>{const x=Number(v);return isFinite(x)&&x>=0?x:null;};
+function safeUrl(u){try{const x=new URL(String(u));return /^https:$/.test(x.protocol)?x.href:'';}catch(e){return '';}}
+function sanitizeVendorData(j){
+  if(!j||!Array.isArray(j.pages)||!Array.isArray(j.packages))return {};
+  const packages=j.packages.slice(0,2000).map(p=>({id:str(p.id,40).replace(/[^\w-]/g,''),vendor:str(p.vendor,80),package:str(p.package,120),category:str(p.category,60),priceINR:num(p.priceINR),priceNote:str(p.priceNote,120),pageCount:num(p.pageCount)||0,source:str(p.source,200)})).filter(p=>p.id);
+  const ids=new Set(packages.map(p=>p.id));
+  const pages=j.pages.slice(0,50000).map(p=>({h:str(p.h,61).toLowerCase(),n:str(p.n,120),f:num(p.f),l:safeUrl(p.l),c:str(p.c,60),o:(Array.isArray(p.o)?p.o:[]).map(x=>str(x,40)).filter(x=>ids.has(x)),...(num(p.v)!=null?{v:num(p.v)}:{}),...(num(p.er)!=null?{er:num(p.er)}:{}),...(num(p.cpr)!=null?{cpr:num(p.cpr)}:{})})).filter(p=>HANDLE_RE.test(p.h)&&p.o.length);
+  return {packages,pages};
+}
 function importVendorJson(input){
   const file=input.files[0];if(!file)return;const rd=new FileReader();
-  rd.onload=e=>{try{const j=JSON.parse(e.target.result);if(!j.pages||!j.packages)throw 0;
+  rd.onload=e=>{try{const j=sanitizeVendorData(JSON.parse(e.target.result));if(!j.pages||!j.packages)throw 0;
     vdb=vdb||{version:1,packages:[],pages:[],campaigns:[]};
     const idmap={};j.packages.forEach(p=>{const nid=uid('pk');idmap[p.id]=nid;vdb.packages.push({...p,id:nid});});
     const byH=Object.fromEntries(vdb.pages.map(p=>[p.h,p]));
@@ -1198,7 +1211,7 @@ async function importRateCards(input){
         XLSX.utils.sheet_to_json(wb.Sheets[sn],{header:1,defval:''}).forEach(r=>{
         const url=r.find(c=>typeof c==='string'&&/instagram\.com|youtube\.com/i.test(c));if(!url)return;
         const m=url.match(/instagram\.com\/([A-Za-z0-9._]+)/i)||url.match(/youtube\.com\/(@[A-Za-z0-9._-]+)/i);if(!m||['reel','p'].includes(m[1].toLowerCase()))return;
-        const h=m[1].toLowerCase().replace(/\.$/,'');const others=r.filter(c=>c!==url&&c!=='');
+        const h=m[1].toLowerCase().replace(/\.$/,'');if(!HANDLE_RE.test(h))return;const others=r.filter(c=>c!==url&&c!=='');
         const name=others.find(c=>typeof c==='string'&&!parseF(c)&&!/http/i.test(c))||h;
         const fol=others.map(c=>(typeof c==='number'&&c<1000&&r.indexOf(c)===0)?null:parseF(c)).find(x=>x&&x>=100);
         if(byH[h]){if(!byH[h].o.includes(pk.id))byH[h].o.push(pk.id);if(!byH[h].f&&fol)byH[h].f=fol;}
@@ -1285,8 +1298,8 @@ function renderVendors(){
     if((vFilter.sort||'score')==='score')list.sort((a,b)=>((b._s.score??-1)-(a._s.score??-1))||((b.f||0)-(a.f||0)));else list.sort((a,b)=>(b.f||0)-(a.f||0));
     window._pageList=list.map(p=>p.h);const stTag={dead:'<span class="tag tag-amber">Removed</span>',weak:'<span class="tag">Low quality</span>',good:'<span class="tag tag-good">Worth using</span>'};
     const top=list.filter(p=>p._s.score!=null&&p.status!=='dead').slice(0,8);const topConf=top.filter(p=>p._s.conf!=='low').length;
-    const picks=top.length?`<div class="card picks"><div class="sec-head"><div class="sec-title">✦ Top picks <span class="sub" style="font-weight:400">${vFilter.cat||vFilter.vendor||vFilter.q?'for this filter':'across all pages'}</span></div><span class="sub">${topConf<top.length?'Some picks are estimates from followers and price only. Add reel views in the preview to firm them up.':'Based on views, followers, price and your results.'}</span></div><div class="pick-grid">${top.map((p,i)=>`<button class="pick-card" onclick="openPreview('${escA(p.h)}')"><span class="pick-rank">${i+1}</span>${scoreBadge(p._s)}<span class="pick-name">${p.h.startsWith('@')?'':'@'}${esc(p.h)}</span><span class="sub">${fmtNum(p.f)} · ${esc(p.c)}</span></button>`).join('')}</div></div>`:'';
-    const rows=list.slice(0,vFilter.limit).map(p=>`<tr class="click-row" onclick="openPreview('${escA(p.h)}')"><td>${scoreBadge(p._s)}</td><td><span class="pv-link"><strong>${p.h.startsWith('@')?'':'@'}${esc(p.h)}</strong> <span class="pv-eye">Preview</span></span> ${stTag[p.status]||''}${p.n&&p.n.toLowerCase()!==p.h?`<br><span class="sub">${esc(p.n)}</span>`:''}</td><td>${fmtNum(p.f)}</td><td><span class="tag">${esc(p.c)}</span></td><td class="sub">${p.o.map(o=>esc(pkMap[o]?.vendor||'?')).filter((v,i,a)=>a.indexOf(v)===i).join(', ')}${p.o.length>1?' <span class="tag tag-amber">'+p.o.length+' offers</span>':''}</td><td class="sub">${p.v?fmtNum(p.v)+' avg views':''}${p.cpr?' · ₹'+Number(p.cpr).toLocaleString('en-GB')+'/reel':''}</td></tr>`).join('');
+    const picks=top.length?`<div class="card picks"><div class="sec-head"><div class="sec-title">✦ Top picks <span class="sub" style="font-weight:400">${vFilter.cat||vFilter.vendor||vFilter.q?'for this filter':'across all pages'}</span></div><span class="sub">${topConf<top.length?'Some picks are estimates from followers and price only. Add reel views in the preview to firm them up.':'Based on views, followers, price and your results.'}</span></div><div class="pick-grid">${top.map((p,i)=>`<button class="pick-card" data-h="${escA(p.h)}" onclick="openPreview(this.dataset.h)"><span class="pick-rank">${i+1}</span>${scoreBadge(p._s)}<span class="pick-name">${p.h.startsWith('@')?'':'@'}${esc(p.h)}</span><span class="sub">${fmtNum(p.f)} · ${esc(p.c)}</span></button>`).join('')}</div></div>`:'';
+    const rows=list.slice(0,vFilter.limit).map(p=>`<tr class="click-row" data-h="${escA(p.h)}" onclick="openPreview(this.dataset.h)"><td>${scoreBadge(p._s)}</td><td><span class="pv-link"><strong>${p.h.startsWith('@')?'':'@'}${esc(p.h)}</strong> <span class="pv-eye">Preview</span></span> ${stTag[p.status]||''}${p.n&&p.n.toLowerCase()!==p.h?`<br><span class="sub">${esc(p.n)}</span>`:''}</td><td>${fmtNum(p.f)}</td><td><span class="tag">${esc(p.c)}</span></td><td class="sub">${p.o.map(o=>esc(pkMap[o]?.vendor||'?')).filter((v,i,a)=>a.indexOf(v)===i).join(', ')}${p.o.length>1?' <span class="tag tag-amber">'+p.o.length+' offers</span>':''}</td><td class="sub">${p.v?fmtNum(p.v)+' avg views':''}${p.cpr?' · ₹'+Number(p.cpr).toLocaleString('en-GB')+'/reel':''}</td></tr>`).join('');
     body=`<div class="toolbar"><input type="text" placeholder="Search handle or name..." value="${escA(vFilter.q)}" oninput="vFilter.q=this.value;vFilter.limit=60;renderVendors();const i=document.getElementById('vq');i.focus();i.setSelectionRange(i.value.length,i.value.length)" id="vq">
       <select onchange="vFilter.cat=this.value;renderVendors()"><option value="">All categories</option>${cats.map(c=>`<option ${c===vFilter.cat?'selected':''}>${esc(c)}</option>`).join('')}</select>
       <select onchange="vFilter.vendor=this.value;renderVendors()"><option value="">All vendors</option>${vendors.map(c=>`<option ${c===vFilter.vendor?'selected':''}>${esc(c)}</option>`).join('')}</select>
@@ -1441,9 +1454,9 @@ function emptyState(icon,t,s){return `<div class="empty-state"><div class="empty
 /* ===================== END PROMO TOOL ADDITIONS ===================== */
 
 /* remember the Google sign in on this browser until the token expires */
-function saveAuth(resp){try{localStorage.setItem('rh_auth',JSON.stringify({t:resp.access_token,exp:Date.now()+((resp.expires_in||3600)-120)*1000}));}catch(e){}}
-function clearAuth(){try{localStorage.removeItem('rh_auth');}catch(e){}}
-function restoreAuth(){try{const a=JSON.parse(localStorage.getItem('rh_auth')||'null');if(a&&a.t&&a.exp>Date.now()){accessToken=a.t;showApp();loadFromDrive();setTimeout(()=>{toast('Session expires soon. Sign in again to keep syncing.',5000);},Math.max(0,a.exp-Date.now()-5*60000));return true;}}catch(e){}return false;}
+function saveAuth(resp){try{sessionStorage.setItem('rh_auth',JSON.stringify({t:resp.access_token,exp:Date.now()+((resp.expires_in||3600)-120)*1000}));}catch(e){}}
+function clearAuth(){try{sessionStorage.removeItem('rh_auth');}catch(e){}}
+function restoreAuth(){try{const a=JSON.parse(sessionStorage.getItem('rh_auth')||'null');if(a&&a.t&&a.exp>Date.now()){accessToken=a.t;showApp();loadFromDrive();setTimeout(()=>{toast('Session expires soon. Sign in again to keep syncing.',5000);},Math.max(0,a.exp-Date.now()-5*60000));return true;}}catch(e){}return false;}
 function authExpired(){clearAuth();accessToken=null;document.getElementById('main-shell').style.display='none';document.getElementById('auth-screen').style.display='flex';toast('Your Google session ended. Sign in again, it takes one click.',4000);}
 window.onload=function(){restoreAuth();const s=document.createElement('script');s.src='https://accounts.google.com/gsi/client';s.onload=initGoogle;document.head.appendChild(s);
   document.addEventListener('click',e=>{const a=e.target.closest('a[href^="http"]');if(!a)return;e.preventDefault();window.open(a.href,'_blank','noopener');},true);};
