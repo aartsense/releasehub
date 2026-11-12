@@ -614,12 +614,13 @@ function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').repl
 function initGoogle(){
   tokenClient=google.accounts.oauth2.initTokenClient({client_id:CLIENT_ID,scope:SCOPES,callback:resp=>{
     if(resp.error){toast('Sign in failed');return;}
-    accessToken=resp.access_token;
+    accessToken=resp.access_token;saveAuth(resp);
+    if(window._pendingSave){showApp();saveToDrive().then(()=>{renderAll();toast('Signed back in. Your changes are saved.');});return;}
     showApp();loadFromDrive();
   }});
 }
 function signIn(){tokenClient.requestAccessToken();}
-function signOut(){if(accessToken)google.accounts.oauth2.revoke(accessToken,()=>{});accessToken=null;driveFileId=null;vendorFileId=null;vdb=null;db={releases:[],activeId:null};document.getElementById('main-shell').style.display='none';document.getElementById('auth-screen').style.display='flex';toast('Signed out');}
+function signOut(){clearAuth();if(accessToken&&window.google)google.accounts.oauth2.revoke(accessToken,()=>{});accessToken=null;driveFileId=null;vendorFileId=null;vdb=null;db={releases:[],activeId:null};document.getElementById('main-shell').style.display='none';document.getElementById('auth-screen').style.display='flex';toast('Signed out');}
 function showApp(){document.getElementById('auth-screen').style.display='none';document.getElementById('main-shell').style.display='flex';}
 
 /* DRIVE SYNC */
@@ -628,6 +629,7 @@ async function loadFromDrive(){
   try{
     setSyncBadge('saving');
     const res=await fetch(`https://www.googleapis.com/drive/v3/files?q=name='${FILE_NAME}'+and+trashed=false&spaces=drive&fields=files(id,name)`,{headers:{Authorization:'Bearer '+accessToken}});
+    if(res.status===401){authExpired();return;}
     const data=await res.json();
     if(data.files?.length){driveFileId=data.files[0].id;const f=await fetch(`https://www.googleapis.com/drive/v3/files/${driveFileId}?alt=media`,{headers:{Authorization:'Bearer '+accessToken}});const j=await f.json();if(j.releases)db=j;}
     setSyncBadge('ok');renderAll();loadVendors();
@@ -641,7 +643,8 @@ async function saveToDrive(){
     form.append('metadata',new Blob([JSON.stringify({name:FILE_NAME,mimeType:'application/json'})],{type:'application/json'}));
     form.append('file',new Blob([JSON.stringify(db)],{type:'application/json'}));
     const r=await fetch(driveFileId?`https://www.googleapis.com/upload/drive/v3/files/${driveFileId}?uploadType=multipart`:'https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart',{method:driveFileId?'PATCH':'POST',headers:{Authorization:'Bearer '+accessToken},body:form});
-    const j=await r.json();if(j.id)driveFileId=j.id;
+    if(r.status===401){window._pendingSave=true;authExpired();return;}
+    const j=await r.json();if(j.id)driveFileId=j.id;window._pendingSave=false;
     setSyncBadge('ok');
   }catch(e){setSyncBadge('err');}
 }
@@ -1331,7 +1334,13 @@ function renderVendorDirectory(){
 function emptyState(icon,t,s){return `<div class="empty-state"><div class="empty-icon">${icon}</div><div class="empty-text">${t}</div><div class="empty-sub">${s}</div></div>`;}
 /* ===================== END PROMO TOOL ADDITIONS ===================== */
 
-window.onload=function(){const s=document.createElement('script');s.src='https://accounts.google.com/gsi/client';s.onload=initGoogle;document.head.appendChild(s);};
+/* remember the Google sign in on this browser until the token expires */
+function saveAuth(resp){try{localStorage.setItem('rh_auth',JSON.stringify({t:resp.access_token,exp:Date.now()+((resp.expires_in||3600)-120)*1000}));}catch(e){}}
+function clearAuth(){try{localStorage.removeItem('rh_auth');}catch(e){}}
+function restoreAuth(){try{const a=JSON.parse(localStorage.getItem('rh_auth')||'null');if(a&&a.t&&a.exp>Date.now()){accessToken=a.t;showApp();loadFromDrive();setTimeout(()=>{toast('Session expires soon. Sign in again to keep syncing.',5000);},Math.max(0,a.exp-Date.now()-5*60000));return true;}}catch(e){}return false;}
+function authExpired(){clearAuth();accessToken=null;document.getElementById('main-shell').style.display='none';document.getElementById('auth-screen').style.display='flex';toast('Your Google session ended. Sign in again, it takes one click.',4000);}
+window.onload=function(){restoreAuth();const s=document.createElement('script');s.src='https://accounts.google.com/gsi/client';s.onload=initGoogle;document.head.appendChild(s);
+  document.addEventListener('click',e=>{const a=e.target.closest('a[href^="http"]');if(!a)return;e.preventDefault();window.open(a.href,'_blank','noopener');},true);};
 </script>
 </body>
 </html>
