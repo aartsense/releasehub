@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://accounts.google.com/gsi/ https://cdn.sheetjs.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://accounts.google.com/gsi/style; font-src https://fonts.gstatic.com; connect-src https://www.googleapis.com https://api.anthropic.com https://accounts.google.com/gsi/; frame-src https://www.instagram.com https://accounts.google.com/gsi/; img-src 'self' data: blob:; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://accounts.google.com/gsi/ https://cdn.sheetjs.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://accounts.google.com/gsi/style; font-src https://fonts.gstatic.com; connect-src https://www.googleapis.com https://api.anthropic.com https://accounts.google.com/gsi/; frame-src https://www.instagram.com https://accounts.google.com/gsi/ https://open.spotify.com https://embed.music.apple.com https://www.youtube-nocookie.com; img-src 'self' data: blob:; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <title>Aart Sense — Release Hub</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -484,6 +484,19 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center}
 .plan-result{margin-top:6px}.plan-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:6px}.plan-kpis div{background:var(--fill3);border-radius:12px;padding:12px 14px}.plan-kpis b{display:block;font-size:22px;letter-spacing:-.02em}.plan-kpis span{font-size:12px;color:var(--muted)}
 .toolbar>div label{margin-bottom:4px}
 .clash-flag{color:#ffb340;font-size:11px;margin-top:4px}
+.note-warn{background:rgba(255,159,10,.10);color:#ffcf80;border-radius:14px;padding:12px 16px;font-size:12.5px;line-height:1.5}
+.plv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+.plv-card{background:var(--card);border-radius:16px;padding:14px 16px;cursor:pointer;border:1px solid transparent;transition:border-color .15s,transform .2s var(--spring)}.plv-card:hover{border-color:var(--border2)}.plv-card.on{border-color:#fff}.plv-card:active{transform:scale(.98)}
+.plv-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+.plat{display:inline-block;font-size:10.5px;font-weight:600;padding:2px 8px;border-radius:99px}.plat-sp,.plat-am,.plat-yt{background:var(--fill2);color:var(--text)}
+.rate-row{display:grid;grid-template-columns:1fr 110px 150px 28px;gap:8px;margin-bottom:6px;align-items:center}
+.fp-cols{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:12px}@media (max-width:1000px){.fp-cols{grid-template-columns:1fr}}
+.fp-h{font-size:13px;font-weight:600;margin-bottom:8px}
+.fp-item{display:flex;flex-direction:column;gap:2px;padding:9px 12px;border-radius:12px;background:var(--fill3);margin-bottom:6px;font-size:13px}
+.fp-tl{display:grid;gap:2px}.fp-step{display:grid;grid-template-columns:120px 1fr;gap:12px;padding:8px 4px;border-bottom:1px solid var(--sep);font-size:13px}.fp-step:last-child{border-bottom:none}.fp-when{color:var(--muted);font-size:12.5px}
+.fp-targets{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.fp-targets div{background:var(--fill3);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:2px;font-size:13px}
+.fp-doc{margin-top:14px;padding:18px 20px;border-radius:14px;background:var(--fill3);white-space:pre-wrap;font-size:13.5px;line-height:1.65}
+.slider{width:100%;accent-color:#fff;padding:0!important;background:none!important;box-shadow:none!important}
 </style>
 </head>
 <body>
@@ -533,6 +546,11 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center}
 <div class="pv-scrim" id="pv-scrim" onclick="closePreview()"></div>
 <aside class="pv-sheet" id="pv-sheet" aria-label="Page preview"><div id="pv-head"></div><div class="pv-body" id="pv-body"><iframe id="pv-frame" title="Instagram preview" loading="lazy" referrerpolicy="no-referrer"></iframe><div class="pv-fallback">YouTube channels can't be previewed inside the app.</div></div>
 <div class="pv-foot"><span class="sub">Use ← → to flip through pages · Esc to close</span><button class="btn btn-ghost btn-sm" id="pv-open">Open on Instagram ↗</button></div></aside>
+<div class="modal-bg" id="plv-modal"><div class="modal modal-wide"><div class="modal-title">Playlist vendor</div><div id="plv-body"></div><div class="modal-actions"><button class="btn btn-ghost btn-sm" id="plv-del" onclick="deletePlVendor()" style="margin-right:auto">Delete</button><button class="btn btn-ghost btn-sm" onclick="document.getElementById('plv-modal').classList.remove('open')">Cancel</button><button class="btn btn-primary btn-sm" onclick="savePlVendor()">Save</button></div></div></div>
+<div class="modal-bg" id="pl-modal"><div class="modal modal-wide"><div class="modal-title">Playlist</div><div id="pl-body"></div><div class="modal-actions"><button class="btn btn-ghost btn-sm" id="pl-del" onclick="deletePlaylist()" style="margin-right:auto">Delete</button><button class="btn btn-ghost btn-sm" onclick="document.getElementById('pl-modal').classList.remove('open')">Cancel</button><button class="btn btn-primary btn-sm" onclick="savePlaylist()">Save</button></div></div></div>
+<div class="pv-scrim" id="pl-scrim" onclick="closePlPreview()"></div>
+<aside class="pv-sheet" id="pl-sheet" aria-label="Playlist preview"><div id="pl-head" style="padding:18px 18px 12px;border-bottom:1px solid var(--sep);max-height:55%;overflow-y:auto"></div><div class="pv-body" style="background:#000"><iframe id="pl-frame" title="Playlist preview" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="encrypted-media; clipboard-write" style="position:absolute;inset:0;width:100%;height:100%;border:0"></iframe></div>
+<div class="pv-foot"><span class="sub">Preview plays inside the app</span><button class="btn btn-ghost btn-sm" id="pl-open">Open playlist ↗</button></div></aside>
 <!-- MAIN SHELL -->
 <div class="shell" id="main-shell" style="display:none">
 
@@ -590,6 +608,10 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center}
       <button class="nav-btn" onclick="showView('strategy',this)">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><polygon points="16.2 7.8 14.1 14.1 7.8 16.2 9.9 9.9 16.2 7.8"/></svg>
         Promo strategy
+      </button>
+      <button class="nav-btn" onclick="showView('playlisting',this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="3" y1="6" x2="15" y2="6"/><line x1="3" y1="12" x2="15" y2="12"/><line x1="3" y1="18" x2="11" y2="18"/><circle cx="18" cy="17" r="3"/><line x1="21" y1="17" x2="21" y2="5"/></svg>
+        Playlisting
       </button>
     </div>
     <div class="lsec-label" style="margin-top:8px">Releases</div>
@@ -809,7 +831,7 @@ function renderRightSidebar(){
 }
 function selectSection(id){selectedSection=id;currentView='section';document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));renderAll();}
 function showView(id,btn){currentView=id;selectedSection=null;document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));if(btn)btn.classList.add('active');renderCenter();renderRightSidebar();}
-function renderCenter(){if(currentView==='section'&&selectedSection)renderSectionDetail();else if(currentView==='dashboard')renderDash();else if(currentView==='analytics')renderAnalytics();else if(currentView==='pitch')renderPitchPage();else if(currentView==='notes')renderNotesPage();else if(currentView==='timeline')renderTimeline();else if(currentView==='details')renderDetails();else if(currentView==='plan')renderPlan();else if(currentView==='outreach')renderOutreach();else if(currentView==='contacts')renderContacts();else if(currentView==='vendors')renderVendors();else if(currentView==='strategy')renderStrategy();}
+function renderCenter(){if(currentView==='section'&&selectedSection)renderSectionDetail();else if(currentView==='dashboard')renderDash();else if(currentView==='analytics')renderAnalytics();else if(currentView==='pitch')renderPitchPage();else if(currentView==='notes')renderNotesPage();else if(currentView==='timeline')renderTimeline();else if(currentView==='details')renderDetails();else if(currentView==='plan')renderPlan();else if(currentView==='outreach')renderOutreach();else if(currentView==='contacts')renderContacts();else if(currentView==='vendors')renderVendors();else if(currentView==='strategy')renderStrategy();else if(currentView==='playlisting')renderPlaylisting();}
 function renderAll(){renderRelBar();renderLeftSidebar();renderRightSidebar();renderCenter();}
 
 /* DASHBOARD */
@@ -1181,7 +1203,9 @@ function sanitizeVendorData(j){
   const vendors={};if(j.vendors&&typeof j.vendors==='object')Object.entries(j.vendors).slice(0,500).forEach(([k,v])=>{vendors[str(k,80)]={phone:str(v&&v.phone,30).replace(/[^\d+ ]/g,'')};});
   const campaigns=(Array.isArray(j.campaigns)?j.campaigns:[]).slice(0,2000).map(c=>({id:str(c.id,40).replace(/[^\w-]/g,''),relId:'',pkgId:ids.has(str(c.pkgId,40))?str(c.pkgId,40):'',vendor:str(c.vendor,80),package:str(c.package,120),song:str(c.song,80),date:/^\d{4}-\d\d-\d\d$/.test(c.date||'')?c.date:'',cost:num(c.cost)||0,currency:['INR','GBP','USD','EUR'].includes(c.currency)?c.currency:'INR',views:num(c.views),streams:num(c.streams),notes:str(c.notes,300),posts:(Array.isArray(c.posts)?c.posts:[]).slice(0,1000).map(x=>({url:safeUrl(x&&x.url),by:str(x&&x.by,80)})).filter(x=>x.url)})).filter(c=>c.id);
   const duplicatesRemoved=(Array.isArray(j.duplicatesRemoved)?j.duplicatesRemoved:[]).slice(0,100).map(d=>({removed:str(d.removed,200),keptAs:str(d.keptAs,200)}));
-  return {version:num(j.version)||1,packages,pages,vendors,campaigns,duplicatesRemoved};
+  const vendorAliases={};if(j.vendorAliases&&typeof j.vendorAliases==='object')Object.entries(j.vendorAliases).slice(0,200).forEach(([a,b])=>{vendorAliases[str(a,80)]=str(b,80);});
+  const playlistVendors=(Array.isArray(j.playlistVendors)?j.playlistVendors:[]).slice(0,100).map(x=>str(x,80)).filter(Boolean);
+  return {version:num(j.version)||1,packages,pages,vendors,campaigns,duplicatesRemoved,vendorAliases,playlistVendors};
 }
 function importVendorJson(input){
   const file=input.files[0];if(!file)return;const rd=new FileReader();
@@ -1190,15 +1214,221 @@ function importVendorJson(input){
     // keep everything you entered: page verdicts, notes, views, vendor contacts, your campaigns
     const mine=Object.fromEntries((vdb.pages||[]).map(p=>[p.h,p]));
     j.pages.forEach(p=>{const old=mine[p.h];if(old){['status','note','myViews','checked'].forEach(k=>{if(old[k]!=null&&old[k]!=='')p[k]=old[k];});}});
-    const vend={...(vdb.vendors||{})};Object.entries(j.vendors).forEach(([k,v])=>{vend[k]={...(v||{}),...(vend[k]||{})};if(!vend[k].phone&&v.phone)vend[k].phone=v.phone;});
+    const AL=j.vendorAliases||{};const canon=n=>{let x=n;for(let i=0;i<5&&AL[x];i++)x=AL[x];return x;};
+    const vend={};Object.entries(vdb.vendors||{}).forEach(([k,v])=>{const c=canon(k);vend[c]={...(vend[c]||{}),...Object.fromEntries(Object.entries(v||{}).filter(([,x])=>x!==''&&x!=null))};});
+    (vdb.campaigns||[]).forEach(c=>{c.vendor=canon(c.vendor||'');});
+    const newNames=new Set([...j.packages.map(p=>p.vendor),...Object.keys(j.vendors)]);
+    Object.keys(vend).forEach(k=>{const v=vend[k];const mineInfo=['person','email','ig','offer','notes','lastContact'].some(f=>v[f]);if(v.type!=='playlist'&&!newNames.has(k)&&!mineInfo&&!(vdb.packages||[]).some(p=>p.added&&p.vendor===k))delete vend[k];});
+    Object.entries(j.vendors).forEach(([k,v])=>{vend[k]={...(v||{}),...(vend[k]||{})};if(!vend[k].phone&&v.phone)vend[k].phone=v.phone;});
     const camps=[...(vdb.campaigns||[])];const have=new Set(camps.map(c=>c.id));j.campaigns.forEach(c=>{if(!have.has(c.id))camps.push(c);});
     const userPk=(vdb.packages||[]).filter(p=>p.added&&!j.packages.some(x=>x.source===p.source));
     const keepPages=(vdb.pages||[]).filter(p=>p.o.some(o=>userPk.some(u=>u.id===o)));
     const byH=Object.fromEntries(j.pages.map(p=>[p.h,p]));keepPages.forEach(p=>{const uo=p.o.filter(o=>userPk.some(u=>u.id===o));if(byH[p.h])byH[p.h].o=[...new Set([...byH[p.h].o,...uo])];else{j.pages.push({...p,o:uo});}});
-    vdb={version:2,packages:[...j.packages,...userPk],pages:j.pages,campaigns:camps,vendors:vend,duplicatesRemoved:j.duplicatesRemoved};
+    (j.playlistVendors||[]).forEach(n=>{if(!vend[n])vend[n]={type:'playlist',rates:[]};});
+    vdb={version:2,packages:[...j.packages,...userPk],pages:j.pages,campaigns:camps,vendors:vend,duplicatesRemoved:j.duplicatesRemoved,playlists:vdb.playlists||[]};
     scheduleVendorSave();renderVendors();toast(`Updated: ${j.packages.length} packages, ${j.pages.length.toLocaleString()} pages. Your notes and contacts were kept.`,4500);
   }catch(err){toast('That is not a vendor data file');}};
   rd.readAsText(file);input.value='';
+}
+
+/* ---------- PLAYLISTING ---------- */
+const PL_UNITS=['per placement','per week','per 4 weeks','per 1,000 streams','package'];
+let plF={vendor:'',platform:'',q:''},plCur=null;
+function plVendors(){return Object.entries(vdb?.vendors||{}).filter(([,v])=>v&&v.type==='playlist').map(([k])=>k).sort((a,b)=>a.localeCompare(b));}
+function parsePlaylistUrl(u){
+  let x;try{x=new URL(String(u).trim());}catch(e){return null;}
+  if(x.protocol!=='https:')return null;
+  const h=x.hostname.replace(/^www\./,'');
+  if(h==='open.spotify.com'){const m=x.pathname.match(/\/playlist\/([A-Za-z0-9]{10,40})/);if(m)return {platform:'Spotify',id:m[1],url:'https://open.spotify.com/playlist/'+m[1],embed:'https://open.spotify.com/embed/playlist/'+m[1]};}
+  if(h==='music.apple.com'){const m=x.pathname.match(/^\/([a-z]{2})\/playlist\/([^/]+)\/(pl\.[A-Za-z0-9.-]+)/);if(m)return {platform:'Apple Music',id:m[3],url:'https://music.apple.com/'+m[1]+'/playlist/'+m[2]+'/'+m[3],embed:'https://embed.music.apple.com/'+m[1]+'/playlist/'+m[2]+'/'+m[3]};}
+  if(h==='youtube.com'||h==='m.youtube.com'||h==='music.youtube.com'){const l=x.searchParams.get('list');if(l&&/^[A-Za-z0-9_-]{10,64}$/.test(l))return {platform:'YouTube',id:l,url:'https://www.youtube.com/playlist?list='+l,embed:'https://www.youtube-nocookie.com/embed/videoseries?list='+l};}
+  return null;
+}
+function playlistScore(pl){
+  if(pl.status==='dead')return {score:0,conf:'none',parts:[['Removed',0]]};
+  const parts=[];let tot=0,w=0;const add=(l,v,wt)=>{if(v==null||isNaN(v))return;tot+=v*wt;w+=wt;parts.push([l,Math.round(v*100)]);};
+  add('Reach',pl.followers?clamp01((Math.log10(pl.followers)-3)/3):null,.35);
+  const perK=pl.priceINR&&pl.followers?pl.priceINR/(pl.followers/1000):null;
+  add('Price value',perK?clamp01(1-Math.log10(perK/2)/Math.log10(100)):null,.20);
+  const res=(pl.results||[]).filter(r=>r.cost&&r.streams);let resV=null;
+  if(res.length){const cps=res.reduce((t,r)=>t+r.cost,0)/res.reduce((t,r)=>t+r.streams,0);resV=clamp01(1-Math.log10(cps/0.5)/Math.log10(40));}
+  add('Real results',resV,.30);
+  add('Your verdict',{good:1,ok:.6,weak:.1}[pl.status]??null,.15);
+  if(!w)return {score:null,conf:'none',parts};
+  let score=tot/w*100;if(resV==null)score*=0.85;
+  return {score:Math.round(score),conf:w>=.75?'high':w>=.45?'medium':'low',parts,noEng:resV==null};
+}
+function platIcon(p){return {Spotify:'<span class="plat plat-sp">Spotify</span>','Apple Music':'<span class="plat plat-am">Apple Music</span>',YouTube:'<span class="plat plat-yt">YouTube</span>'}[p]||'';}
+function openPlVendor(name){
+  const v=name?vendorRec(name):{rates:[]};const rates=(v.rates||[]);
+  document.getElementById('plv-body').innerHTML=`<input type="hidden" id="plv-old" value="${escA(name||'')}">
+  <div class="form-row"><div><label>Playlist vendor or curator</label><input type="text" id="plv-name" value="${escA(name||'')}" placeholder="e.g. All by Play"></div><div><label>Contact person</label><input type="text" id="plv-person" value="${escA(v.person||'')}"></div></div>
+  <div class="form-row"><div><label>WhatsApp number (with country code)</label><input type="text" id="plv-phone" value="${escA(v.phone||'')}" placeholder="+91 ..."></div><div><label>Email</label><input type="text" id="plv-email" value="${escA(v.email||'')}"></div></div>
+  <label>Rates</label><div id="plv-rates">${(rates.length?rates:[{label:'',priceINR:'',unit:'per placement'}]).map(r=>rateRow(r)).join('')}</div>
+  <button class="btn btn-ghost btn-sm" onclick="document.getElementById('plv-rates').insertAdjacentHTML('beforeend',rateRow({unit:'per placement'}))" style="margin:6px 0 12px">+ Add rate</button>
+  <div class="form-row full"><div><label>Notes (genres, how they work, reliability)</label><textarea id="plv-notes">${esc(v.notes||'')}</textarea></div></div>`;
+  document.getElementById('plv-del').style.display=name?'':'none';
+  document.getElementById('plv-modal').classList.add('open');
+}
+function rateRow(r){return `<div class="rate-row"><input type="text" class="rr-label" value="${escA(r.label||'')}" placeholder="What (e.g. Hindi indie playlist, 4 weeks)"><input type="text" class="rr-price" value="${escA(r.priceINR??'')}" placeholder="₹"><select class="rr-unit">${PL_UNITS.map(u=>`<option ${u===r.unit?'selected':''}>${u}</option>`).join('')}</select><button class="x-btn" onclick="this.parentElement.remove()">×</button></div>`;}
+function savePlVendor(){
+  const g=id=>document.getElementById(id).value.trim();const name=g('plv-name'),old=g('plv-old');if(!name){toast('Add a vendor name');return;}
+  vdb.vendors=vdb.vendors||{};
+  const rates=[...document.querySelectorAll('#plv-rates .rate-row')].map(r=>({label:r.querySelector('.rr-label').value.trim(),priceINR:Number(r.querySelector('.rr-price').value.replace(/[^\d.]/g,''))||null,unit:r.querySelector('.rr-unit').value})).filter(r=>r.label||r.priceINR);
+  const rec={...(vdb.vendors[old]||{}),type:'playlist',person:g('plv-person'),phone:g('plv-phone'),email:g('plv-email'),notes:g('plv-notes'),rates};
+  if(old&&old!==name){delete vdb.vendors[old];(vdb.playlists||[]).forEach(p=>{if(p.vendor===old)p.vendor=name;});}
+  vdb.vendors[name]=rec;scheduleVendorSave();document.getElementById('plv-modal').classList.remove('open');renderPlaylisting();toast('Vendor saved');
+}
+function deletePlVendor(){const old=document.getElementById('plv-old').value;if(!old||!confirm('Delete this playlist vendor? Their playlists stay, without a vendor.'))return;delete vdb.vendors[old];(vdb.playlists||[]).forEach(p=>{if(p.vendor===old)p.vendor='';});scheduleVendorSave();document.getElementById('plv-modal').classList.remove('open');renderPlaylisting();}
+function openPlaylistForm(id){
+  const p=(vdb.playlists||[]).find(x=>x.id===id)||{vendor:plF.vendor||'',unit:'per placement'};
+  const vs=plVendors();
+  document.getElementById('pl-body').innerHTML=`<input type="hidden" id="pl-id" value="${escA(p.id||'')}">
+  <div class="form-row full"><div><label>Playlist link (Spotify, Apple Music or YouTube)</label><input type="text" id="pl-url" value="${escA(p.url||'')}" placeholder="https://open.spotify.com/playlist/..." oninput="const r=parsePlaylistUrl(this.value);document.getElementById('pl-detect').innerHTML=r?platIcon(r.platform)+' detected':(this.value?'<span class=&quot;sub&quot;>Not a playlist link yet</span>':'')"><div class="field-hint" id="pl-detect">${p.platform?platIcon(p.platform)+' detected':''}</div></div></div>
+  <div class="form-row"><div><label>Playlist name</label><input type="text" id="pl-name" value="${escA(p.name||'')}"></div><div><label>Vendor</label><select id="pl-vendor"><option value="">None / direct</option>${vs.map(v=>`<option ${v===p.vendor?'selected':''}>${esc(v)}</option>`).join('')}</select></div></div>
+  <div class="form-row"><div><label>Followers / likes / subscribers</label><input type="text" id="pl-fol" value="${escA(p.followers||'')}" placeholder="Shown on the playlist page"></div><div><label>Genre / mood</label><input type="text" id="pl-genre" value="${escA(p.genre||'')}" placeholder="Hindi indie, lofi, Punjabi..."></div></div>
+  <div class="form-row"><div><label>Price (₹)</label><input type="text" id="pl-price" value="${escA(p.priceINR||'')}"></div><div><label>Price is</label><select id="pl-unit">${PL_UNITS.map(u=>`<option ${u===p.unit?'selected':''}>${u}</option>`).join('')}</select></div></div>
+  <div class="form-row full"><div><label>Notes</label><textarea id="pl-notes">${esc(p.note||'')}</textarea></div></div>`;
+  document.getElementById('pl-del').style.display=p.id?'':'none';
+  document.getElementById('pl-modal').classList.add('open');
+}
+function savePlaylist(){
+  const g=id=>document.getElementById(id).value.trim();const r=parsePlaylistUrl(g('pl-url'));
+  if(!r){toast('Paste a Spotify, Apple Music or YouTube playlist link',3500);return;}
+  vdb.playlists=vdb.playlists||[];const id=g('pl-id');
+  if(!id&&vdb.playlists.some(p=>p.platform===r.platform&&p.pid===r.id)){toast('That playlist is already in your list');return;}
+  const rec={platform:r.platform,pid:r.id,url:r.url,embed:r.embed,name:g('pl-name')||r.platform+' playlist',vendor:g('pl-vendor'),followers:parseFollowers(g('pl-fol')),genre:g('pl-genre'),priceINR:Number(g('pl-price').replace(/[^\d.]/g,''))||null,unit:g('pl-unit'),note:g('pl-notes')};
+  if(id)Object.assign(vdb.playlists.find(p=>p.id===id),rec);else vdb.playlists.push({id:uid('pl'),...rec,results:[],added:Date.now()});
+  scheduleVendorSave();document.getElementById('pl-modal').classList.remove('open');renderPlaylisting();
+}
+function parseFollowers(s){const m=String(s||'').toLowerCase().replace(/[\s,]/g,'').match(/^([\d.]+)([km]?)/);if(!m)return null;let x=parseFloat(m[1]);if(m[2]==='k')x*=1e3;if(m[2]==='m')x*=1e6;return Math.round(x)||null;}
+function deletePlaylist(){const id=document.getElementById('pl-id').value;if(!id||!confirm('Delete this playlist?'))return;vdb.playlists=vdb.playlists.filter(p=>p.id!==id);scheduleVendorSave();document.getElementById('pl-modal').classList.remove('open');renderPlaylisting();}
+function openPlPreview(id){plCur=id;document.getElementById('pl-scrim').classList.add('open');document.getElementById('pl-sheet').classList.add('open');renderPlPreview();}
+function closePlPreview(){document.getElementById('pl-scrim').classList.remove('open');document.getElementById('pl-sheet').classList.remove('open');document.getElementById('pl-frame').src='about:blank';renderPlaylisting();}
+function setPl(k,v){const p=(vdb.playlists||[]).find(x=>x.id===plCur);if(!p)return;p[k]=v;scheduleVendorSave();renderPlPreview();}
+function addPlResult(){const p=(vdb.playlists||[]).find(x=>x.id===plCur);if(!p)return;const g=id=>document.getElementById(id).value.trim();
+  const r={id:uid('pr'),relId:g('plr-rel'),date:g('plr-date'),cost:Number(g('plr-cost').replace(/[^\d.]/g,''))||0,streams:Number(g('plr-streams').replace(/[^\d.]/g,''))||0,saves:Number(g('plr-saves').replace(/[^\d.]/g,''))||null};
+  if(!r.streams){toast('Add the streams it brought in');return;}p.results=p.results||[];p.results.push(r);scheduleVendorSave();renderPlPreview();toast('Result logged');}
+function renderPlPreview(){
+  const p=(vdb.playlists||[]).find(x=>x.id===plCur);if(!p)return;const sc=playlistScore(p);
+  const res=(p.results||[]);
+  document.getElementById('pl-head').innerHTML=`<div class="pv-top"><div>${platIcon(p.platform)}<div class="pv-handle" style="margin-top:6px">${esc(p.name)}</div><div class="sub">${esc(p.vendor||'Direct')} · ${p.followers?fmtNum(p.followers)+' followers':'followers not set'}${p.priceINR?' · ₹'+p.priceINR.toLocaleString('en-GB')+' '+esc(p.unit||''):''}</div></div>
+   <div class="sec-actions"><button class="btn btn-ghost btn-sm" onclick="openPlaylistForm('${p.id}')">Edit</button><button class="x-btn" onclick="closePlPreview()">×</button></div></div>
+   <div class="pv-score">${scoreBadge(sc)}<div class="pv-parts">${sc.parts.map(([l,v])=>`<span>${l}<b>${v}</b></span>`).join('')}${sc.noEng&&p.status!=='dead'?'<span class="sub">No results logged yet</span>':''}</div></div>
+   <div class="seg pv-seg">${[['ok','Active'],['dead','Removed'],['weak','Bot risk'],['good','Worth using']].map(([k,l])=>`<button class="${(p.status||'')===k?'on':''}" onclick="setPl('status','${(p.status||'')===k?'':k}')">${l}</button>`).join('')}</div>
+   <details class="picker" style="margin-top:8px"><summary>Log a placement result (${res.length} so far)</summary>
+   <div class="form-row" style="margin-top:10px"><div><label>Release</label><select id="plr-rel">${db.releases.map(r=>`<option value="${r.id}">${esc(r.title)}</option>`).join('')||'<option value="">No releases</option>'}</select></div><div><label>Date</label><input type="date" id="plr-date" value="${new Date().toISOString().slice(0,10)}"></div></div>
+   <div class="form-row"><div><label>Paid (₹)</label><input type="text" id="plr-cost" value="${escA(p.priceINR||'')}"></div><div><label>Streams it brought (from Spotify for Artists or YouTube Studio)</label><input type="text" id="plr-streams"></div></div>
+   <div class="form-row"><div><label>Saves (optional, Spotify)</label><input type="text" id="plr-saves"></div><div style="align-self:end"><button class="btn btn-primary btn-sm" onclick="addPlResult()">Save result</button></div></div>
+   ${res.map(r=>`<div class="sub">${esc(db.releases.find(x=>x.id===r.relId)?.title||'Release')} · ${r.date||''} · ₹${(r.cost||0).toLocaleString('en-GB')} → ${fmtNum(r.streams)} streams${r.saves?` · ${fmtNum(r.saves)} saves (${(r.saves/r.streams*100).toFixed(1)}%)`:''}${r.cost&&r.streams?` · ₹${(r.cost/r.streams).toFixed(2)}/stream`:''}</div>`).join('')}</details>`;
+  const fr=document.getElementById('pl-frame');const src=parsePlaylistUrl(p.url)?.embed||'';if(fr.src!==src)fr.src=src;
+  document.getElementById('pl-open').onclick=()=>window.open(p.url,'_blank','noopener');
+}
+function renderPlaylisting(){
+  const el=document.getElementById('center-inner');
+  if(!vdb){el.innerHTML=`<div class="pitch-out loading"><div class="spinner"></div><span>Loading…</span></div>`;loadVendors().then(()=>{if(currentView==='playlisting')renderPlaylisting();});return;}
+  vdb.playlists=vdb.playlists||[];const vs=plVendors();
+  const q=plF.q.toLowerCase();
+  const list=vdb.playlists.filter(p=>(!plF.vendor||p.vendor===plF.vendor)&&(!plF.platform||p.platform===plF.platform)&&(!q||[p.name,p.genre,p.vendor,p.note].join(' ').toLowerCase().includes(q))).map(p=>({p,s:playlistScore(p)})).sort((a,b)=>((b.s.score??-1)-(a.s.score??-1)));
+  const top=list.filter(x=>x.s.score!=null&&x.p.status!=='dead').slice(0,4);
+  const vcard=n=>{const v=vendorRec(n);const c=vdb.playlists.filter(p=>p.vendor===n).length;return `<div class="plv-card ${plF.vendor===n?'on':''}" data-v="${escA(n)}" onclick="plF.vendor=plF.vendor===this.dataset.v?'':this.dataset.v;renderPlaylisting()"><div class="plv-top"><strong>${esc(n)}</strong><span class="sub">${c} playlist${c===1?'':'s'}</span></div>${(v.rates||[]).slice(0,3).map(r=>`<div class="sub">${esc(r.label||'Rate')}: ${r.priceINR?'₹'+Number(r.priceINR).toLocaleString('en-GB'):'?'} ${esc(r.unit||'')}</div>`).join('')||'<div class="sub">No rates yet</div>'}<div class="sec-actions" style="margin-top:8px" onclick="event.stopPropagation()"><button class="btn btn-ghost btn-sm" data-v="${escA(n)}" onclick="openPlVendor(this.dataset.v)">Edit</button>${v.phone?`<button class="btn btn-wa btn-sm" data-v="${escA(n)}" onclick="openWhatsApp(this.dataset.v)">${waIcon()} WhatsApp</button>`:''}</div></div>`;};
+  el.innerHTML=`<div class="eyebrow">Paid promotion</div><div class="page-title">Playlisting</div><div class="page-sub">Playlist vendors, their rates and every playlist they offer, scored the same way as pages</div>
+  <div class="note-warn">Spotify's rules don't allow paying for placement on Spotify playlists. Paid placement and bot streams can get tracks removed or royalties withheld, so pay curators for consideration and promotion, check each playlist with the preview, and log real streams and saves after every placement.</div>
+  <div class="sec-head" style="margin:18px 0 10px"><div class="sec-title">Vendors</div><button class="btn btn-ghost btn-sm" onclick="openPlVendor()">+ Add vendor</button></div>
+  <div class="plv-grid">${vs.map(vcard).join('')||'<div class="muted-cell">No playlist vendors yet.</div>'}</div>
+  ${top.length?`<div class="card picks" style="margin-top:16px"><div class="sec-head"><div class="sec-title">✦ Top playlists</div><span class="sub">${plF.vendor?esc(plF.vendor):'All vendors'}</span></div><div class="pick-grid">${top.map((x,i)=>`<button class="pick-card" onclick="openPlPreview('${x.p.id}')"><span class="pick-rank">${i+1}</span>${scoreBadge(x.s)}<span class="pick-name">${esc(x.p.name)}</span><span class="sub">${x.p.platform} · ${fmtNum(x.p.followers)}${x.p.priceINR?' · ₹'+x.p.priceINR.toLocaleString('en-GB'):''}</span></button>`).join('')}</div></div>`:''}
+  <div class="toolbar" style="margin-top:16px"><input type="text" placeholder="Search playlists, genres..." value="${escA(plF.q)}" id="plq" oninput="plF.q=this.value;renderPlaylisting();const i=document.getElementById('plq');i.focus();i.setSelectionRange(i.value.length,i.value.length)">
+  <div class="seg">${[['','All'],['Spotify','Spotify'],['Apple Music','Apple'],['YouTube','YouTube']].map(([k,l])=>`<button class="${plF.platform===k?'on':''}" onclick="plF.platform='${k}';renderPlaylisting()">${l}</button>`).join('')}</div>
+  <button class="btn btn-primary btn-sm" onclick="openPlaylistForm()">+ Add playlist</button></div>
+  <div class="card"><div class="table-wrap"><table class="releases-table"><thead><tr><th style="width:64px">Score</th><th>Playlist</th><th>Vendor</th><th>Followers</th><th>Price</th><th>₹ / 1K followers</th><th>Results</th></tr></thead><tbody>
+  ${list.map(({p,s})=>{const perK=p.priceINR&&p.followers?p.priceINR/(p.followers/1000):null;const res=(p.results||[]);const st=res.reduce((t,r)=>t+(r.streams||0),0);return `<tr class="click-row" onclick="openPlPreview('${p.id}')"><td>${scoreBadge(s)}</td><td><strong>${esc(p.name)}</strong> ${p.status==='weak'?'<span class="tag tag-amber">Bot risk</span>':p.status==='dead'?'<span class="tag tag-amber">Removed</span>':p.status==='good'?'<span class="tag tag-good">Worth using</span>':''}<br>${platIcon(p.platform)} <span class="sub">${esc(p.genre||'')}</span></td><td>${esc(p.vendor||'Direct')}</td><td>${p.followers?fmtNum(p.followers):'<span class="sub">add</span>'}</td><td>${p.priceINR?'₹'+p.priceINR.toLocaleString('en-GB')+'<br><span class="sub">'+esc(p.unit||'')+'</span>':'<span class="sub">add</span>'}</td><td>${perK?'₹'+perK.toFixed(2):'—'}</td><td>${res.length?fmtNum(st)+' streams':'<span class="sub">none yet</span>'}</td></tr>`;}).join('')||`<tr><td colspan="7" class="muted-cell">${vdb.playlists.length?'No playlists match.':'No playlists yet. Click "+ Add playlist" and paste a Spotify, Apple Music or YouTube playlist link.'}</td></tr>`}
+  </tbody></table></div></div>`;
+}
+
+/* ---------- FULL RELEASE PROMO PLAN (pages + playlists) ---------- */
+let fpF={relId:'',budget:100000,split:70,goal:'reach'};
+function plCost(p){if(!p.priceINR)return null;return {'per placement':p.priceINR,'per week':p.priceINR*4,'per 4 weeks':p.priceINR,'package':p.priceINR}[p.unit||'per placement']??null;}
+function planPlaylists(budget){
+  const c=(vdb.playlists||[]).filter(p=>!['dead','weak'].includes(p.status)&&plCost(p)&&p.followers).map(p=>({p,cost:plCost(p),s:playlistScore(p)}));
+  c.forEach(x=>{x.eff=((x.s.score||30)/100)*x.p.followers/x.cost;});
+  c.sort((a,b)=>b.eff-a.eff);
+  const chosen=[];let left=budget;c.forEach(x=>{if(x.cost<=left){chosen.push(x);left-=x.cost;}});
+  const skipped=(vdb.playlists||[]).filter(p=>!chosen.some(x=>x.p===p)).map(p=>({p,why:['dead','weak'].includes(p.status)?(p.status==='weak'?'marked Bot risk':'removed'):!plCost(p)?(p.unit==='per 1,000 streams'?'priced per stream, agree a cap first':'no price'):!p.followers?'no follower count':'over budget'}));
+  return {chosen,spent:budget-left,reach:chosen.reduce((t,x)=>t+x.p.followers,0),skipped};
+}
+function fpTimeline(rel,ig,pl){
+  const d=rel?.date;const at=n=>d?addDays(d,n):null;
+  const vendors=[...new Set(ig.chosen.map(v=>v.p.vendor))];const plv=[...new Set(pl.chosen.map(x=>x.p.vendor).filter(Boolean))];
+  return [
+    [-14,'Book and lock lists',`Confirm ${vendors.join(', ')||'page vendors'} and ${plv.join(', ')||'playlist curators'}. Ask vendors to swap any repeated pages before paying.`],
+    [-10,'Pitch playlists',`Send the song link and pitch to ${plv.join(', ')||'playlist curators'} with your chosen playlists.`],
+    [-5,'Send assets to pages','Lyric pages: 15 to 30s lyric cut of the hook. Fan and pap pages: performance or behind the scenes clip. Meme pages: a funny or relatable moment that fits the song.'],
+    [-2,'Pay deposits, set posting slots','Agree posting times (evening India time works for an India heavy audience) and how you will get proof links.'],
+    [0,'Release day: wave 1','Biggest pages post first. Playlist adds go live. Arjuna posts his own reel the same evening.'],
+    [3,'Wave 2 and first check','Remaining pages post. Collect post links, check early views and drop anything that looks fake.'],
+    [7,'Log results','Enter views per vendor and streams and saves per playlist in releasehub. Compare cost per 1K views.'],
+    [14,'Decide on round two','Re-book only what beat your targets. Renew playlists with a good cost per stream and healthy saves.'],
+  ].map(([o,t,x])=>({off:o,date:at(o),title:t,detail:x}));
+}
+function fpTargets(){
+  const cs=(vdb.campaigns||[]).filter(c=>c.cost&&c.views&&c.currency==='INR');const cpm=cs.length?cs.reduce((t,c)=>t+c.cost,0)/cs.reduce((t,c)=>t+c.views,0)*1000:null;
+  const pr=(vdb.playlists||[]).flatMap(p=>p.results||[]).filter(r=>r.cost&&r.streams);const cps=pr.length?pr.reduce((t,r)=>t+r.cost,0)/pr.reduce((t,r)=>t+r.streams,0):null;
+  const sv=(vdb.playlists||[]).flatMap(p=>p.results||[]).filter(r=>r.saves&&r.streams);const svr=sv.length?sv.reduce((t,r)=>t+r.saves,0)/sv.reduce((t,r)=>t+r.streams,0):null;
+  return [
+    ['Cost per 1K views (pages)',cpm?`Beat your average of ₹${cpm.toFixed(0)}`:'Set after your first logged campaign'],
+    ['Cost per stream (playlists)',cps?`Beat your average of ₹${cps.toFixed(2)}`:'Set after your first logged placement'],
+    ['Save rate (playlists)',svr?`Your average is ${(svr*100).toFixed(1)}%. Under 2% is a bot warning`:'Under 2% saves to streams is a bot warning'],
+    ['Proof','Post links from every vendor within 48 hours of posting'],
+  ];
+}
+function fpIcs(){
+  const rel=db.releases.find(r=>r.id===fpF.relId);if(!rel?.date){toast('Pick a release with a date');return;}
+  const M=stModel();const igB=Math.round(fpF.budget*fpF.split/100);const ig=planBudget(M,igB,stF.cat,stF.mode);const pl=planPlaylists(fpF.budget-igB);
+  const items=fpTimeline(rel,ig,pl);const stamp=new Date().toISOString().replace(/[-:]/g,'').slice(0,15)+'Z';
+  const L=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Aart Sense//Promo plan//EN'];
+  items.forEach((i,k)=>{L.push('BEGIN:VEVENT','UID:'+rel.id+'-promo-'+k+'@releasehub','DTSTAMP:'+stamp,'DTSTART;VALUE=DATE:'+i.date.replace(/-/g,''),'DTEND;VALUE=DATE:'+addDays(i.date,1).replace(/-/g,''),'SUMMARY:'+(rel.title+' promo: '+i.title).replace(/[,;]/g,' '),'DESCRIPTION:'+i.detail.replace(/[,;\n]/g,' '),'END:VEVENT');});
+  L.push('END:VCALENDAR');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([L.join('\r\n')],{type:'text/calendar'}));a.download=rel.title+' promo plan.ics';a.click();
+}
+async function fpWrite(){
+  if(!getSettings().apiKey){noKeyMsg();return;}
+  const rel=db.releases.find(r=>r.id===fpF.relId);if(!rel){toast('Pick a release first');return;}
+  const M=stModel();const igB=Math.round(fpF.budget*fpF.split/100);const ig=planBudget(M,igB,stF.cat,stF.mode);const pl=planPlaylists(fpF.budget-igB);const d=relDetails(rel);
+  const prompt=`You are planning paid promotion for an independent music release. Write a clear, practical promotion strategy in plain English with short sections and bullet points. No hype words. Never invent numbers that are not given.
+Release: "${rel.title}" by ${rel.artist}. Genre: ${rel.genre||'—'}. Release date: ${rel.date||'not set'}. Mood: ${d.mood||'—'}. Language: ${d.language||'—'}. Story: ${d.story||'—'}. Artist bio: ${artistBio(rel.artist)||'—'}.
+Goal: ${fpF.goal==='streams'?'streams and saves':'reach and awareness'}. Total budget ₹${fpF.budget}: ₹${igB} Instagram pages, ₹${fpF.budget-igB} playlists.
+Chosen Instagram packages: ${ig.chosen.map(v=>`${v.p.vendor} "${v.p.package}" (${v.p.category}, ₹${v.p.priceINR}, ${v.nn} new pages, ${Math.round(v.nf/1e5)/10}M new followers)`).join('; ')||'none'}.
+Chosen playlists: ${pl.chosen.map(x=>`${x.p.name} on ${x.p.platform} via ${x.p.vendor||'direct'} (${x.p.followers} followers, ₹${x.cost}, score ${x.s.score??'n/a'})`).join('; ')||'none'}.
+Past results: ${(vdb.campaigns||[]).filter(c=>c.views).map(c=>`${c.vendor} ₹${c.cost} → ${c.views} views`).join('; ')||'none logged yet'}.
+Cover: 1) the plan in one paragraph, 2) why this split and these picks, 3) what content to send each page type (lyric, fan, pap, meme, influencer) for this song, 4) 5 short reel ideas with the hook in the first second, 5) a day by day timeline from 14 days before release to 14 days after, 6) what to measure and when to stop or double down, 7) risks (fake views, bot streams, overlapping pages) and how to check for them.`;
+  const box=document.getElementById('fp-ai');box.innerHTML='<div class="pitch-out loading ai-glow" style="border-radius:12px;padding:14px"><span class="ai-text">Writing the full strategy…</span></div>';
+  try{const t=await askClaude(prompt,3000);rel.promoStrategy={text:t,at:Date.now(),budget:fpF.budget,split:fpF.split};scheduleSave();renderStrategy();toast('Strategy saved to '+rel.title);}
+  catch(e){box.innerHTML='';toast('Could not write the strategy: '+e.message,4000);}
+}
+function renderFullPlan(M){
+  if(!fpF.relId)fpF.relId=db.activeId||db.releases[0]?.id||'';
+  const rel=db.releases.find(r=>r.id===fpF.relId);
+  const igB=Math.round(fpF.budget*fpF.split/100),plB=fpF.budget-igB;
+  const ig=planBudget(M,igB,stF.cat,stF.mode);const pl=planPlaylists(plB);const tl=fpTimeline(rel,ig,pl);
+  const saved=rel?.promoStrategy;
+  return `<div class="card glass-section fp"><div class="sec-head"><div class="sec-title">✦ Release promo plan</div><span class="sub">Instagram pages and playlists together, for one release</span></div>
+  <div class="toolbar">
+    <div><label>Release</label><select onchange="fpF.relId=this.value;renderStrategy()">${db.releases.map(r=>`<option value="${r.id}" ${r.id===fpF.relId?'selected':''}>${esc(r.title)}</option>`).join('')||'<option value="">Create a release first</option>'}</select></div>
+    <div><label>Total budget (₹)</label><input type="text" value="${fpF.budget}" style="width:130px" onchange="fpF.budget=Number(this.value.replace(/[^\\d]/g,''))||0;renderStrategy()"></div>
+    <div style="min-width:220px;flex:1"><label>Split: ${fpF.split}% pages · ${100-fpF.split}% playlists</label><input type="range" min="0" max="100" step="5" value="${fpF.split}" oninput="this.previousElementSibling.textContent='Split: '+this.value+'% pages · '+(100-this.value)+'% playlists'" onchange="fpF.split=Number(this.value);renderStrategy()" class="slider"></div>
+    <div><label>Goal</label><div class="seg">${[['reach','Reach'],['streams','Streams']].map(([k,l])=>`<button class="${fpF.goal===k?'on':''}" onclick="fpF.goal='${k}';fpF.split=${k==='streams'?40:70};renderStrategy()">${l}</button>`).join('')}</div></div>
+  </div>
+  <div class="plan-kpis" style="margin-top:4px"><div><b>₹${(ig.spent+pl.spent).toLocaleString('en-GB')}</b><span>of ₹${fpF.budget.toLocaleString('en-GB')} used</span></div><div><b>${fmtNum(ig.reach)}</b><span>unique page followers</span></div><div><b>${fmtNum(pl.reach)}</b><span>playlist followers</span></div><div><b>${ig.chosen.length+pl.chosen.length}</b><span>bookings</span></div></div>
+  <div class="fp-cols">
+    <div><div class="fp-h">Instagram pages · ₹${igB.toLocaleString('en-GB')}</div>${ig.chosen.length?ig.chosen.map(v=>`<div class="fp-item"><strong>${esc(v.p.package)}</strong><span class="sub">${esc(v.p.vendor)} · ${v.nn} new pages · ${fmtNum(v.nf)} · ₹${v.p.priceINR.toLocaleString('en-GB')}</span></div>`).join(''):'<div class="sub">Nothing priced fits. Raise the pages share or add prices.</div>'}${ig.vendor?`<div class="sub" style="margin-top:6px">Single vendor mode: ${esc(ig.vendor)}. Switch to "Mix vendors" in the planner below for more reach.</div>`:''}</div>
+    <div><div class="fp-h">Playlists · ₹${plB.toLocaleString('en-GB')}</div>${pl.chosen.length?pl.chosen.map(x=>`<div class="fp-item"><strong>${esc(x.p.name)}</strong><span class="sub">${x.p.platform} · ${esc(x.p.vendor||'Direct')} · ${fmtNum(x.p.followers)} · ₹${x.cost.toLocaleString('en-GB')} · score ${x.s.score??'—'}</span></div>`).join(''):`<div class="sub">${(vdb.playlists||[]).length?'No priced playlists fit this budget.':'No playlists yet. Add them in Playlisting.'}</div>`}${pl.skipped.filter(s=>s.why!=='over budget').length?`<div class="sub" style="margin-top:6px">Left out: ${pl.skipped.filter(s=>s.why!=='over budget').slice(0,4).map(s=>esc(s.p.name)+' ('+s.why+')').join(', ')}</div>`:''}</div>
+  </div>
+  <div class="fp-h" style="margin-top:14px">Timeline${rel?.date?'':' (set a release date to get real dates)'}</div>
+  <div class="fp-tl">${tl.map(i=>`<div class="fp-step"><div class="fp-when">${i.date?new Date(i.date+'T00:00:00').toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'}):(i.off===0?'Release day':(i.off>0?'+':'')+i.off+' days')}</div><div><strong>${esc(i.title)}</strong><div class="sub">${esc(i.detail)}</div></div></div>`).join('')}</div>
+  <div class="fp-h" style="margin-top:14px">Targets to track</div>
+  <div class="fp-targets">${fpTargets().map(([a,b])=>`<div><strong>${a}</strong><span class="sub">${b}</span></div>`).join('')}</div>
+  <div class="sec-actions" style="margin-top:14px"><button class="btn btn-ai btn-sm" onclick="fpWrite()">✦ ${saved?'Rewrite':'Write'} the full strategy</button><button class="btn btn-ghost btn-sm" onclick="fpIcs()">Add timeline to calendar (.ics)</button>${saved?`<button class="btn btn-ghost btn-sm" onclick="navigator.clipboard.writeText(db.releases.find(r=>r.id===fpF.relId).promoStrategy.text).then(()=>toast('Copied'))">Copy strategy</button>`:''}</div>
+  <div id="fp-ai">${saved?`<div class="fp-doc"><div class="sub" style="margin-bottom:8px">Written ${new Date(saved.at).toLocaleDateString('en-GB',{day:'numeric',month:'short'})} for ₹${Number(saved.budget).toLocaleString('en-GB')} (${saved.split}% pages)</div>${esc(saved.text)}</div>`:''}</div>
+  </div>`;
 }
 
 /* ---------- PROMO STRATEGY ---------- */
@@ -1246,7 +1476,8 @@ function renderStrategy(){
   const unpriced=M.val.filter(v=>!v.p.priceINR&&v.p.kind!=='work sheet');
   const waBtn=v=>`<button class="btn btn-wa btn-sm" data-v="${escA(v)}" onclick="openWhatsApp(this.dataset.v);setTimeout(()=>{const t=document.getElementById('wa-tpl');if(t){t.value='rates';fillWa();}},50)">${waIcon()} Ask price</button>`;
   const camps=(vdb.campaigns||[]);
-  el.innerHTML=`<div class="eyebrow">Paid promotion</div><div class="page-title">Promo strategy</div><div class="page-sub">What overlaps, what's good value, and what to buy for your budget</div>
+  el.innerHTML=`<div class="eyebrow">Paid promotion</div><div class="page-title">Promo strategy</div><div class="page-sub">A full plan for each release across Instagram pages and playlists, plus what overlaps and what's good value</div>
+  ${renderFullPlan(M)}
   <div class="metrics-grid">
     <div class="metric-card"><div class="metric-val">${(vdb.pages||[]).length.toLocaleString()}</div><div class="metric-lbl">Unique pages</div><div class="metric-sub">from ${totalListings.toLocaleString()} listings across ${M.pkgs.length} packages</div></div>
     <div class="metric-card"><div class="metric-val">${Math.round(M.multi/(vdb.pages||[1]).length*100)}%</div><div class="metric-lbl">Oversold</div><div class="metric-sub">${M.multi} pages sold by 2+ vendors</div></div>
@@ -1254,7 +1485,7 @@ function renderStrategy(){
     <div class="metric-card"><div class="metric-val">${priced[0]?'₹'+priced[0].perK.toFixed(2):'—'}</div><div class="metric-lbl">Best ₹ per 1K followers</div><div class="metric-sub">${priced[0]?esc(priced[0].p.vendor):'Add prices'}</div></div>
   </div>
 
-  <div class="card glass-section"><div class="sec-head"><div class="sec-title">✦ Budget planner</div><span class="sub">Picks packages that add the most new followers per ₹ and skips anything mostly repeated</span></div>
+  <div class="card glass-section"><div class="sec-head"><div class="sec-title">Instagram budget planner</div><span class="sub">Pages only. Picks packages that add the most new followers per ₹ and skips anything mostly repeated</span></div>
     <div class="toolbar"><div><label>Budget (₹)</label><input type="text" value="${stF.budget}" style="width:140px" onchange="stF.budget=Number(this.value.replace(/[^\\d]/g,''))||0;renderStrategy()"></div>
     <div><label>Page type</label><select onchange="stF.cat=this.value;renderStrategy()"><option value="">Any</option>${cats.map(c=>`<option ${c===stF.cat?'selected':''}>${esc(c)}</option>`).join('')}</select></div>
     <div><label>Vendors</label><div class="seg">${[['one','One vendor'],['mix','Mix vendors']].map(([k,l])=>`<button class="${stF.mode===k?'on':''}" onclick="stF.mode='${k}';renderStrategy()">${l}</button>`).join('')}</div></div></div>
@@ -1422,7 +1653,7 @@ function renderVendors(){
 }
 
 /* ---------- VENDOR CONTACTS + WHATSAPP ---------- */
-function vendorNames(){const s=new Set((vdb?.packages||[]).map(p=>p.vendor));Object.keys(vdb?.vendors||{}).forEach(k=>s.add(k));return [...s].sort((a,b)=>a.localeCompare(b));}
+function vendorNames(){const s=new Set((vdb?.packages||[]).map(p=>p.vendor));Object.entries(vdb?.vendors||{}).forEach(([k,v])=>{if(!(v&&v.type==='playlist'))s.add(k);});return [...s].sort((a,b)=>a.localeCompare(b));}
 function vendorRec(name){vdb.vendors=vdb.vendors||{};return vdb.vendors[name]||{};}
 function waDigits(p){return String(p||'').replace(/[^\d]/g,'').replace(/^00/,'');}
 function openVendor(name){
@@ -1451,6 +1682,7 @@ function waTemplates(name,rel){
   const d=rel?relDetails(rel):{};const link=d.profilyLink||d.link||'';
   const date=rel?.date?new Date(rel.date+'T00:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'long'}):'';
   const cats=[...new Set((vdb.packages||[]).filter(p=>p.vendor===name).map(p=>p.category))].join(', ').toLowerCase();
+  if(v.type==='playlist')return {rates:`${hi} hope you're well. This is ${me}. Could you share your current playlist options with follower counts, genres and price per placement?`,book:rel?`${hi} this is ${me}. We'd like playlist support for "${rel.title}" by ${rel.artist}${date?', releasing '+date:''}.${link?'\nSong link: '+link:''}\n\nWhich of your playlists fit this song, and what are the rates and durations? Please share the playlist links. Thanks!`:`${hi} this is ${me}. Could you share playlist options for our next release?`,report:rel?`${hi} could you confirm which playlists "${rel.title}" was added to and the dates? We track streams for every placement. Thanks!`:`${hi} could you share the playlists and dates for our last placement? Thanks!`,custom:`${hi} `};
   return {
     rates:`${hi} hope you're well. This is ${me}. Could you share your latest rate card${cats?' for '+cats:''}? Please include page links, follower counts and average reel views per page. Thanks!`,
     book:rel?`${hi} this is ${me}. We'd like to run a campaign for "${rel.title}" by ${rel.artist}${date?', releasing '+date:''}.${link?'\nSong link: '+link:''}\n\nCould you send your best options and budget for this, with average views per post? We'd want posts going live from release day. Thanks!`:`${hi} this is ${me}. We'd like to book a campaign. Could you send your current options and availability?`,
