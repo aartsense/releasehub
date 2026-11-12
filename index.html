@@ -435,6 +435,13 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 @media (prefers-reduced-transparency:reduce){.lsidebar,.rsidebar{background:#1c1c1e;backdrop-filter:none}.rel-bar{background:#000;backdrop-filter:none}.modal{background:#2c2c2e;backdrop-filter:none}}
 
+
+.btn-wa{display:inline-flex;align-items:center;gap:6px;background:var(--fill2);color:var(--text)}.btn-wa:hover{background:var(--fill1)}
+.btn svg,.x-btn svg{vertical-align:middle}
+.x-btn{display:inline-grid;place-items:center}
+.wa-inline{width:22px;height:22px;margin-left:4px}.wa-inline svg{width:12px;height:12px}
+.wa-to{display:flex;gap:12px;align-items:center;padding:12px 14px;border-radius:14px;background:var(--fill3);margin-bottom:14px}
+.wa-ico{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:#fff;color:#000}
 </style>
 </head>
 <body>
@@ -479,6 +486,8 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center}
 <div class="modal-bg" id="settings-modal"><div class="modal"><div class="modal-title">Settings</div><div id="settings-body"></div><div class="modal-actions"><button class="btn btn-ghost btn-sm" onclick="closeSettings()">Cancel</button><button class="btn btn-primary btn-sm" onclick="saveSettings()">Save</button></div></div></div>
 <div class="modal-bg" id="contact-modal"><div class="modal modal-wide"><div class="modal-title">Contact</div><div id="contact-body"></div><div class="modal-actions"><button class="btn btn-ghost btn-sm" id="contact-del" onclick="deleteContact()" style="margin-right:auto;color:var(--red)">Delete</button><button class="btn btn-ghost btn-sm" onclick="closeContact()">Cancel</button><button class="btn btn-primary btn-sm" onclick="saveContact()">Save</button></div></div></div>
 <div class="modal-bg" id="campaign-modal"><div class="modal modal-wide"><div class="modal-title">Log a paid campaign</div><div id="campaign-body"></div><div class="modal-actions"><button class="btn btn-ghost btn-sm" onclick="document.getElementById('campaign-modal').classList.remove('open')">Cancel</button><button class="btn btn-primary btn-sm" onclick="saveCampaign()">Save</button></div></div></div>
+<div class="modal-bg" id="vendor-modal"><div class="modal modal-wide"><div class="modal-title">Vendor contact</div><div id="vendor-body"></div><div class="modal-actions"><button class="btn btn-ghost btn-sm" id="vendor-del" onclick="deleteVendor()" style="margin-right:auto">Delete</button><button class="btn btn-ghost btn-sm" onclick="closeVendor()">Cancel</button><button class="btn btn-primary btn-sm" onclick="saveVendor()">Save</button></div></div></div>
+<div class="modal-bg" id="wa-modal"><div class="modal modal-wide"><div class="modal-title">Message on WhatsApp</div><div id="wa-body"></div><div class="modal-actions"><button class="btn btn-ghost btn-sm" onclick="document.getElementById('wa-modal').classList.remove('open')">Cancel</button><button class="btn btn-primary btn-sm" onclick="sendWa()">Open in WhatsApp</button></div></div></div>
 <!-- MAIN SHELL -->
 <div class="shell" id="main-shell" style="display:none">
 
@@ -978,11 +987,12 @@ function exportIcs(){
 
 /* ---------- CONTACTS ---------- */
 function openContact(id){
-  const c=(db.contacts||[]).find(x=>x.id===id)||{id:'',name:'',org:'',type:'Playlist curator',email:'',ig:'',genres:'',notes:''};
+  const c=(db.contacts||[]).find(x=>x.id===id)||{id:'',name:'',org:'',type:'Playlist curator',email:'',phone:'',ig:'',genres:'',notes:''};
   document.getElementById('contact-body').innerHTML=`<input type="hidden" id="ct-id" value="${escA(c.id)}">
   <div class="form-row"><div><label>Name</label><input type="text" id="ct-name" value="${escA(c.name)}"></div><div><label>Organisation, playlist or outlet</label><input type="text" id="ct-org" value="${escA(c.org)}"></div></div>
   <div class="form-row"><div><label>Type</label><select id="ct-type">${CONTACT_TYPES.map(t=>`<option ${t===c.type?'selected':''}>${t}</option>`).join('')}</select></div><div><label>Email</label><input type="text" id="ct-email" value="${escA(c.email)}"></div></div>
-  <div class="form-row"><div><label>Instagram or website</label><input type="text" id="ct-ig" value="${escA(c.ig)}"></div><div><label>Genres they cover</label><input type="text" id="ct-genres" value="${escA(c.genres)}"></div></div>
+  <div class="form-row"><div><label>WhatsApp number (with country code)</label><input type="text" id="ct-phone" value="${escA(c.phone||'')}" placeholder="+44 7700 900000"></div><div><label>Instagram or website</label><input type="text" id="ct-ig" value="${escA(c.ig)}"></div></div>
+  <div class="form-row full"><div><label>Genres they cover</label><input type="text" id="ct-genres" value="${escA(c.genres)}"></div></div>
   <div class="form-row full"><div><label>Notes (what they like, past results, how to approach)</label><textarea id="ct-notes">${esc(c.notes||'')}</textarea></div></div>`;
   document.getElementById('contact-del').style.display=c.id?'':'none';
   document.getElementById('contact-modal').classList.add('open');
@@ -991,7 +1001,7 @@ function closeContact(){document.getElementById('contact-modal').classList.remov
 function saveContact(){
   db.contacts=db.contacts||[];
   const id=document.getElementById('ct-id').value;
-  const rec={name:document.getElementById('ct-name').value.trim(),org:document.getElementById('ct-org').value.trim(),type:document.getElementById('ct-type').value,email:document.getElementById('ct-email').value.trim(),ig:document.getElementById('ct-ig').value.trim(),genres:document.getElementById('ct-genres').value.trim(),notes:document.getElementById('ct-notes').value.trim()};
+  const rec={name:document.getElementById('ct-name').value.trim(),org:document.getElementById('ct-org').value.trim(),type:document.getElementById('ct-type').value,email:document.getElementById('ct-email').value.trim(),phone:document.getElementById('ct-phone').value.trim(),ig:document.getElementById('ct-ig').value.trim(),genres:document.getElementById('ct-genres').value.trim(),notes:document.getElementById('ct-notes').value.trim()};
   if(!rec.name&&!rec.org){toast('Add a name or organisation');return;}
   if(id){Object.assign(db.contacts.find(x=>x.id===id),rec);}else{db.contacts.push({id:uid('ct'),...rec,created:Date.now()});}
   scheduleSave();closeContact();renderCenter();
@@ -1006,7 +1016,7 @@ function importContactsFile(input){
       const wb=XLSX.read(e.target.result,{type:'array'});const rows=XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{defval:''});
       const pick=(r,keys)=>{const k=Object.keys(r).find(k=>keys.some(x=>k.toLowerCase().includes(x)));return k?String(r[k]).trim():'';};
       db.contacts=db.contacts||[];let n=0;
-      rows.forEach(r=>{const rec={name:pick(r,['name','contact']),org:pick(r,['org','company','outlet','playlist','publication','station']),type:pick(r,['type','category'])||'Other',email:pick(r,['email','mail']),ig:pick(r,['instagram','ig','website','url','link']),genres:pick(r,['genre']),notes:pick(r,['note'])};
+      rows.forEach(r=>{const rec={name:pick(r,['name','contact']),org:pick(r,['org','company','outlet','playlist','publication','station']),type:pick(r,['type','category'])||'Other',email:pick(r,['email','mail']),phone:pick(r,['whatsapp','phone','mobile','number']),ig:pick(r,['instagram','ig','website','url','link']),genres:pick(r,['genre']),notes:pick(r,['note'])};
         if(!rec.name&&!rec.email)return;if(rec.email&&db.contacts.some(c=>c.email&&c.email.toLowerCase()===rec.email.toLowerCase()))return;
         if(!CONTACT_TYPES.includes(rec.type))rec.type='Other';db.contacts.push({id:uid('ct'),...rec,created:Date.now()});n++;});
       scheduleSave();renderCenter();toast(n+' contacts imported');
@@ -1019,12 +1029,12 @@ function renderContacts(){
   const q=cFilter.q.toLowerCase();
   const shown=list.filter(c=>(!cFilter.type||c.type===cFilter.type)&&(!q||[c.name,c.org,c.email,c.genres,c.notes].join(' ').toLowerCase().includes(q)));
   const rows=shown.map(c=>{const h=contactHistory(c.id);const placed=h.filter(o=>o.status==='Placed').length;const replied=h.filter(o=>['Replied','Placed'].includes(o.status)).length;
-    return `<tr class="click-row" onclick="openContact('${c.id}')"><td><strong>${esc(c.name||c.org)}</strong>${c.name&&c.org?`<br><span class="sub">${esc(c.org)}</span>`:''}</td><td><span class="tag">${esc(c.type)}</span></td><td class="sub">${esc(c.email||'—')}</td><td class="sub">${esc(c.genres||'')}</td><td class="sub">${h.length?`${h.length} pitched · ${replied} replied · ${placed} placed`:'Not pitched yet'}</td></tr>`;}).join('');
+    return `<tr class="click-row" onclick="openContact('${c.id}')"><td><strong>${esc(c.name||c.org)}</strong>${c.name&&c.org?`<br><span class="sub">${esc(c.org)}</span>`:''}</td><td><span class="tag">${esc(c.type)}</span></td><td class="sub">${esc(c.email||'—')}${c.phone?`<br>${esc(c.phone)} <button class="x-btn wa-inline" title="WhatsApp" onclick="event.stopPropagation();waContact('${c.id}')">${waIcon()}</button>`:''}</td><td class="sub">${esc(c.genres||'')}</td><td class="sub">${h.length?`${h.length} pitched · ${replied} replied · ${placed} placed`:'Not pitched yet'}</td></tr>`;}).join('');
   el.innerHTML=`<div class="eyebrow">Your network</div><div class="page-title">Contacts</div><div class="page-sub">Curators, press, radio, brands and sync people you pitch by email</div>
   <div class="toolbar"><input type="text" placeholder="Search name, outlet, genre..." value="${escA(cFilter.q)}" oninput="cFilter.q=this.value;renderContacts();this.focus();this.setSelectionRange(this.value.length,this.value.length)">
   <select onchange="cFilter.type=this.value;renderContacts()"><option value="">All types</option>${CONTACT_TYPES.map(t=>`<option ${t===cFilter.type?'selected':''}>${t}</option>`).join('')}</select>
   <button class="btn btn-primary btn-sm" onclick="openContact()">+ Add contact</button><label class="btn btn-ghost btn-sm file-btn">Import Excel or CSV<input type="file" accept=".xlsx,.xls,.csv" onchange="importContactsFile(this)"></label></div>
-  <div class="card"><div class="table-wrap"><table class="releases-table"><thead><tr><th>Contact</th><th>Type</th><th>Email</th><th>Genres</th><th>History</th></tr></thead><tbody>${rows||`<tr><td colspan="5" class="muted-cell">${list.length?'No contacts match.':'No contacts yet. Add them one by one or import a sheet with columns like Name, Email, Outlet, Type, Genre.'}</td></tr>`}</tbody></table></div></div>`;
+  <div class="card"><div class="table-wrap"><table class="releases-table"><thead><tr><th>Contact</th><th>Type</th><th>Email &amp; WhatsApp</th><th>Genres</th><th>History</th></tr></thead><tbody>${rows||`<tr><td colspan="5" class="muted-cell">${list.length?'No contacts match.':'No contacts yet. Add them one by one or import a sheet with columns like Name, Email, Outlet, Type, Genre.'}</td></tr>`}</tbody></table></div></div>`;
 }
 
 /* ---------- OUTREACH (per release) ---------- */
@@ -1080,7 +1090,7 @@ function renderOutreach(){
       ${o.drafting?'<div class="pitch-out loading ai-glow" style="border-radius:12px;padding:14px"><span class="ai-text">Writing a personal draft…</span></div>':`
       <input type="text" value="${escA(o.subject||'')}" placeholder="Subject" onchange="setOut('${o.id}','subject',this.value)" style="margin-bottom:6px">
       <textarea rows="6" placeholder="Email body" onchange="setOut('${o.id}','body',this.value)">${esc(o.body||'')}</textarea>`}
-      <div class="sec-actions" style="margin-top:8px"><button class="btn btn-ghost btn-sm" onclick="draftOne('${o.id}')">✦ ${o.body?'Rewrite':'Write draft'}</button><button class="btn btn-primary btn-sm" onclick="openGmail('${o.id}')" ${c.email?'':'disabled title="No email on this contact"'}>Open in Gmail</button>
+      <div class="sec-actions" style="margin-top:8px"><button class="btn btn-ghost btn-sm" onclick="draftOne('${o.id}')">✦ ${o.body?'Rewrite':'Write draft'}</button><button class="btn btn-primary btn-sm" onclick="openGmail('${o.id}')" ${c.email?'':'disabled title="No email on this contact"'}>Open in Gmail</button>${c.phone?`<button class="btn btn-ghost btn-sm" onclick="window.open('https://wa.me/'+waDigits('${escA(c.phone)}')+'?text='+encodeURIComponent((getActive().outreach.find(x=>x.id==='${o.id}')||{}).body||''),'_blank')">${waIcon()} WhatsApp</button>`:''}
       <input type="text" class="note-in" value="${escA(o.result||'')}" placeholder="Result (playlist added, review date...)" onchange="setOut('${o.id}','result',this.value)"></div></div>`;}).join('');
   el.innerHTML=`<div class="eyebrow">Email pitching</div><div class="page-title">Outreach</div><div class="page-sub">${esc(rel.title)} — personal emails to curators, press, radio and brands</div>
   <div class="stat-row">${counts}</div>${picker}
@@ -1172,17 +1182,17 @@ function renderVendors(){
   if(!vdb){el.innerHTML=`<div class="pitch-out loading"><div class="spinner"></div><span>Loading vendor data from Drive…</span></div>`;loadVendors();return;}
   const tab=vFilter.tab||'packages';
   const head=`<div class="eyebrow">Paid promotion</div><div class="page-title">Vendors &amp; pages</div><div class="page-sub">${vdb.packages.length} packages · ${vdb.pages.length.toLocaleString()} unique pages · ${vdb.pages.filter(p=>p.o.length>1).length} pages sold by more than one vendor</div>
-  <div class="toolbar"><div class="seg">${[['packages','Packages'],['pages','All pages'],['campaigns','Campaign results']].map(([k,l])=>`<button class="${tab===k?'on':''}" onclick="vTab('${k}')">${l}</button>`).join('')}</div><div style="flex:1"></div>
+  <div class="toolbar"><div class="seg">${[['directory','Vendor contacts'],['packages','Packages'],['pages','All pages'],['campaigns','Campaign results']].map(([k,l])=>`<button class="${tab===k?'on':''}" onclick="vTab('${k}')">${l}</button>`).join('')}</div><div style="flex:1"></div>
   <label class="btn btn-ghost btn-sm file-btn">Import rate card (Excel)<input type="file" accept=".xlsx,.xls,.csv" onchange="importRateCard(this)"></label><label class="btn btn-ghost btn-sm file-btn">Import data file<input type="file" accept=".json" onchange="importVendorJson(this)"></label><button class="btn btn-primary btn-sm" onclick="logCampaign()">+ Log campaign</button></div>`;
-  if(!vdb.packages.length&&tab!=='campaigns'){el.innerHTML=head+`<div class="card muted-cell" style="padding:28px">No vendor data yet. Use <strong>Import data file</strong> with the vendor-data.json file to load your existing rate cards, or import a vendor's Excel sheet.</div>`;return;}
+  if(!vdb.packages.length&&tab!=='campaigns'&&tab!=='directory'){el.innerHTML=head+`<div class="card muted-cell" style="padding:28px">No vendor data yet. Use <strong>Import data file</strong> with the vendor-data.json file to load your existing rate cards, or import a vendor's Excel sheet.</div>`;return;}
   let body='';
-  if(tab==='packages'){
+  if(tab==='directory'){body=renderVendorDirectory();}else if(tab==='packages'){
     const rows=vdb.packages.map(pk=>{const s=pkgStats(pk);const sharePct=s.ps.length?Math.round(s.shared/s.ps.length*100):0;
       return `<tr><td><strong>${esc(pk.vendor)}</strong><br><span class="sub">${esc(pk.package)}</span></td><td><span class="tag">${esc(pk.category)}</span></td><td>${s.ps.length}</td><td>${s.fol?fmtNum(s.fol):'<span class="sub">—</span>'}</td>
       <td><input type="text" class="mini-in" value="${escA(s.priceINR??'')}" placeholder="₹ ?" onchange="setPkg('${pk.id}','priceINR',this.value)"></td>
       <td>${s.perK?'₹'+s.perK.toFixed(2):'<span class="sub">—</span>'}</td><td>${sharePct?`<span class="tag ${sharePct>40?'tag-amber':''}">${sharePct}% resold</span>`:'<span class="sub">0%</span>'}</td>
-      <td class="sub">${esc(pk.priceNote||'')}</td><td><button class="x-btn" onclick="deletePkg('${pk.id}')" title="Remove">×</button></td></tr>`;}).join('');
-    body=`<div class="card"><div class="field-hint" style="margin-bottom:10px">Followers are not views. Cost per 1,000 followers is only a rough comparison. Log real campaigns to see what each vendor actually delivers. "Resold" means those pages also appear in another vendor's list, so you may be paying a middleman.</div><div class="table-wrap"><table class="releases-table"><thead><tr><th>Vendor / package</th><th>Category</th><th>Pages</th><th>Followers</th><th>Price (₹)</th><th>₹ per 1K followers</th><th>Overlap</th><th>Note</th><th></th></tr></thead><tbody>${rows}</tbody></table></div></div>`;
+      <td class="sub">${esc(pk.priceNote||'')}</td><td style="white-space:nowrap"><button class="x-btn" title="WhatsApp this vendor" data-v="${escA(pk.vendor)}" onclick="openWhatsApp(this.dataset.v)">${waIcon()}</button> <button class="x-btn" onclick="deletePkg('${pk.id}')" title="Remove">×</button></td></tr>`;}).join('');
+    body=`<div class="card"><div class="field-hint" style="margin-bottom:10px">Followers are not views. Cost per 1,000 followers is only a rough comparison. Log real campaigns to see what each vendor actually delivers. "Resold" means those pages also appear in another vendor's list, so you may be paying a middleman.</div><div class="table-wrap"><table class="releases-table"><thead><tr><th>Vendor / package</th><th>Category</th><th>Pages</th><th>Followers</th><th>Price (₹)</th><th>₹ per 1K followers</th><th>Overlap</th><th>Note</th><th style="width:70px"></th></tr></thead><tbody>${rows}</tbody></table></div></div>`;
   }else if(tab==='pages'){
     const cats=[...new Set(vdb.pages.map(p=>p.c))].sort();const vendors=[...new Set(vdb.packages.map(p=>p.vendor))].sort();
     const pkMap=Object.fromEntries(vdb.packages.map(p=>[p.id,p]));const q=vFilter.q.toLowerCase();
@@ -1202,6 +1212,76 @@ function renderVendors(){
     body=`<div class="card"><div class="field-hint" style="margin-bottom:10px">This is the number that matters: cost per 1,000 real views. After two or three campaigns you will know which vendors to keep.</div><div class="table-wrap"><table class="releases-table"><thead><tr><th>Date</th><th>Vendor</th><th>Release</th><th>Paid</th><th>Views</th><th>Cost per 1K views</th><th>Streams</th><th>Notes</th><th></th></tr></thead><tbody>${rows||'<tr><td colspan="9" class="muted-cell">No campaigns logged yet. Press "+ Log campaign" whenever you pay a vendor.</td></tr>'}</tbody></table></div></div>`;
   }
   el.innerHTML=head+body;
+}
+
+/* ---------- VENDOR CONTACTS + WHATSAPP ---------- */
+function vendorNames(){const s=new Set((vdb?.packages||[]).map(p=>p.vendor));Object.keys(vdb?.vendors||{}).forEach(k=>s.add(k));return [...s].sort((a,b)=>a.localeCompare(b));}
+function vendorRec(name){vdb.vendors=vdb.vendors||{};return vdb.vendors[name]||{};}
+function waDigits(p){return String(p||'').replace(/[^\d]/g,'').replace(/^00/,'');}
+function openVendor(name){
+  const v=name?vendorRec(name):{};
+  document.getElementById('vendor-body').innerHTML=`<input type="hidden" id="vd-old" value="${escA(name||'')}">
+  <div class="form-row"><div><label>Vendor or agency name</label><input type="text" id="vd-name" value="${escA(name||'')}" placeholder="e.g. DHHGRAM"></div><div><label>Contact person</label><input type="text" id="vd-person" value="${escA(v.person||'')}" placeholder="e.g. Pronit"></div></div>
+  <div class="form-row"><div><label>WhatsApp number (with country code)</label><input type="text" id="vd-phone" value="${escA(v.phone||'')}" placeholder="+91 98765 43210"></div><div><label>Email</label><input type="text" id="vd-email" value="${escA(v.email||'')}"></div></div>
+  <div class="form-row"><div><label>Instagram or website</label><input type="text" id="vd-ig" value="${escA(v.ig||'')}"></div><div><label>What they offer</label><input type="text" id="vd-offer" value="${escA(v.offer||'')}" placeholder="Lyric pages, meme pages, influencers..."></div></div>
+  <div class="form-row full"><div><label>Notes (payment terms, reliability, past issues)</label><textarea id="vd-notes">${esc(v.notes||'')}</textarea></div></div>`;
+  document.getElementById('vendor-del').style.display=name&&!(vdb.packages||[]).some(p=>p.vendor===name)?'':'none';
+  document.getElementById('vendor-modal').classList.add('open');
+}
+function closeVendor(){document.getElementById('vendor-modal').classList.remove('open');}
+function saveVendor(){
+  const g=id=>document.getElementById(id).value.trim();
+  const name=g('vd-name'),old=g('vd-old');if(!name){toast('Add a vendor name');return;}
+  vdb.vendors=vdb.vendors||{};
+  const rec={...(vdb.vendors[old]||{}),person:g('vd-person'),phone:g('vd-phone'),email:g('vd-email'),ig:g('vd-ig'),offer:g('vd-offer'),notes:g('vd-notes')};
+  if(old&&old!==name){delete vdb.vendors[old];(vdb.packages||[]).forEach(p=>{if(p.vendor===old)p.vendor=name;});(vdb.campaigns||[]).forEach(c=>{if(c.vendor===old)c.vendor=name;});}
+  vdb.vendors[name]=rec;scheduleVendorSave();closeVendor();renderVendors();toast('Vendor saved');
+}
+function deleteVendor(){const old=document.getElementById('vd-old').value;if(!old||!confirm('Delete this vendor contact?'))return;delete vdb.vendors[old];scheduleVendorSave();closeVendor();renderVendors();}
+function waTemplates(name,rel){
+  const v=vendorRec(name);const hi='Hi'+(v.person?' '+v.person.split(' ')[0]:'')+',';
+  const me=db.sender||'Alex from Aart Sense Records';
+  const d=rel?relDetails(rel):{};const link=d.profilyLink||d.link||'';
+  const date=rel?.date?new Date(rel.date+'T00:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'long'}):'';
+  const cats=[...new Set((vdb.packages||[]).filter(p=>p.vendor===name).map(p=>p.category))].join(', ').toLowerCase();
+  return {
+    rates:`${hi} hope you're well. This is ${me}. Could you share your latest rate card${cats?' for '+cats:''}? Please include page links, follower counts and average reel views per page. Thanks!`,
+    book:rel?`${hi} this is ${me}. We'd like to run a campaign for "${rel.title}" by ${rel.artist}${date?', releasing '+date:''}.${link?'\nSong link: '+link:''}\n\nCould you send your best options and budget for this, with average views per post? We'd want posts going live from release day. Thanks!`:`${hi} this is ${me}. We'd like to book a campaign. Could you send your current options and availability?`,
+    report:rel?`${hi} could you share the post links and current view counts for the "${rel.title}" campaign? We track results for every campaign. Thanks!`:`${hi} could you share the post links and view counts for our last campaign? Thanks!`,
+    custom:`${hi} `
+  };
+}
+function openWhatsApp(name){
+  const v=vendorRec(name);
+  if(!waDigits(v.phone)){toast('Add a WhatsApp number for '+name+' first',3000);openVendor(name);return;}
+  const rel=getActive();
+  document.getElementById('wa-body').innerHTML=`<input type="hidden" id="wa-vendor" value="${escA(name)}">
+  <div class="wa-to"><div class="wa-ico">${waIcon()}</div><div><strong>${esc(v.person||name)}</strong><div class="sub">${esc(name)} · ${esc(v.phone)}</div></div></div>
+  <div class="form-row"><div><label>Message</label><select id="wa-tpl" onchange="fillWa()"><option value="rates">Ask for latest rate card</option><option value="book" selected>Book a campaign for a release</option><option value="report">Ask for campaign report</option><option value="custom">Write my own</option></select></div>
+  <div><label>Release</label><select id="wa-rel" onchange="fillWa()">${db.releases.map(r=>`<option value="${r.id}" ${rel&&r.id===rel.id?'selected':''}>${esc(r.title)}</option>`).join('')||'<option value="">No releases</option>'}</select></div></div>
+  <div class="form-row full"><div><textarea id="wa-text" rows="8"></textarea><div class="field-hint">Opens WhatsApp with this message ready. You press send there.</div></div></div>`;
+  fillWa();document.getElementById('wa-modal').classList.add('open');
+}
+function fillWa(){const name=document.getElementById('wa-vendor').value;const rel=db.releases.find(r=>r.id===document.getElementById('wa-rel').value);document.getElementById('wa-text').value=waTemplates(name,rel)[document.getElementById('wa-tpl').value];}
+function sendWa(){
+  const name=document.getElementById('wa-vendor').value;const v=vendorRec(name);
+  window.open('https://wa.me/'+waDigits(v.phone)+'?text='+encodeURIComponent(document.getElementById('wa-text').value),'_blank');
+  v.lastContact=new Date().toISOString().slice(0,10);vdb.vendors[name]=v;scheduleVendorSave();
+  document.getElementById('wa-modal').classList.remove('open');if(currentView==='vendors')renderVendors();
+}
+function waContact(id){const c=(db.contacts||[]).find(x=>x.id===id);if(!c||!waDigits(c.phone)){toast('Add a WhatsApp number to this contact');return;}window.open('https://wa.me/'+waDigits(c.phone)+'?text='+encodeURIComponent('Hi'+(c.name?' '+c.name.split(' ')[0]:'')+', '),'_blank');}
+function waIcon(){return '<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.39-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.08c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.62.71.23 1.36.19 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35zM12.04 21.5h-.01a9.4 9.4 0 01-4.8-1.31l-.34-.2-3.57.94.95-3.48-.22-.36a9.43 9.43 0 01-1.45-5.03c0-5.2 4.24-9.44 9.45-9.44 2.52 0 4.89.98 6.68 2.77a9.38 9.38 0 012.76 6.68c0 5.2-4.24 9.43-9.45 9.43zm8.04-17.47A11.3 11.3 0 0012.04.7C5.77.7.66 5.8.66 12.07c0 2 .52 3.96 1.52 5.69L.57 23.3l5.68-1.49a11.36 11.36 0 005.43 1.38h.01c6.27 0 11.38-5.1 11.38-11.37 0-3.04-1.18-5.9-3.33-8.05z"/></svg>';}
+function renderVendorDirectory(){
+  const names=vendorNames();
+  const rows=names.map(n=>{const v=vendorRec(n);const pk=(vdb.packages||[]).filter(p=>p.vendor===n);const camps=(vdb.campaigns||[]).filter(c=>c.vendor===n);
+    const spent=camps.reduce((t,c)=>t+(c.currency==='INR'?c.cost:0),0);const views=camps.reduce((t,c)=>t+(c.views||0),0);
+    return `<tr><td><strong>${esc(n)}</strong>${v.person?`<br><span class="sub">${esc(v.person)}</span>`:''}</td>
+    <td class="sub">${v.phone?esc(v.phone):'<span style="opacity:.6">No number</span>'}${v.email?'<br>'+esc(v.email):''}</td>
+    <td class="sub">${pk.length} package${pk.length===1?'':'s'}${v.offer?'<br>'+esc(v.offer):''}</td>
+    <td class="sub">${camps.length?`${camps.length} campaign${camps.length===1?'':'s'} · ₹${spent.toLocaleString('en-GB')}${views&&spent?' · ₹'+(spent/(views/1000)).toFixed(0)+'/1K views':''}`:'No campaigns yet'}${v.lastContact?'<br>Last messaged '+new Date(v.lastContact+'T00:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'short'}):''}</td>
+    <td style="white-space:nowrap;text-align:right"><button class="btn btn-ghost btn-sm" data-v="${escA(n)}" onclick="openVendor(this.dataset.v)">Edit</button> <button class="btn btn-wa btn-sm" data-v="${escA(n)}" onclick="openWhatsApp(this.dataset.v)">${waIcon()} WhatsApp</button></td></tr>`;}).join('');
+  return `<div class="toolbar"><div class="field-hint" style="margin:0;flex:1">Save each vendor's WhatsApp number once, then message them with a ready written request in one click.</div><button class="btn btn-primary btn-sm" onclick="openVendor()">+ Add vendor</button></div>
+  <div class="card"><div class="table-wrap"><table class="releases-table"><thead><tr><th>Vendor</th><th>Contact</th><th>Offers</th><th>History</th><th></th></tr></thead><tbody>${rows||'<tr><td colspan="5" class="muted-cell">No vendors yet.</td></tr>'}</tbody></table></div></div>`;
 }
 
 function emptyState(icon,t,s){return `<div class="empty-state"><div class="empty-icon">${icon}</div><div class="empty-text">${t}</div><div class="empty-sub">${s}</div></div>`;}
