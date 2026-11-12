@@ -442,6 +442,7 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center}
 .wa-inline{width:22px;height:22px;margin-left:4px}.wa-inline svg{width:12px;height:12px}
 .wa-to{display:flex;gap:12px;align-items:center;padding:12px 14px;border-radius:14px;background:var(--fill3);margin-bottom:14px}
 .wa-ico{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:#fff;color:#000}
+.name-in{background:transparent!important;padding:3px 6px!important;font-weight:600;font-size:13px!important;min-width:150px}.name-in:hover{background:var(--fill3)!important}.sub-in{font-weight:400;color:var(--muted)!important;font-size:12px!important}
 </style>
 </head>
 <body>
@@ -1126,6 +1127,49 @@ function importVendorJson(input){
     scheduleVendorSave();renderVendors();toast(j.pages.length+' pages imported');}catch(err){toast('That is not a vendor data file');}};
   rd.readAsText(file);input.value='';
 }
+function guessCategory(t){t=t.toLowerCase();if(/lyric/.test(t))return 'Lyric page';if(/meme/.test(t))return 'Meme page';if(/fan/.test(t))return 'Fan page';if(/reaction/.test(t))return 'YouTube reaction channel';if(/editor|edit/.test(t))return 'Editor page';if(/influencer|creator|creater/.test(t))return 'Influencer';if(/media/.test(t))return 'Media page';if(/aesthetic/.test(t))return 'Aesthetic page';return 'Page';}
+function guessFromName(path){
+  const parts=path.split('/');const file=parts.pop().replace(/\.[^.]+$/,'');const folder=parts.length>1?parts[parts.length-1]:'';
+  let vendor='',pkg=file;
+  const m=file.match(/^([A-Za-z][A-Za-z ]{1,20}?)_(.+)$/);if(m){vendor=m[1].replace(/_/g,' ').trim();pkg=m[2];}
+  if(!vendor&&folder)vendor=folder;
+  if(vendor&&folder&&vendor!==folder&&!m)vendor=folder;
+  const pm=file.match(/(\d+(?:\.\d+)?)\s*k\b/i);const perUnit=/per|@/i.test(file);
+  const price=pm&&!perUnit?Math.round(parseFloat(pm[1])*1000):null;
+  vendor=vendor?vendor.replace(/\b\w/g,c=>c.toUpperCase()).replace(/^([A-Z]+)$/,'$1'):'Unknown vendor';
+  if(/^[A-Z]{3,}$/.test(m?m[1]:''))vendor=m[1];
+  return {vendor,pkg:pkg.replace(/[-_]+/g,' ').replace(/\s+/g,' ').trim(),price,note:pm?(perUnit?file.match(/@?\s*\d+(?:\.\d+)?\s*k[^.]*/i)[0].trim():'from file name'):''};
+}
+async function importRateCards(input){
+  const files=[...input.files].filter(f=>/\.(xlsx|xls|csv)$/i.test(f.name));input.value='';
+  if(!files.length){toast('No Excel or CSV files found. PDFs need converting first.',3500);return;}
+  vdb=vdb||{version:1,packages:[],pages:[],campaigns:[]};
+  const byH=Object.fromEntries(vdb.pages.map(p=>[p.h,p]));
+  const parseF=v=>{if(typeof v==='number')return v;const m=String(v||'').toLowerCase().replace(/[\s,]/g,'').match(/^([\d.]+)([km]?)/);if(!m)return null;let x=parseFloat(m[1]);if(m[2]==='k')x*=1e3;if(m[2]==='m')x*=1e6;return Math.round(x);};
+  let totalPages=0,made=0,skipped=0;
+  for(const file of files){
+    const path=file.webkitRelativePath||file.name;
+    if(vdb.packages.some(p=>p.source===path)){skipped++;continue;}
+    try{
+      const wb=XLSX.read(await file.arrayBuffer(),{type:'array'});const g=guessFromName(path);
+      const pk={id:uid('pk'),vendor:g.vendor,package:g.pkg,category:guessCategory(path),priceINR:g.price,priceNote:g.note,pageCount:0,source:path,added:Date.now()};
+      wb.SheetNames.forEach(sn=>{const cat=guessCategory(sn)!=='Page'?guessCategory(sn):pk.category;
+        XLSX.utils.sheet_to_json(wb.Sheets[sn],{header:1,defval:''}).forEach(r=>{
+        const url=r.find(c=>typeof c==='string'&&/instagram\.com|youtube\.com/i.test(c));if(!url)return;
+        const m=url.match(/instagram\.com\/([A-Za-z0-9._]+)/i)||url.match(/youtube\.com\/(@[A-Za-z0-9._-]+)/i);if(!m||['reel','p'].includes(m[1].toLowerCase()))return;
+        const h=m[1].toLowerCase().replace(/\.$/,'');const others=r.filter(c=>c!==url&&c!=='');
+        const name=others.find(c=>typeof c==='string'&&!parseF(c)&&!/http/i.test(c))||h;
+        const fol=others.map(c=>(typeof c==='number'&&c<1000&&r.indexOf(c)===0)?null:parseF(c)).find(x=>x&&x>=100);
+        if(byH[h]){if(!byH[h].o.includes(pk.id))byH[h].o.push(pk.id);if(!byH[h].f&&fol)byH[h].f=fol;}
+        else{const np={h,n:String(name).trim(),f:fol||null,l:url.split('?')[0],c:cat,o:[pk.id]};vdb.pages.push(np);byH[h]=np;}
+        pk.pageCount++;});});
+      if(pk.pageCount){vdb.packages.push(pk);made++;totalPages+=pk.pageCount;}
+    }catch(e){skipped++;}
+  }
+  scheduleVendorSave();vFilter.tab='packages';renderVendors();
+  toast(`${made} rate card${made===1?'':'s'} imported · ${totalPages.toLocaleString()} pages${skipped?' · '+skipped+' skipped (already imported or unreadable)':''}`,4500);
+}
+
 function importRateCard(input){
   const file=input.files[0];if(!file)return;
   const vendor=prompt('Vendor name for this rate card?','');if(vendor===null){input.value='';return;}
@@ -1183,12 +1227,12 @@ function renderVendors(){
   const tab=vFilter.tab||'packages';
   const head=`<div class="eyebrow">Paid promotion</div><div class="page-title">Vendors &amp; pages</div><div class="page-sub">${vdb.packages.length} packages · ${vdb.pages.length.toLocaleString()} unique pages · ${vdb.pages.filter(p=>p.o.length>1).length} pages sold by more than one vendor</div>
   <div class="toolbar"><div class="seg">${[['directory','Vendor contacts'],['packages','Packages'],['pages','All pages'],['campaigns','Campaign results']].map(([k,l])=>`<button class="${tab===k?'on':''}" onclick="vTab('${k}')">${l}</button>`).join('')}</div><div style="flex:1"></div>
-  <label class="btn btn-ghost btn-sm file-btn">Import rate card (Excel)<input type="file" accept=".xlsx,.xls,.csv" onchange="importRateCard(this)"></label><label class="btn btn-ghost btn-sm file-btn">Import data file<input type="file" accept=".json" onchange="importVendorJson(this)"></label><button class="btn btn-primary btn-sm" onclick="logCampaign()">+ Log campaign</button></div>`;
+  <label class="btn btn-ghost btn-sm file-btn">Import rate cards<input type="file" accept=".xlsx,.xls,.csv" multiple onchange="importRateCards(this)"></label><label class="btn btn-ghost btn-sm file-btn">Import folder<input type="file" webkitdirectory multiple onchange="importRateCards(this)"></label><label class="btn btn-ghost btn-sm file-btn">Import data file<input type="file" accept=".json" onchange="importVendorJson(this)"></label><button class="btn btn-primary btn-sm" onclick="logCampaign()">+ Log campaign</button></div>`;
   if(!vdb.packages.length&&tab!=='campaigns'&&tab!=='directory'){el.innerHTML=head+`<div class="card muted-cell" style="padding:28px">No vendor data yet. Use <strong>Import data file</strong> with the vendor-data.json file to load your existing rate cards, or import a vendor's Excel sheet.</div>`;return;}
   let body='';
   if(tab==='directory'){body=renderVendorDirectory();}else if(tab==='packages'){
     const rows=vdb.packages.map(pk=>{const s=pkgStats(pk);const sharePct=s.ps.length?Math.round(s.shared/s.ps.length*100):0;
-      return `<tr><td><strong>${esc(pk.vendor)}</strong><br><span class="sub">${esc(pk.package)}</span></td><td><span class="tag">${esc(pk.category)}</span></td><td>${s.ps.length}</td><td>${s.fol?fmtNum(s.fol):'<span class="sub">—</span>'}</td>
+      return `<tr><td><input type="text" class="name-in" value="${escA(pk.vendor)}" onchange="setPkg('${pk.id}','vendor',this.value)"><input type="text" class="name-in sub-in" value="${escA(pk.package)}" onchange="setPkg('${pk.id}','package',this.value)"></td><td><span class="tag">${esc(pk.category)}</span></td><td>${s.ps.length}</td><td>${s.fol?fmtNum(s.fol):'<span class="sub">—</span>'}</td>
       <td><input type="text" class="mini-in" value="${escA(s.priceINR??'')}" placeholder="₹ ?" onchange="setPkg('${pk.id}','priceINR',this.value)"></td>
       <td>${s.perK?'₹'+s.perK.toFixed(2):'<span class="sub">—</span>'}</td><td>${sharePct?`<span class="tag ${sharePct>40?'tag-amber':''}">${sharePct}% resold</span>`:'<span class="sub">0%</span>'}</td>
       <td class="sub">${esc(pk.priceNote||'')}</td><td style="white-space:nowrap"><button class="x-btn" title="WhatsApp this vendor" data-v="${escA(pk.vendor)}" onclick="openWhatsApp(this.dataset.v)">${waIcon()}</button> <button class="x-btn" onclick="deletePkg('${pk.id}')" title="Remove">×</button></td></tr>`;}).join('');
