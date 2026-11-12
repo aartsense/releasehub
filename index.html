@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://accounts.google.com/gsi/ https://cdn.sheetjs.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://accounts.google.com/gsi/style; font-src https://fonts.gstatic.com; connect-src https://www.googleapis.com https://api.anthropic.com https://accounts.google.com/gsi/; frame-src https://www.instagram.com https://accounts.google.com/gsi/ https://open.spotify.com https://embed.music.apple.com https://www.youtube-nocookie.com; img-src 'self' data: blob:; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://accounts.google.com/gsi/ https://cdn.sheetjs.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://accounts.google.com/gsi/style; font-src https://fonts.gstatic.com; connect-src https://www.googleapis.com https://api.anthropic.com https://accounts.google.com/gsi/; frame-src https://www.instagram.com https://accounts.google.com/gsi/ https://open.spotify.com https://embed.music.apple.com https://www.youtube-nocookie.com; img-src 'self' data: blob:; media-src https: blob:; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <title>Aart Sense — Release Hub</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -497,6 +497,42 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center}
 .fp-targets{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.fp-targets div{background:var(--fill3);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:2px;font-size:13px}
 .fp-doc{margin-top:14px;padding:18px 20px;border-radius:14px;background:var(--fill3);white-space:pre-wrap;font-size:13.5px;line-height:1.65}
 .slider{width:100%;accent-color:#fff;padding:0!important;background:none!important;box-shadow:none!important}
+.board{display:grid;grid-template-columns:repeat(8,minmax(170px,1fr));gap:10px;overflow-x:auto;padding-bottom:10px}.board5{grid-template-columns:repeat(5,minmax(180px,1fr))}
+.center-inner:has(.board){max-width:none}
+.col{background:rgba(255,255,255,.03);border-radius:16px;padding:10px;min-height:120px}
+.col-h{display:flex;justify-content:space-between;font-size:12px;font-weight:600;color:var(--muted);padding:2px 4px 10px}.col-h span{color:var(--soft)}
+.scard{background:var(--card);border-radius:12px;padding:11px 12px;margin-bottom:8px;cursor:pointer;transition:transform .2s var(--spring),background .15s}.scard:hover{background:var(--card2)}.scard:active{transform:scale(.98)}
+.scard-t{font-weight:600;font-size:13px;margin-bottom:2px}.scard-f{display:flex;justify-content:space-between;align-items:center;margin-top:8px}.scard-f .x-btn{width:24px;height:24px;margin-left:4px}
+.mini-bar{height:4px;background:var(--fill2);border-radius:99px;margin-top:8px;overflow:hidden}.mini-bar i{display:block;height:100%;background:var(--ai-lin);border-radius:99px}.mini-bar.w{width:120px;flex-shrink:0;margin-top:0}
+.late-t{color:#ffb340!important}
+.sg-sheet{width:min(640px,calc(100vw - 24px))}.sg-body{padding:20px 22px 40px;overflow-y:auto;height:100%}
+.sg-title{font-size:24px!important;font-weight:700;letter-spacing:-.02em;background:transparent!important;padding:2px 0!important;box-shadow:none!important}
+.sg-sec{margin-top:22px;padding-top:18px;border-top:1px solid var(--sep)}
+.stg-row{display:grid;grid-template-columns:1fr 1fr;gap:2px 18px;margin:8px 0}
+.stg{display:grid;grid-template-columns:26px 1fr 150px;align-items:center;gap:10px;padding:5px 0}
+.stg-dot{width:26px;height:26px;border-radius:50%;border:1.5px solid var(--soft);background:transparent;color:#000;font-size:12px;font-weight:700;cursor:pointer}
+.stg.done .stg-dot{background:#fff;border-color:#fff}.stg.now .stg-dot{border:none;background:var(--ai);animation:aispin 4s linear infinite;box-shadow:0 0 12px rgba(201,89,221,.5)}
+.stg-name{font-size:13px;color:var(--muted)}.stg.now .stg-name{color:#fff;font-weight:600}
+.stg-date{font-size:12px!important;padding:5px 8px!important;border-radius:8px!important;width:100%}.stg-date.late{color:#ffb340!important}
+.pvw-add{display:grid;grid-template-columns:1fr 1.6fr auto;gap:8px;margin-bottom:10px}
+.pvw{background:var(--fill3);border-radius:12px;padding:10px 12px;margin-bottom:8px}.pvw-top{display:flex;gap:10px;align-items:center}.pvw audio{width:100%;margin-top:8px;height:34px}
+.sg-embed{width:100%;border:0;border-radius:12px;margin-top:10px;background:#111}
+.stat-in{display:grid;grid-template-columns:130px repeat(4,1fr) auto;gap:6px}
+.spark{width:100%;height:50px;margin-top:8px}
+.ct-mini{padding:8px 10px;border-radius:10px;background:var(--fill3);margin-bottom:6px;font-size:13px;cursor:pointer}
+.cal{background:var(--card);border-radius:18px;overflow:hidden}.cal-h{display:grid;grid-template-columns:repeat(7,1fr);font-size:11.5px;color:var(--soft);padding:10px 8px}.cal-h div{padding-left:6px}
+.cal-g{display:grid;grid-template-columns:repeat(7,1fr);border-top:1px solid var(--sep)}
+.cal-d{min-height:108px;padding:6px;border-right:1px solid var(--sep);border-bottom:1px solid var(--sep);overflow:hidden}.cal-d:nth-child(7n){border-right:none}.cal-d.out{opacity:.35}
+.cal-n{font-size:12px;color:var(--muted);margin-bottom:4px}.cal-d.today .cal-n{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:#fff;color:#000;font-weight:700}
+.cal-e{font-size:10.5px;padding:2px 6px;border-radius:6px;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;background:var(--fill2)}.cal-e.past{opacity:.5}
+.k-release{background:rgba(255,255,255,.9)!important;color:#000}.k-ingest{background:rgba(10,132,255,.35)!important}.k-stage{background:rgba(191,90,242,.3)!important}.k-task{background:var(--fill2)!important}.k-post,.k-shoot{background:rgba(255,159,10,.25)!important}
+.legend{display:flex;gap:10px;align-items:center;font-size:11.5px;color:var(--muted)}.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:-6px}
+.pipe-strip{display:grid;grid-template-columns:repeat(8,1fr);gap:8px;margin-bottom:16px}.pipe-s{background:var(--card);border-radius:14px;padding:12px;cursor:pointer;display:flex;flex-direction:column}.pipe-s b{font-size:26px;font-weight:700;letter-spacing:-.03em}.pipe-s span{font-size:12px;color:var(--muted)}.pipe-s.zero b{color:var(--soft)}
+.ov-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}@media (max-width:1100px){.ov-grid{grid-template-columns:1fr}.pipe-strip{grid-template-columns:repeat(4,1fr)}}
+.wk{display:flex;gap:10px;align-items:center;padding:8px 6px;border-bottom:1px solid var(--sep);font-size:13px;cursor:pointer}.wk:last-child{border-bottom:none}.wk:hover{background:rgba(255,255,255,.03)}.wk-d{width:74px;color:var(--muted);font-size:12px;flex-shrink:0}.wk.late .wk-d{color:#ffb340}.wk .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.prow{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:9px 4px;border-bottom:1px solid var(--sep);cursor:pointer;font-size:13px}.prow:last-child{border-bottom:none}
+.promo-c{margin-bottom:12px}.promo-k{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:10px}.promo-k div{background:var(--fill3);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column}.promo-k b{font-size:22px;letter-spacing:-.02em}.promo-k small{font-size:13px;color:var(--soft);font-weight:500}.promo-k span{font-size:11.5px;color:var(--muted)}
+.left-l{margin-top:10px;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
 </style>
 </head>
 <body>
@@ -551,6 +587,9 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center}
 <div class="pv-scrim" id="pl-scrim" onclick="closePlPreview()"></div>
 <aside class="pv-sheet" id="pl-sheet" aria-label="Playlist preview"><div id="pl-head" style="padding:18px 18px 12px;border-bottom:1px solid var(--sep);max-height:55%;overflow-y:auto"></div><div class="pv-body" style="background:#000"><iframe id="pl-frame" title="Playlist preview" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="encrypted-media; clipboard-write" style="position:absolute;inset:0;width:100%;height:100%;border:0"></iframe></div>
 <div class="pv-foot"><span class="sub">Preview plays inside the app</span><button class="btn btn-ghost btn-sm" id="pl-open">Open playlist ↗</button></div></aside>
+<div class="modal-bg" id="ct-modal"><div class="modal modal-wide"><div class="modal-title">Content</div><div id="ct-body"></div><div class="modal-actions"><button class="btn btn-ghost btn-sm" id="ct-del" onclick="deleteContent()" style="margin-right:auto">Delete</button><button class="btn btn-ghost btn-sm" onclick="document.getElementById('ct-modal').classList.remove('open')">Cancel</button><button class="btn btn-primary btn-sm" onclick="saveContent()">Save</button></div></div></div>
+<div class="pv-scrim" id="sg-scrim" onclick="closeSong()"></div>
+<aside class="pv-sheet sg-sheet" id="sg-sheet" aria-label="Song"><div id="sg-body" class="sg-body"></div></aside>
 <!-- MAIN SHELL -->
 <div class="shell" id="main-shell" style="display:none">
 
@@ -562,8 +601,25 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center}
       <div class="logo-user"><div class="logo-user-dot"></div><span id="user-name">Signed in</span></div>
     </div>
     <div style="padding:2px 4px">
-      <div class="lsec-label">Views</div>
-      <button class="nav-btn active" onclick="showView('dashboard',this)">
+      <div class="lsec-label">Pipeline</div>
+      <button class="nav-btn active" onclick="showView('overview',this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 12l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+        Overview
+      </button>
+      <button class="nav-btn" onclick="showView('songs',this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="5" height="16" rx="1.5"/><rect x="10" y="4" width="5" height="11" rx="1.5"/><rect x="17" y="4" width="4" height="7" rx="1.5"/></svg>
+        Songs
+      </button>
+      <button class="nav-btn" onclick="showView('content',this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="5" width="18" height="14" rx="3"/><polygon points="10 9 15 12 10 15 10 9"/></svg>
+        Content
+      </button>
+      <button class="nav-btn" onclick="showView('calendar',this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="17" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/></svg>
+        Calendar
+      </button>
+      <div class="lsec-label" style="margin-top:8px">Release</div>
+      <button class="nav-btn" onclick="showView('dashboard',this)">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
         Dashboard
       </button>
@@ -666,7 +722,7 @@ const SECTIONS=[
 
 let tokenClient,accessToken=null,driveFileId=null,saveTimer=null;
 let db={releases:[],activeId:null};
-let currentView='dashboard',selectedSection=null,activePitchType='bbc_playlist';
+let currentView='overview',selectedSection=null,activePitchType='bbc_playlist';
 
 function toast(msg,d=2400){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),d);}
 function getActive(){return db.releases.find(r=>r.id===db.activeId)||null;}
@@ -831,7 +887,7 @@ function renderRightSidebar(){
 }
 function selectSection(id){selectedSection=id;currentView='section';document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));renderAll();}
 function showView(id,btn){currentView=id;selectedSection=null;document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));if(btn)btn.classList.add('active');renderCenter();renderRightSidebar();}
-function renderCenter(){if(currentView==='section'&&selectedSection)renderSectionDetail();else if(currentView==='dashboard')renderDash();else if(currentView==='analytics')renderAnalytics();else if(currentView==='pitch')renderPitchPage();else if(currentView==='notes')renderNotesPage();else if(currentView==='timeline')renderTimeline();else if(currentView==='details')renderDetails();else if(currentView==='plan')renderPlan();else if(currentView==='outreach')renderOutreach();else if(currentView==='contacts')renderContacts();else if(currentView==='vendors')renderVendors();else if(currentView==='strategy')renderStrategy();else if(currentView==='playlisting')renderPlaylisting();}
+function renderCenter(){if(currentView==='overview')return renderOverview();if(currentView==='songs')return renderSongs();if(currentView==='content')return renderContent();if(currentView==='calendar')return renderCalendar();if(currentView==='section'&&selectedSection)renderSectionDetail();else if(currentView==='dashboard')renderDash();else if(currentView==='analytics')renderAnalytics();else if(currentView==='pitch')renderPitchPage();else if(currentView==='notes')renderNotesPage();else if(currentView==='timeline')renderTimeline();else if(currentView==='details')renderDetails();else if(currentView==='plan')renderPlan();else if(currentView==='outreach')renderOutreach();else if(currentView==='contacts')renderContacts();else if(currentView==='vendors')renderVendors();else if(currentView==='strategy')renderStrategy();else if(currentView==='playlisting')renderPlaylisting();}
 function renderAll(){renderRelBar();renderLeftSidebar();renderRightSidebar();renderCenter();}
 
 /* DASHBOARD */
@@ -948,6 +1004,7 @@ function openSettings(){
   <div class="form-row full"><div><label>Claude API key</label><input type="password" autocomplete="off" spellcheck="false" id="st-key" value="${escA(s.apiKey||'')}" placeholder="sk-ant-..."><label class="check-lbl" style="margin-top:8px"><input type="checkbox" id="st-remember" ${s.rememberKey?'checked':''}> Remember on this device</label><div class="field-hint">Never saved to Drive or GitHub. Unticked, the key is forgotten when you close the tab. Use a key made only for this app, with a monthly spend limit set in console.anthropic.com.</div></div></div>
   <div class="form-row full"><div><label>Model</label><input type="text" id="st-model" value="${escA(s.model||DEFAULT_MODEL)}"></div></div>
   <div class="form-row full"><div><label>Artist bios used in pitches (one per line: Name | bio)</label><textarea id="st-artists" rows="5" placeholder="Arjuna Harjai | UK based independent artist with South Asian diaspora roots...">${esc(artists)}</textarea></div></div>
+  <div class="form-row full"><div><label>Distributor lead time (days before release for ingestion)</label><input type="text" id="st-lead" value="${escA(db.ingestLead||28)}"></div></div>
   <div class="form-row full"><div><label>Your name for email sign off</label><input type="text" id="st-sender" value="${escA(db.sender||'')}" placeholder="Alex, Aart Sense Records"></div></div>`;
   document.getElementById('settings-modal').classList.add('open');
 }
@@ -958,7 +1015,7 @@ function saveSettings(){
   s.model=document.getElementById('st-model').value.trim()||DEFAULT_MODEL;
   putSettings(s);
   db.artists=document.getElementById('st-artists').value.split('\n').map(l=>l.split('|')).filter(p=>p[0]&&p[0].trim()).map(p=>({name:p[0].trim(),bio:(p.slice(1).join('|')||'').trim()}));
-  db.sender=document.getElementById('st-sender').value.trim();
+  db.sender=document.getElementById('st-sender').value.trim();db.ingestLead=Number(document.getElementById('st-lead').value.replace(/[^\d]/g,''))||28;
   scheduleSave();closeSettings();toast('Settings saved');
 }
 
@@ -1786,6 +1843,191 @@ function renderPreview(){
   document.getElementById('pv-open').onclick=()=>window.open(url,'_blank','noopener');
 }
 document.addEventListener('keydown',e=>{if(!document.getElementById('pv-sheet')?.classList.contains('open'))return;if(e.target.matches('input,textarea'))return;if(e.key==='Escape')closePreview();if(e.key==='ArrowRight')stepPreview(1);if(e.key==='ArrowLeft')stepPreview(-1);});
+
+/* ===================== PIPELINE: SONGS, CONTENT, CALENDAR, OVERVIEW ===================== */
+const STAGES=['Idea','Lyrics','Production','Mix','Master','Delivered','Promotion','Done'];
+const STAGE_OFFSETS={Lyrics:-70,Production:-56,Mix:-42,Master:-35,Delivered:-28,Promotion:-14};
+const C_STAGES=['Idea','Planned','Shot','Edited','Posted'];
+const C_PLATFORMS=['Instagram','YouTube','YouTube Shorts','TikTok','Facebook','Other'];
+const C_FORMATS=['Reel','Short','Vlog','Live','Carousel','Story','Lyric video','Music video','Other'];
+let pipeF={artist:''},contentF={rel:'',status:''},calM=null,songCur=null;
+function songStage(r){return r.stage||(r.date&&r.date<new Date().toISOString().slice(0,10)?'Promotion':'Idea');}
+function artistOk(r){return !pipeF.artist||(r&&r.artist===pipeF.artist);}
+function relsF(){return db.releases.filter(artistOk);}
+function artistPicker(fn){const a=songArtists();return a.length>1?`<select onchange="pipeF.artist=this.value;${fn}()" style="width:auto"><option value="">All artists</option>${a.map(x=>`<option ${x===pipeF.artist?'selected':''}>${esc(x)}</option>`).join('')}</select>`:'';}
+function songArtists(){return [...new Set(db.releases.map(r=>r.artist).filter(Boolean))].sort();}
+function todayISO(){return new Date().toISOString().slice(0,10);}
+function fmtD(d,o){return d?new Date(d+'T00:00:00').toLocaleDateString('en-GB',o||{day:'numeric',month:'short'}):'';}
+/* links: Spotify / Apple / YouTube for a song */
+function songEmbed(u){
+  let x;try{x=new URL(String(u||'').trim());}catch(e){return null;}if(x.protocol!=='https:')return null;const h=x.hostname.replace(/^www\./,'');
+  if(h==='open.spotify.com'){const m=x.pathname.match(/\/(track|album)\/([A-Za-z0-9]{10,40})/);if(m)return {kind:'Spotify',src:`https://open.spotify.com/embed/${m[1]}/${m[2]}`,h:m[1]==='track'?152:352};}
+  if(h==='music.apple.com'){const m=x.pathname.match(/^\/([a-z]{2})\/(album|song)\/[^/]+\/\d+/);if(m)return {kind:'Apple Music',src:'https://embed.music.apple.com'+x.pathname+(x.search||''),h:x.searchParams.get('i')||m[2]==='song'?175:450};}
+  if(h==='youtube.com'||h==='m.youtube.com'||h==='music.youtube.com'){const v=x.searchParams.get('v');if(v&&/^[\w-]{11}$/.test(v))return {kind:'YouTube',src:'https://www.youtube-nocookie.com/embed/'+v,h:215};const s=x.pathname.match(/^\/shorts\/([\w-]{11})/);if(s)return {kind:'YouTube',src:'https://www.youtube-nocookie.com/embed/'+s[1],h:215};}
+  if(h==='youtu.be'){const v=x.pathname.slice(1,12);if(/^[\w-]{11}$/.test(v))return {kind:'YouTube',src:'https://www.youtube-nocookie.com/embed/'+v,h:215};}
+  return null;
+}
+function audioSrc(u){let x;try{x=new URL(String(u||'').trim());}catch(e){return null;}if(x.protocol!=='https:')return null;
+  if(/\.(mp3|wav|m4a|aac|ogg|flac)$/i.test(x.pathname))return x.href;
+  if(/(^|\.)dropbox\.com$/.test(x.hostname)&&/\.(mp3|wav|m4a|aac)$/i.test(x.pathname)){x.searchParams.delete('dl');x.searchParams.set('raw','1');return x.href;}
+  return null;}
+function previewHost(u){try{return new URL(u).hostname.replace(/^www\./,'');}catch(e){return '';}}
+/* song drawer */
+function openSong(id){songCur=id;document.getElementById('sg-scrim').classList.add('open');document.getElementById('sg-sheet').classList.add('open');renderSong();}
+function closeSong(){document.getElementById('sg-scrim').classList.remove('open');document.getElementById('sg-sheet').classList.remove('open');songCur=null;renderCenter();renderLeftSidebar();}
+function curSong(){return db.releases.find(r=>r.id===songCur);}
+function setSong(k,v){const r=curSong();if(!r)return;r[k]=v;if(k==='stage'){r.activity=r.activity||[];r.activity.push({ts:Date.now(),label:'Stage: '+v});}scheduleSave();renderSong();}
+function setStageDate(st,v){const r=curSong();r.stageDates=r.stageDates||{};r.stageDates[st]=v;scheduleSave();renderSong();}
+function autoStageDates(){const r=curSong();if(!r?.date){toast('Set a target release date first');return;}r.stageDates=r.stageDates||{};const lead=Number(db.ingestLead||28);
+  Object.entries(STAGE_OFFSETS).forEach(([s,o])=>{if(!r.stageDates[s])r.stageDates[s]=addDays(r.date,s==='Delivered'?-lead:s==='Master'?-lead-7:o);});scheduleSave();renderSong();toast('Stage deadlines set from the release date');}
+function addPreview(){const r=curSong();const l=document.getElementById('pvw-label').value.trim(),u=document.getElementById('pvw-url').value.trim();if(!safeUrl(u)){toast('Paste a full https link');return;}r.previews=r.previews||[];r.previews.unshift({id:uid('pw'),label:l||'Untitled',url:safeUrl(u),at:Date.now()});scheduleSave();renderSong();}
+function delPreview(pid){const r=curSong();r.previews=(r.previews||[]).filter(p=>p.id!==pid);scheduleSave();renderSong();}
+function setLink(k,v){const r=curSong();r.links=r.links||{};r.links[k]=v.trim();scheduleSave();renderSong();}
+function addStat(){const r=curSong();const g=id=>Number(document.getElementById(id).value.replace(/[^\d]/g,''))||0;const s={date:document.getElementById('st-date').value||todayISO(),streams:g('st-streams'),listeners:g('st-listeners'),saves:g('st-saves'),adds:g('st-adds')};if(!s.streams&&!s.listeners){toast('Add at least streams or listeners');return;}r.stats=(r.stats||[]).filter(x=>x.date!==s.date);r.stats.push(s);r.stats.sort((a,b)=>a.date.localeCompare(b.date));scheduleSave();renderSong();toast('Spotify stats saved');}
+function renderSong(){
+  const r=curSong();if(!r)return;const st=songStage(r);const sd=r.stageDates||{};const links=r.links||{};const today=todayISO();
+  const stageRow=STAGES.map((s,i)=>{const idx=STAGES.indexOf(st);const state=i<idx?'done':i===idx?'now':'';const due=sd[s];const late=due&&due<today&&i>=idx&&s!=='Idea';
+    return `<div class="stg ${state}"><button class="stg-dot" onclick="setSong('stage','${s}')" title="Set stage to ${s}">${i<idx?'✓':''}</button><div class="stg-name">${s}</div>${s==='Idea'||s==='Done'?'<div class="stg-date"></div>':`<input type="date" class="stg-date ${late?'late':''}" value="${escA(due||'')}" onchange="setStageDate('${s}',this.value)">`}</div>`;}).join('');
+  const emb=['spotify','apple','youtube'].map(k=>links[k]&&songEmbed(links[k])).filter(Boolean);
+  const stats=(r.stats||[]);const last=stats[stats.length-1],prev=stats[stats.length-2];
+  const delta=(k)=>last&&prev?last[k]-prev[k]:null;
+  document.getElementById('sg-body').innerHTML=`
+  <div class="pv-top"><div><input type="text" class="sg-title" value="${escA(r.title)}" onchange="setSong('title',this.value.trim()||'Untitled')"><div class="sub">${esc(r.artist||'')}${r.date?' · target release '+fmtD(r.date,{day:'numeric',month:'long',year:'numeric'}):''}</div></div><button class="x-btn" onclick="closeSong()">×</button></div>
+  <div class="form-row" style="margin-top:12px"><div><label>Artist</label><input type="text" value="${escA(r.artist||'')}" onchange="setSong('artist',this.value.trim())"></div><div><label>Target release date</label><input type="date" value="${escA(r.date||'')}" onchange="setSong('date',this.value)"></div></div>
+  <div class="sg-sec"><div class="sec-head"><div class="sec-title">Progress</div><button class="btn btn-ghost btn-sm" onclick="autoStageDates()">Fill deadlines from release date</button></div><div class="stg-row">${stageRow}</div>
+  <div class="field-hint">Tap a circle to move the song to that stage. Ingestion is set ${db.ingestLead||28} days before release (change in Settings to match The Orchard's lead time).</div></div>
+  <div class="sg-sec"><div class="sec-title">Team</div><div class="form-grid3"><div><label>Writers</label><input type="text" value="${escA(r.writers||'')}" onchange="setSong('writers',this.value)"></div><div><label>Producer</label><input type="text" value="${escA(r.producer||'')}" onchange="setSong('producer',this.value)"></div><div><label>Mix / master engineer</label><input type="text" value="${escA(r.engineer||'')}" onchange="setSong('engineer',this.value)"></div></div>
+  <label>Lyrics and notes</label><textarea rows="4" onchange="setSong('lyrics',this.value)" placeholder="Lyric drafts, references, feedback">${esc(r.lyrics||'')}</textarea></div>
+  <div class="sg-sec"><div class="sec-title">Previews</div>
+   <div class="pvw-add"><input type="text" id="pvw-label" placeholder="Label (demo v2, mix 3, master...)"><input type="text" id="pvw-url" placeholder="https:// link (Dropbox, Drive, WeTransfer, SoundCloud, audio file)"><button class="btn btn-primary btn-sm" onclick="addPreview()">Add</button></div>
+   ${(r.previews||[]).map(p=>{const a=audioSrc(p.url);return `<div class="pvw"><div class="pvw-top"><strong>${esc(p.label)}</strong><span class="sub">${esc(previewHost(p.url))} · ${new Date(p.at).toLocaleDateString('en-GB',{day:'numeric',month:'short'})}</span><span style="flex:1"></span><a class="btn btn-ghost btn-sm" href="${escA(p.url)}" target="_blank" rel="noopener">Open ↗</a><button class="x-btn" onclick="delPreview('${p.id}')">×</button></div>${a?`<audio controls preload="none" src="${escA(a)}"></audio>`:''}</div>`;}).join('')||'<div class="sub">No previews yet. Untitled links are fine, label them later.</div>'}
+   <div class="field-hint">Use links that need sign in to open. Direct audio files and Dropbox audio links play here; other links open in a new tab.</div></div>
+  <div class="sg-sec"><div class="sec-title">Spotify, Apple Music and YouTube</div>
+   <div class="form-grid3"><div><label>Spotify track or album link</label><input type="text" value="${escA(links.spotify||'')}" placeholder="https://open.spotify.com/track/..." onchange="setLink('spotify',this.value)"></div><div><label>Apple Music link</label><input type="text" value="${escA(links.apple||'')}" placeholder="https://music.apple.com/..." onchange="setLink('apple',this.value)"></div><div><label>YouTube video link</label><input type="text" value="${escA(links.youtube||'')}" placeholder="https://www.youtube.com/watch?v=..." onchange="setLink('youtube',this.value)"></div></div>
+   ${emb.map(e=>`<iframe class="sg-embed" src="${escA(e.src)}" height="${e.h}" loading="lazy" allow="encrypted-media; clipboard-write" title="${e.kind} player"></iframe>`).join('')}</div>
+  <div class="sg-sec"><div class="sec-title">Spotify for Artists stats</div>
+   <div class="field-hint" style="margin:0 0 8px">Spotify doesn't let other apps read these, so copy 4 numbers from the Spotify for Artists app once a week.</div>
+   <div class="stat-in"><input type="date" id="st-date" value="${todayISO()}"><input type="text" id="st-streams" placeholder="Streams"><input type="text" id="st-listeners" placeholder="Listeners"><input type="text" id="st-saves" placeholder="Saves"><input type="text" id="st-adds" placeholder="Playlist adds"><button class="btn btn-primary btn-sm" onclick="addStat()">Save</button></div>
+   ${last?`<div class="plan-kpis" style="margin-top:10px">${[['streams','Streams'],['listeners','Listeners'],['saves','Saves'],['adds','Playlist adds']].map(([k,l])=>`<div><b>${fmtNum(last[k])}</b><span>${l}${delta(k)!=null?` · ${delta(k)>=0?'+':''}${fmtNum(delta(k))} since ${fmtD(prev.date)}`:''}</span></div>`).join('')}</div><div class="sub">Save rate ${last.streams?(last.saves/last.streams*100).toFixed(1)+'%':'—'} · last updated ${fmtD(last.date)}</div>${sparkline(stats.map(s=>s.streams))}`:''}</div>
+  <div class="sg-sec"><div class="sec-title">Content for this song</div>${contentFor(r.id).map(c=>`<div class="ct-mini" onclick="openContent('${c.id}')"><span class="tag">${esc(c.status)}</span> ${esc(c.title)} <span class="sub">${esc(c.platform)}${c.postDate?' · '+fmtD(c.postDate):''}</span></div>`).join('')||'<div class="sub">No content planned yet.</div>'}<button class="btn btn-ghost btn-sm" style="margin-top:8px" onclick="openContent(null,'${r.id}')">+ Add content idea</button></div>
+  <div class="sg-sec"><button class="btn btn-ghost btn-sm" onclick="setActive('${r.id}');closeSong();showView('details',null)">Open release tools (details, splits, pitches)</button></div>`;
+}
+function sparkline(vals){vals=vals.filter(v=>v!=null);if(vals.length<2)return '';const w=300,h=50,mx=Math.max(...vals),mn=Math.min(...vals);const pts=vals.map((v,i)=>`${(i/(vals.length-1)*w).toFixed(1)},${(h-(mx===mn?h/2:(v-mn)/(mx-mn)*h)).toFixed(1)}`).join(' ');return `<svg class="spark" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none"><polyline points="${pts}" fill="none" stroke="#fff" stroke-width="2" vector-effect="non-scaling-stroke"/></svg>`;}
+function newSong(){const r={id:'r_'+Date.now(),title:'Untitled '+(db.releases.length+1),artist:pipeF.artist||(db.releases[0]?.artist)||'Arjuna Harjai',date:'',genre:'',dist:'The Orchard',state:{},notes:{},dates:{},freeNote:'',sectionNotes:{},pitches:{},created:Date.now(),activity:[],stage:'Idea'};db.releases.push(r);scheduleSave();renderAll();openSong(r.id);}
+function moveSong(id,d){const r=db.releases.find(x=>x.id===id);const i=STAGES.indexOf(songStage(r));const n=Math.max(0,Math.min(STAGES.length-1,i+d));r.stage=STAGES[n];r.activity=r.activity||[];r.activity.push({ts:Date.now(),label:'Stage: '+r.stage});scheduleSave();renderCenter();}
+function renderSongs(){
+  const el=document.getElementById('center-inner');const today=todayISO();
+  const list=db.releases.filter(r=>!pipeF.artist||r.artist===pipeF.artist);
+  const arts=songArtists();
+  el.innerHTML=`<div class="eyebrow">Pipeline</div><div class="page-title">Songs</div><div class="page-sub">From idea to master, delivery and promotion</div>
+  <div class="toolbar">${artistPicker('renderSongs')}<span style="flex:1"></span><button class="btn btn-primary btn-sm" onclick="newSong()">+ New song</button></div>
+  <div class="board">${STAGES.map(s=>{const cs=list.filter(r=>songStage(r)===s);return `<div class="col"><div class="col-h">${s}<span>${cs.length}</span></div>${cs.map(r=>{const nxt=STAGES[STAGES.indexOf(s)+1];const due=(r.stageDates||{})[nxt]||(s==='Delivered'||s==='Master'?r.date:null);const late=due&&due<today&&s!=='Done'&&s!=='Promotion';const pct=Math.round(STAGES.indexOf(s)/(STAGES.length-1)*100);
+    return `<div class="scard" onclick="openSong('${r.id}')"><div class="scard-t">${esc(r.title)}</div><div class="sub">${esc(r.artist||'')}</div>${due?`<div class="sub ${late?'late-t':''}">${late?'Overdue: ':'Next: '}${nxt||'release'} ${fmtD(due)}</div>`:''}${r.date?`<div class="sub">Release ${fmtD(r.date)}</div>`:''}<div class="mini-bar"><i style="width:${pct}%"></i></div><div class="scard-f"><span class="sub">${(r.previews||[]).length} preview${(r.previews||[]).length===1?'':'s'}</span><span onclick="event.stopPropagation()"><button class="x-btn" onclick="moveSong('${r.id}',-1)" title="Back a stage">‹</button><button class="x-btn" onclick="moveSong('${r.id}',1)" title="Next stage">›</button></span></div></div>`;}).join('')}</div>`;}).join('')}</div>`;
+}
+/* content */
+function contentFor(relId){return (db.content||[]).filter(c=>c.relId===relId);}
+function openContent(id,relId){
+  const c=(db.content||[]).find(x=>x.id===id)||{status:'Idea',platform:'Instagram',format:'Reel',relId:relId||contentF.rel||'',assets:[]};
+  document.getElementById('ct-body').innerHTML=`<input type="hidden" id="ct-id" value="${escA(c.id||'')}">
+  <div class="form-row full"><div><label>Idea / title</label><input type="text" id="ctn-title" value="${escA(c.title||'')}" placeholder="One take: Arjuna sings the hook, no intro"></div></div>
+  <div class="form-row full"><div><label>Hook and script</label><textarea id="ctn-script" rows="4" placeholder="First second: ... / Text on screen: ... / CTA: Comment FIRE">${esc(c.script||'')}</textarea></div></div>
+  <div class="form-grid3"><div><label>Song</label><select id="ctn-rel"><option value="">Not linked</option>${db.releases.map(r=>`<option value="${r.id}" ${r.id===c.relId?'selected':''}>${esc(r.title)}</option>`).join('')}</select></div><div><label>Platform</label><select id="ctn-plat">${C_PLATFORMS.map(p=>`<option ${p===c.platform?'selected':''}>${p}</option>`).join('')}</select></div><div><label>Format</label><select id="ctn-fmt">${C_FORMATS.map(p=>`<option ${p===c.format?'selected':''}>${p}</option>`).join('')}</select></div></div>
+  <div class="form-grid3"><div><label>Status</label><select id="ctn-status">${C_STAGES.map(p=>`<option ${p===c.status?'selected':''}>${p}</option>`).join('')}</select></div><div><label>Shoot date</label><input type="date" id="ctn-shoot" value="${escA(c.shootDate||'')}"></div><div><label>Post date</label><input type="date" id="ctn-post" value="${escA(c.postDate||'')}"></div></div>
+  <div class="form-row"><div><label>Asset / edit link</label><input type="text" id="ctn-asset" value="${escA(c.asset||'')}" placeholder="Drive, Dropbox or Frame.io link"></div><div><label>Posted link</label><input type="text" id="ctn-posturl" value="${escA(c.postUrl||'')}" placeholder="Paste once it's live"></div></div>
+  <div class="form-row"><div><label>Views (after posting)</label><input type="text" id="ctn-views" value="${escA(c.views||'')}"></div><div></div></div>`;
+  document.getElementById('ct-del').style.display=c.id?'':'none';document.getElementById('ct-modal').classList.add('open');
+}
+function saveContent(){
+  const g=id=>document.getElementById(id).value.trim();const id=g('ct-id');db.content=db.content||[];
+  const rec={title:g('ctn-title')||'Untitled idea',script:g('ctn-script'),relId:g('ctn-rel'),platform:g('ctn-plat'),format:g('ctn-fmt'),status:g('ctn-status'),shootDate:g('ctn-shoot'),postDate:g('ctn-post'),asset:safeUrl(g('ctn-asset'))||'',postUrl:safeUrl(g('ctn-posturl'))||'',views:Number(g('ctn-views').replace(/[^\d]/g,''))||null};
+  if(rec.postUrl&&rec.status!=='Posted')rec.status='Posted';
+  if(id)Object.assign(db.content.find(c=>c.id===id),rec);else db.content.push({id:uid('ct'),...rec,created:Date.now()});
+  scheduleSave();document.getElementById('ct-modal').classList.remove('open');if(songCur)renderSong();renderCenter();
+}
+function deleteContent(){const id=document.getElementById('ct-id').value;if(!id||!confirm('Delete this content idea?'))return;db.content=db.content.filter(c=>c.id!==id);scheduleSave();document.getElementById('ct-modal').classList.remove('open');if(songCur)renderSong();renderCenter();}
+function moveContent(id,d){const c=db.content.find(x=>x.id===id);const i=C_STAGES.indexOf(c.status);c.status=C_STAGES[Math.max(0,Math.min(C_STAGES.length-1,i+d))];scheduleSave();renderCenter();}
+function seedScripts(){
+  const rel=db.releases.find(r=>r.id===contentF.rel)||getActive();const ideas=[
+   ['One take','Opens on the strongest line already being sung. No intro, no logo. Text: "The voice behind Winter Ayun Waliye 2.0. New song." CTA: Comment FIRE for the full song.'],
+   ['First listen','Divya hears the song for the first time, real reaction, unscripted. Only if she is comfortable.'],
+   ['Finish the line','Sing the hook and stop before the last word. Text: "Comment the next line." Invites comments and duets.'],
+   ['Six years apart','Split screen: an old performance clip and the new song now, continuing the "Live after 6 years" story.'],
+   ['Four elements','A fixed 10 second format, one per element (Fire, Paani, Mitti, Hawa), posted weekly as a series.']];
+  db.content=db.content||[];ideas.forEach(([t,s])=>db.content.push({id:uid('ct'),title:t,script:s,relId:rel?.id||'',platform:'Instagram',format:'Reel',status:'Idea',created:Date.now()}));
+  scheduleSave();renderCenter();toast('5 script ideas added');
+}
+function renderContent(){
+  const el=document.getElementById('center-inner');const today=todayISO();
+  const list=(db.content||[]).filter(c=>(!contentF.rel||c.relId===contentF.rel)&&(!pipeF.artist||artistOk(db.releases.find(r=>r.id===c.relId))));
+  el.innerHTML=`<div class="eyebrow">Pipeline</div><div class="page-title">Content</div><div class="page-sub">Ideas, plans, shoot and post dates, and what's gone live</div>
+  <div class="toolbar">${artistPicker('renderContent')}<select onchange="contentF.rel=this.value;renderContent()" style="width:auto"><option value="">All songs</option>${relsF().map(r=>`<option value="${r.id}" ${r.id===contentF.rel?'selected':''}>${esc(r.title)}</option>`).join('')}</select><span style="flex:1"></span><button class="btn btn-ghost btn-sm" onclick="seedScripts()">✦ Add our 5 script ideas</button><button class="btn btn-primary btn-sm" onclick="openContent()">+ New idea</button></div>
+  <div class="board board5">${C_STAGES.map(s=>{const cs=list.filter(c=>c.status===s).sort((a,b)=>(a.postDate||'9').localeCompare(b.postDate||'9'));return `<div class="col"><div class="col-h">${s}<span>${cs.length}</span></div>${cs.map(c=>{const rel=db.releases.find(r=>r.id===c.relId);const late=c.postDate&&c.postDate<today&&s!=='Posted';return `<div class="scard" onclick="openContent('${c.id}')"><div class="scard-t">${esc(c.title)}</div><div class="sub">${esc(c.platform)} · ${esc(c.format)}${rel?' · '+esc(rel.title):''}</div>${c.shootDate&&s!=='Posted'?`<div class="sub">Shoot ${fmtD(c.shootDate)}</div>`:''}${c.postDate?`<div class="sub ${late?'late-t':''}">${s==='Posted'?'Posted':late?'Overdue post':'Post'} ${fmtD(c.postDate)}</div>`:''}${c.views?`<div class="sub">${fmtNum(c.views)} views</div>`:''}<div class="scard-f"><span></span><span onclick="event.stopPropagation()"><button class="x-btn" onclick="moveContent('${c.id}',-1)">‹</button><button class="x-btn" onclick="moveContent('${c.id}',1)">›</button></span></div></div>`;}).join('')}</div>`;}).join('')}</div>`;
+}
+/* calendar */
+function calEvents(){
+  const ev=[];const add=(d,t,k,id,fn)=>{if(d)ev.push({d,t,k,id,fn});};
+  relsF().forEach(r=>{add(r.date,r.title+': release','release',r.id,'song');Object.entries(r.stageDates||{}).forEach(([s,d])=>add(d,r.title+': '+(s==='Delivered'?'ingestion':s.toLowerCase()+' due'),s==='Delivered'?'ingest':'stage',r.id,'song'));
+    Object.entries(r.dates||{}).forEach(([tid,d])=>{if((r.state||{})[tid])return;const it=SECTIONS.flatMap(x=>x.items).find(i=>i.id===tid);if(it)add(d,r.title+': '+it.label,'task',r.id,'plan');});});
+  (db.content||[]).filter(c=>!pipeF.artist||artistOk(db.releases.find(r=>r.id===c.relId))).forEach(c=>{add(c.shootDate,'Shoot: '+c.title,'shoot',c.id,'content');add(c.postDate,(c.status==='Posted'?'Posted: ':'Post: ')+c.title,'post',c.id,'content');});
+  return ev;
+}
+function calOpen(fn,id){if(fn==='song')openSong(id);else if(fn==='content')openContent(id);else{setActive(id);showView('plan',null);}}
+function renderCalendar(){
+  const el=document.getElementById('center-inner');const now=new Date();calM=calM||{y:now.getFullYear(),m:now.getMonth()};
+  const first=new Date(calM.y,calM.m,1);const start=new Date(first);start.setDate(1-((first.getDay()+6)%7));
+  const ev=calEvents();const today=todayISO();const days=[];for(let i=0;i<42;i++){const d=new Date(start);d.setDate(start.getDate()+i);days.push(d);}
+  const iso=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  el.innerHTML=`<div class="eyebrow">Pipeline</div><div class="page-title">Calendar</div><div class="page-sub">Deadlines, ingestion, releases, release tasks and content in one view</div>
+  <div class="toolbar"><button class="x-btn" onclick="calM.m--;if(calM.m<0){calM.m=11;calM.y--;}renderCalendar()">‹</button><div class="sec-title" style="margin:0;min-width:160px;text-align:center">${first.toLocaleDateString('en-GB',{month:'long',year:'numeric'})}</div><button class="x-btn" onclick="calM.m++;if(calM.m>11){calM.m=0;calM.y++;}renderCalendar()">›</button><button class="btn btn-ghost btn-sm" onclick="calM=null;renderCalendar()">Today</button>${artistPicker('renderCalendar')}<span style="flex:1"></span>
+  <span class="legend"><i class="k-release"></i>Release <i class="k-ingest"></i>Ingestion <i class="k-stage"></i>Song deadline <i class="k-task"></i>Release task <i class="k-post"></i>Content</span><button class="btn btn-ghost btn-sm" onclick="calIcs()">Export (.ics)</button></div>
+  <div class="cal"><div class="cal-h">${['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map(d=>`<div>${d}</div>`).join('')}</div><div class="cal-g">${days.map(d=>{const k=iso(d);const es=ev.filter(e=>e.d===k);return `<div class="cal-d ${d.getMonth()!==calM.m?'out':''} ${k===today?'today':''}"><div class="cal-n">${d.getDate()}</div>${es.slice(0,4).map(e=>`<div class="cal-e k-${e.k} ${e.d<today&&!['release'].includes(e.k)&&!/^Posted/.test(e.t)?'past':''}" onclick="calOpen('${e.fn}','${e.id}')" title="${escA(e.t)}">${esc(e.t)}</div>`).join('')}${es.length>4?`<div class="sub">+${es.length-4} more</div>`:''}</div>`;}).join('')}</div></div>`;
+}
+function calIcs(){const ev=calEvents();if(!ev.length){toast('Nothing scheduled yet');return;}const stamp=new Date().toISOString().replace(/[-:]/g,'').slice(0,15)+'Z';const L=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Aart Sense//Pipeline//EN'];ev.forEach((e,i)=>L.push('BEGIN:VEVENT','UID:pipe-'+i+'-'+e.id+'@releasehub','DTSTAMP:'+stamp,'DTSTART;VALUE=DATE:'+e.d.replace(/-/g,''),'DTEND;VALUE=DATE:'+addDays(e.d,1).replace(/-/g,''),'SUMMARY:'+e.t.replace(/[,;]/g,' '),'END:VEVENT'));L.push('END:VCALENDAR');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([L.join('\r\n')],{type:'text/calendar'}));a.download='Aart Sense schedule.ics';a.click();}
+/* overview dashboard */
+function promoStatus(r){
+  const t=r.title.toLowerCase();
+  const camps=(vdb?.campaigns||[]).filter(c=>c.relId===r.id||(c.song&&c.song.toLowerCase()===t));
+  const vendorPosts=camps.reduce((n,c)=>n+((c.posts||[]).length||0),0);const spent=camps.reduce((n,c)=>n+(c.currency==='INR'?c.cost||0:0),0);const views=camps.reduce((n,c)=>n+(c.views||0),0);
+  const cont=contentFor(r.id);const posted=cont.filter(c=>c.status==='Posted').length;
+  const pls=(vdb?.playlists||[]).flatMap(p=>(p.results||[]).filter(x=>x.relId===r.id).map(x=>({p,x})));
+  const tasks=SECTIONS.flatMap(s=>s.items);const done=tasks.filter(i=>(r.state||{})[i.id]).length;
+  const left=[...cont.filter(c=>c.status!=='Posted').sort((a,b)=>(a.postDate||'9').localeCompare(b.postDate||'9')).slice(0,3).map(c=>'Post "'+c.title+'"'+(c.postDate?' ('+fmtD(c.postDate)+')':'')),
+    ...tasks.filter(i=>!(r.state||{})[i.id]&&['promo','social','bbc'].some(s=>i.id.startsWith(s[0]))).slice(0,3).map(i=>i.label)];
+  return {camps,vendorPosts,spent,views,cont,posted,pls,done,total:tasks.length,left,stats:(r.stats||[]).slice(-1)[0]};
+}
+function renderOverview(){
+  const el=document.getElementById('center-inner');const today=todayISO();const in7=addDays(today,7);
+  if(!vdb&&accessToken)loadVendors().then(()=>{if(currentView==='overview')renderOverview();});
+  const counts=STAGES.map(s=>[s,relsF().filter(r=>songStage(r)===s).length]);
+  const ev=calEvents().filter(e=>e.d<=in7&&!/^Posted/.test(e.t)&&!(e.k==='release'&&e.d<today)).sort((a,b)=>a.d.localeCompare(b.d));
+  const overdue=ev.filter(e=>e.d<today),week=ev.filter(e=>e.d>=today);
+  const promo=relsF().filter(r=>songStage(r)==='Promotion');
+  el.innerHTML=`<div class="eyebrow">Aart Sense</div><div class="page-title">Overview</div><div class="page-sub">${new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'})}${pipeF.artist?' · '+esc(pipeF.artist):' · all artists'}</div>
+  ${songArtists().length>1?`<div class="toolbar">${artistPicker('renderOverview')}</div>`:''}
+  <div class="pipe-strip">${counts.map(([s,n])=>`<div class="pipe-s ${n?'':'zero'}" onclick="showView('songs',null)"><b>${n}</b><span>${s}</span></div>`).join('')}</div>
+  <div class="ov-grid">
+   <div class="card"><div class="sec-head"><div class="sec-title">This week</div><span class="sub">${overdue.length?`<span class="late-t">${overdue.length} overdue</span> · `:''}${week.length} coming up</span></div>
+    ${[...overdue.map(e=>[e,true]),...week.map(e=>[e,false])].slice(0,12).map(([e,late])=>`<div class="wk ${late?'late':''}" onclick="calOpen('${e.fn}','${e.id}')"><span class="wk-d">${late?'Overdue':fmtD(e.d,{weekday:'short',day:'numeric'})}</span><i class="dot k-${e.k}"></i><span>${esc(e.t)}</span></div>`).join('')||'<div class="muted-cell">Nothing due this week.</div>'}
+   </div>
+   <div class="card"><div class="sec-head"><div class="sec-title">Songs in production</div><button class="btn btn-ghost btn-sm" onclick="showView('songs',null)">Open board</button></div>
+    ${relsF().filter(r=>['Idea','Lyrics','Production','Mix','Master','Delivered'].includes(songStage(r))).map(r=>{const s=songStage(r);const i=STAGES.indexOf(s);const nxt=STAGES[i+1];const due=(r.stageDates||{})[nxt];return `<div class="prow" onclick="openSong('${r.id}')"><div><strong>${esc(r.title)}</strong>${pipeF.artist?'':` <span class="sub">· ${esc(r.artist||'')}</span>`}<div class="sub">${s}${due?' · '+nxt+' due '+fmtD(due):''}${r.date?' · release '+fmtD(r.date):''}</div></div><div class="mini-bar w"><i style="width:${Math.round(i/(STAGES.length-1)*100)}%"></i></div></div>`;}).join('')||'<div class="muted-cell">No songs in production. Add one on the Songs board.</div>'}
+   </div>
+  </div>
+  <div class="sec-head" style="margin:22px 0 10px"><div class="sec-title">In promotion</div><span class="sub">What's gone out and what's left</span></div>
+  ${promo.map(r=>{const p=promoStatus(r);const pct=Math.round(p.done/p.total*100);const days=r.date?Math.round((new Date(today)-new Date(r.date))/864e5):null;
+   return `<div class="card promo-c"><div class="sec-head"><div><div class="sec-title" style="margin:0">${esc(r.title)}</div><div class="sub">${esc(r.artist||'')}${days!=null?(days>=0?` · out ${days} days`:` · out in ${-days} days`):''}</div></div><div class="sec-actions"><button class="btn btn-ghost btn-sm" onclick="openSong('${r.id}')">Song</button><button class="btn btn-ghost btn-sm" onclick="setActive('${r.id}');showView('plan',null)">Release plan</button></div></div>
+    <div class="promo-k">
+     <div><b>${p.posted}<small>/${p.cont.length}</small></b><span>own posts live</span></div>
+     <div><b>${p.vendorPosts}</b><span>vendor posts delivered${p.camps.length?' ('+p.camps.length+' campaign'+(p.camps.length===1?'':'s')+')':''}</span></div>
+     <div><b>${p.views?fmtNum(p.views):'—'}</b><span>vendor views logged${p.spent?' · ₹'+p.spent.toLocaleString('en-GB'):''}</span></div>
+     <div><b>${p.pls.length}</b><span>playlist placements logged</span></div>
+     <div><b>${p.stats?fmtNum(p.stats.streams):'—'}</b><span>Spotify streams${p.stats?' · '+fmtD(p.stats.date):''}</span></div>
+    </div>
+    <div class="mini-bar w" style="margin:10px 0 4px"><i style="width:${pct}%"></i></div><div class="sub">Release checklist ${p.done}/${p.total} done</div>
+    ${p.left.length?`<div class="left-l"><span class="sub">Still to do:</span> ${p.left.map(x=>`<span class="tag">${esc(x)}</span>`).join(' ')}</div>`:''}
+   </div>`;}).join('')||'<div class="card muted-cell">No songs in promotion. Move a song to "Promotion" on the Songs board when its campaign starts.</div>'}`;
+}
+/* ===================== END PIPELINE ===================== */
 
 function emptyState(icon,t,s){return `<div class="empty-state"><div class="empty-icon">${icon}</div><div class="empty-text">${t}</div><div class="empty-sub">${s}</div></div>`;}
 /* ===================== END PROMO TOOL ADDITIONS ===================== */
