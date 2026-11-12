@@ -443,6 +443,41 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center}
 .wa-to{display:flex;gap:12px;align-items:center;padding:12px 14px;border-radius:14px;background:var(--fill3);margin-bottom:14px}
 .wa-ico{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:#fff;color:#000}
 .name-in{background:transparent!important;padding:3px 6px!important;font-weight:600;font-size:13px!important;min-width:150px}.name-in:hover{background:var(--fill3)!important}.sub-in{font-weight:400;color:var(--muted)!important;font-size:12px!important}
+
+.pv-link{display:inline-flex;align-items:center;gap:8px}.pv-eye{font-size:11px;color:var(--soft);opacity:0;transition:opacity .15s}.click-row:hover .pv-eye{opacity:1}
+.tag-good{background:rgba(48,209,88,.14);color:#63e08a}
+.pv-scrim{position:fixed;inset:0;background:rgba(0,0,0,.35);opacity:0;pointer-events:none;transition:opacity .3s;z-index:300}
+.pv-scrim.open{opacity:1;pointer-events:auto}
+.pv-sheet{position:fixed;top:12px;right:12px;bottom:12px;width:min(460px,calc(100vw - 24px));z-index:301;display:flex;flex-direction:column;background:rgba(28,28,30,.82);backdrop-filter:blur(40px) saturate(180%);-webkit-backdrop-filter:blur(40px) saturate(180%);border:1px solid var(--border);border-radius:22px;box-shadow:0 30px 80px rgba(0,0,0,.55);transform:translateX(calc(100% + 24px));transition:transform .5s var(--spring);overflow:hidden}
+.pv-sheet.open{transform:none}
+#pv-head{padding:18px 18px 12px;border-bottom:1px solid var(--sep)}
+.pv-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.pv-handle{font-size:20px;font-weight:700;letter-spacing:-.02em}
+.pv-meta{margin:10px 0;display:flex;gap:6px;flex-wrap:wrap}
+.pv-seg{margin-bottom:10px;display:flex}.pv-seg button{flex:1;padding:5px 8px;font-size:12px}
+.pv-body{flex:1;position:relative;background:#fff}
+#pv-frame{position:absolute;inset:0;width:100%;height:100%;border:0;background:#fff}
+.pv-fallback{position:absolute;inset:0;display:none;align-items:center;justify-content:center;padding:30px;text-align:center;color:var(--muted);background:var(--card)}
+.pv-foot{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 16px;border-top:1px solid var(--sep)}
+@media (prefers-reduced-motion:reduce){.pv-sheet{transition:opacity .2s}.pv-sheet:not(.open){opacity:0}}
+
+.score{--c:hsl(calc(var(--s)*1.2) 70% 55%);position:relative;display:inline-grid;place-items:center;width:40px;height:40px;border-radius:50%;background:conic-gradient(var(--c) calc(var(--s)*1%),var(--fill2) 0);font-size:12px}
+.score::before{content:'';position:absolute;inset:3px;border-radius:50%;background:var(--card)}
+.score b{position:relative;font-weight:700}
+.score.none{background:var(--fill3);color:var(--soft)}
+.conf{position:absolute;right:-1px;bottom:-1px;width:10px;height:10px;border-radius:50%;border:2px solid var(--card)}
+.conf-high{background:#30d158}.conf-medium{background:#ffd60a}.conf-low{background:#8e8e93}
+.picks{margin-bottom:16px}
+.pick-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+@media (max-width:1100px){.pick-grid{grid-template-columns:repeat(2,1fr)}}
+.pick-card{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding:14px;border-radius:14px;border:none;background:var(--fill3);color:var(--text);cursor:pointer;text-align:left;font-family:var(--sf);transition:transform .2s var(--spring),background .15s}
+.pick-card:hover{background:var(--fill2)}.pick-card:active{transform:scale(.97)}
+.pick-card .score::before{background:#2a2a2d}.pick-card .conf{border-color:#2a2a2d}
+.pick-rank{position:absolute;top:12px;right:14px;font-size:12px;color:var(--soft);font-weight:600}
+.pick-name{font-weight:600;font-size:13px;word-break:break-all}
+.pv-score{display:flex;gap:12px;align-items:center;margin:4px 0 12px}
+.pv-score .score::before{background:#232325}
+.pv-parts{display:flex;flex-wrap:wrap;gap:6px}.pv-parts span{font-size:11px;color:var(--muted);background:var(--fill3);padding:3px 8px;border-radius:99px}.pv-parts b{color:var(--text);margin-left:5px}
 </style>
 </head>
 <body>
@@ -489,6 +524,9 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center}
 <div class="modal-bg" id="campaign-modal"><div class="modal modal-wide"><div class="modal-title">Log a paid campaign</div><div id="campaign-body"></div><div class="modal-actions"><button class="btn btn-ghost btn-sm" onclick="document.getElementById('campaign-modal').classList.remove('open')">Cancel</button><button class="btn btn-primary btn-sm" onclick="saveCampaign()">Save</button></div></div></div>
 <div class="modal-bg" id="vendor-modal"><div class="modal modal-wide"><div class="modal-title">Vendor contact</div><div id="vendor-body"></div><div class="modal-actions"><button class="btn btn-ghost btn-sm" id="vendor-del" onclick="deleteVendor()" style="margin-right:auto">Delete</button><button class="btn btn-ghost btn-sm" onclick="closeVendor()">Cancel</button><button class="btn btn-primary btn-sm" onclick="saveVendor()">Save</button></div></div></div>
 <div class="modal-bg" id="wa-modal"><div class="modal modal-wide"><div class="modal-title">Message on WhatsApp</div><div id="wa-body"></div><div class="modal-actions"><button class="btn btn-ghost btn-sm" onclick="document.getElementById('wa-modal').classList.remove('open')">Cancel</button><button class="btn btn-primary btn-sm" onclick="sendWa()">Open in WhatsApp</button></div></div></div>
+<div class="pv-scrim" id="pv-scrim" onclick="closePreview()"></div>
+<aside class="pv-sheet" id="pv-sheet" aria-label="Page preview"><div id="pv-head"></div><div class="pv-body" id="pv-body"><iframe id="pv-frame" title="Instagram preview" loading="lazy" referrerpolicy="no-referrer"></iframe><div class="pv-fallback">YouTube channels can't be previewed inside the app.</div></div>
+<div class="pv-foot"><span class="sub">Use ← → to flip through pages · Esc to close</span><button class="btn btn-ghost btn-sm" id="pv-open">Open on Instagram ↗</button></div></aside>
 <!-- MAIN SHELL -->
 <div class="shell" id="main-shell" style="display:none">
 
@@ -1243,13 +1281,17 @@ function renderVendors(){
   }else if(tab==='pages'){
     const cats=[...new Set(vdb.pages.map(p=>p.c))].sort();const vendors=[...new Set(vdb.packages.map(p=>p.vendor))].sort();
     const pkMap=Object.fromEntries(vdb.packages.map(p=>[p.id,p]));const q=vFilter.q.toLowerCase();
-    const list=vdb.pages.filter(p=>(!vFilter.cat||p.c===vFilter.cat)&&(!vFilter.vendor||p.o.some(o=>pkMap[o]?.vendor===vFilter.vendor))&&(!vFilter.shared||p.o.length>1)&&(!q||(p.h+' '+p.n).toLowerCase().includes(q))).sort((a,b)=>(b.f||0)-(a.f||0));
-    const rows=list.slice(0,vFilter.limit).map(p=>`<tr><td><a href="${escA(p.l)}" target="_blank" rel="noopener"><strong>@${esc(p.h)}</strong></a>${p.n&&p.n.toLowerCase()!==p.h?`<br><span class="sub">${esc(p.n)}</span>`:''}</td><td>${fmtNum(p.f)}</td><td><span class="tag">${esc(p.c)}</span></td><td class="sub">${p.o.map(o=>esc(pkMap[o]?.vendor||'?')).filter((v,i,a)=>a.indexOf(v)===i).join(', ')}${p.o.length>1?' <span class="tag tag-amber">'+p.o.length+' offers</span>':''}</td><td class="sub">${p.v?fmtNum(p.v)+' avg views':''}${p.cpr?' · ₹'+Number(p.cpr).toLocaleString('en-GB')+'/reel':''}</td></tr>`).join('');
+    const list=vdb.pages.filter(p=>(!vFilter.cat||p.c===vFilter.cat)&&(!vFilter.vendor||p.o.some(o=>pkMap[o]?.vendor===vFilter.vendor))&&(!vFilter.shared||p.o.length>1)&&(!vFilter.hideDead||p.status!=='dead')&&(!q||(p.h+' '+p.n).toLowerCase().includes(q))); const sctx=scoreCtx();list.forEach(p=>p._s=pageScore(p,sctx));
+    if((vFilter.sort||'score')==='score')list.sort((a,b)=>((b._s.score??-1)-(a._s.score??-1))||((b.f||0)-(a.f||0)));else list.sort((a,b)=>(b.f||0)-(a.f||0));
+    window._pageList=list.map(p=>p.h);const stTag={dead:'<span class="tag tag-amber">Removed</span>',weak:'<span class="tag">Low quality</span>',good:'<span class="tag tag-good">Worth using</span>'};
+    const top=list.filter(p=>p._s.score!=null&&p.status!=='dead').slice(0,8);const topConf=top.filter(p=>p._s.conf!=='low').length;
+    const picks=top.length?`<div class="card picks"><div class="sec-head"><div class="sec-title">✦ Top picks <span class="sub" style="font-weight:400">${vFilter.cat||vFilter.vendor||vFilter.q?'for this filter':'across all pages'}</span></div><span class="sub">${topConf<top.length?'Some picks are estimates from followers and price only. Add reel views in the preview to firm them up.':'Based on views, followers, price and your results.'}</span></div><div class="pick-grid">${top.map((p,i)=>`<button class="pick-card" onclick="openPreview('${escA(p.h)}')"><span class="pick-rank">${i+1}</span>${scoreBadge(p._s)}<span class="pick-name">${p.h.startsWith('@')?'':'@'}${esc(p.h)}</span><span class="sub">${fmtNum(p.f)} · ${esc(p.c)}</span></button>`).join('')}</div></div>`:'';
+    const rows=list.slice(0,vFilter.limit).map(p=>`<tr class="click-row" onclick="openPreview('${escA(p.h)}')"><td>${scoreBadge(p._s)}</td><td><span class="pv-link"><strong>${p.h.startsWith('@')?'':'@'}${esc(p.h)}</strong> <span class="pv-eye">Preview</span></span> ${stTag[p.status]||''}${p.n&&p.n.toLowerCase()!==p.h?`<br><span class="sub">${esc(p.n)}</span>`:''}</td><td>${fmtNum(p.f)}</td><td><span class="tag">${esc(p.c)}</span></td><td class="sub">${p.o.map(o=>esc(pkMap[o]?.vendor||'?')).filter((v,i,a)=>a.indexOf(v)===i).join(', ')}${p.o.length>1?' <span class="tag tag-amber">'+p.o.length+' offers</span>':''}</td><td class="sub">${p.v?fmtNum(p.v)+' avg views':''}${p.cpr?' · ₹'+Number(p.cpr).toLocaleString('en-GB')+'/reel':''}</td></tr>`).join('');
     body=`<div class="toolbar"><input type="text" placeholder="Search handle or name..." value="${escA(vFilter.q)}" oninput="vFilter.q=this.value;vFilter.limit=60;renderVendors();const i=document.getElementById('vq');i.focus();i.setSelectionRange(i.value.length,i.value.length)" id="vq">
       <select onchange="vFilter.cat=this.value;renderVendors()"><option value="">All categories</option>${cats.map(c=>`<option ${c===vFilter.cat?'selected':''}>${esc(c)}</option>`).join('')}</select>
       <select onchange="vFilter.vendor=this.value;renderVendors()"><option value="">All vendors</option>${vendors.map(c=>`<option ${c===vFilter.vendor?'selected':''}>${esc(c)}</option>`).join('')}</select>
-      <label class="check-lbl"><input type="checkbox" ${vFilter.shared?'checked':''} onchange="vFilter.shared=this.checked;renderVendors()"> Only pages sold by 2+ vendors</label></div>
-      <div class="card"><div class="sub" style="margin-bottom:8px">${list.length.toLocaleString()} pages, sorted by followers</div><div class="table-wrap"><table class="releases-table"><thead><tr><th>Page</th><th>Followers</th><th>Category</th><th>Sold by</th><th>Extra data</th></tr></thead><tbody>${rows}</tbody></table></div>${list.length>vFilter.limit?`<div style="text-align:center;margin-top:12px"><button class="btn btn-ghost btn-sm" onclick="vFilter.limit+=100;renderVendors()">Show more</button></div>`:''}</div>`;
+      <label class="check-lbl"><input type="checkbox" ${vFilter.shared?'checked':''} onchange="vFilter.shared=this.checked;renderVendors()"> Only pages sold by 2+ vendors</label><label class="check-lbl"><input type="checkbox" ${vFilter.hideDead?'checked':''} onchange="vFilter.hideDead=this.checked;renderVendors()"> Hide removed pages</label><select onchange="vFilter.sort=this.value;renderVendors()" style="width:auto"><option value="score" ${(vFilter.sort||'score')==='score'?'selected':''}>Sort by score</option><option value="followers" ${vFilter.sort==='followers'?'selected':''}>Sort by followers</option></select></div>
+      ${picks}<div class="card"><div class="sub" style="margin-bottom:8px">${list.length.toLocaleString()} pages, sorted by ${(vFilter.sort||'score')==='score'?'score':'followers'}. Hover a score to see how it was worked out.</div><div class="table-wrap"><table class="releases-table"><thead><tr><th style="width:64px">Score</th><th>Page</th><th>Followers</th><th>Category</th><th>Sold by</th><th>Extra data</th></tr></thead><tbody>${rows}</tbody></table></div>${list.length>vFilter.limit?`<div style="text-align:center;margin-top:12px"><button class="btn btn-ghost btn-sm" onclick="vFilter.limit+=100;renderVendors()">Show more</button></div>`:''}</div>`;
   }else{
     const cs=(vdb.campaigns||[]).slice().sort((a,b)=>(b.date||'').localeCompare(a.date||''));
     const rows=cs.map(c=>{const rel=db.releases.find(r=>r.id===c.relId);const cpm=c.cost&&c.views?c.cost/(c.views/1000):null;
@@ -1330,6 +1372,70 @@ function renderVendorDirectory(){
   return `<div class="toolbar"><div class="field-hint" style="margin:0;flex:1">Save each vendor's WhatsApp number once, then message them with a ready written request in one click.</div><button class="btn btn-primary btn-sm" onclick="openVendor()">+ Add vendor</button></div>
   <div class="card"><div class="table-wrap"><table class="releases-table"><thead><tr><th>Vendor</th><th>Contact</th><th>Offers</th><th>History</th><th></th></tr></thead><tbody>${rows||'<tr><td colspan="5" class="muted-cell">No vendors yet.</td></tr>'}</tbody></table></div></div>`;
 }
+
+/* ---------- PAGE SCORE (0-100) ---------- */
+const clamp01=x=>Math.max(0,Math.min(1,x));
+function scoreCtx(){
+  const pkPerK={};vdb.packages.forEach(pk=>{const st=pkgStats(pk);if(st.perK)pkPerK[pk.id]=st.perK;});
+  const vendCpm={};(vdb.campaigns||[]).forEach(c=>{if(c.cost&&c.views&&c.currency==='INR'){(vendCpm[c.vendor]=vendCpm[c.vendor]||[]).push(c.cost/(c.views/1000));}});
+  Object.keys(vendCpm).forEach(k=>{const a=vendCpm[k];vendCpm[k]=a.reduce((t,x)=>t+x,0)/a.length;});
+  const pkVendor=Object.fromEntries(vdb.packages.map(p=>[p.id,p.vendor]));
+  return {pkPerK,vendCpm,pkVendor};
+}
+function pageScore(p,ctx){
+  if(p.status==='dead')return {score:0,conf:'none',parts:[['Removed from Instagram',0]]};
+  const parts=[];let tot=0,w=0;
+  const add=(label,val,weight)=>{if(val==null||isNaN(val))return;tot+=val*weight;w+=weight;parts.push([label,Math.round(val*100)]);};
+  add('Reach',p.f?clamp01((Math.log10(p.f)-4)/3):null,.30);
+  let eng=null;
+  const views=p.v||p.myViews;
+  if(views&&p.f)eng=clamp01((views/p.f)/0.4);else if(p.er)eng=clamp01(p.er/0.08);
+  add('Engagement',eng,.35);
+  const perKs=p.o.map(o=>ctx.pkPerK[o]).filter(Boolean);
+  const reelCpm=(p.cpr&&views)?p.cpr/(views/1000):null;
+  add('Price value',reelCpm?clamp01(1-Math.log10(reelCpm/20)/Math.log10(25)):perKs.length?clamp01(1-Math.log10(Math.min(...perKs)/0.5)/Math.log10(200)):null,.15);
+  add('Your verdict',{good:1,ok:.6,weak:.25}[p.status]??null,.10);
+  const cpms=p.o.map(o=>ctx.vendCpm[ctx.pkVendor[o]]).filter(Boolean);
+  add('Vendor results',cpms.length?clamp01(1-Math.log10(Math.min(...cpms)/20)/Math.log10(25)):null,.10);
+  if(!w)return {score:null,conf:'none',parts};
+  let score=tot/w*100;if(eng==null)score*=0.85;
+  const conf=w>=.75?'high':w>=.45?'medium':'low';
+  return {score:Math.round(score),conf,parts,noEng:eng==null};
+}
+function scoreBadge(s){
+  if(s.score==null)return '<span class="score none" title="Not enough data">—</span>';
+  const tip=s.parts.map(([l,v])=>l+': '+v).join(' · ')+(s.noEng?' · No view data yet, capped':'')+' · Confidence: '+s.conf;
+  return `<span class="score" style="--s:${s.score}" title="${escA(tip)}"><b>${s.score}</b><i class="conf conf-${s.conf}"></i></span>`;
+}
+
+/* ---------- INSTAGRAM PREVIEW (in app) ---------- */
+let pvList=[],pvIdx=-1;
+function openPreview(h){
+  pvList=window._pageList||[h];pvIdx=Math.max(0,pvList.indexOf(h));if(pvList.indexOf(h)<0){pvList=[h];pvIdx=0;}
+  document.getElementById('pv-scrim').classList.add('open');document.getElementById('pv-sheet').classList.add('open');renderPreview();
+}
+function closePreview(){document.getElementById('pv-scrim').classList.remove('open');document.getElementById('pv-sheet').classList.remove('open');document.getElementById('pv-frame').src='about:blank';if(currentView==='vendors')renderVendors();}
+function stepPreview(d){if(!pvList.length)return;pvIdx=(pvIdx+d+pvList.length)%pvList.length;renderPreview();}
+function pvPage(){return vdb.pages.find(p=>p.h===pvList[pvIdx]);}
+function setPv(k,v){const p=pvPage();if(!p)return;p[k]=v;if(k==='status')p.checked=new Date().toISOString().slice(0,10);scheduleVendorSave();renderPreview();}
+function renderPreview(){
+  const p=pvPage();if(!p)return;
+  const pkMap=Object.fromEntries(vdb.packages.map(x=>[x.id,x]));
+  const isYT=p.h.startsWith('@');const url=isYT?'https://www.youtube.com/'+p.h:'https://www.instagram.com/'+p.h+'/';
+  document.getElementById('pv-head').innerHTML=`
+   <div class="pv-top"><div><div class="pv-handle">${isYT?'':'@'}${esc(p.h)}</div><div class="sub">${esc(p.n&&p.n.toLowerCase()!==p.h?p.n+' · ':'')}${esc(p.c)} · ${fmtNum(p.f)} followers on rate card</div></div>
+   <div class="sec-actions"><button class="x-btn" onclick="stepPreview(-1)" title="Previous (←)">‹</button><span class="sub">${pvIdx+1} / ${pvList.length}</span><button class="x-btn" onclick="stepPreview(1)" title="Next (→)">›</button><button class="x-btn" onclick="closePreview()" title="Close (Esc)">×</button></div></div>
+   <div class="pv-meta">${[...new Set(p.o.map(o=>pkMap[o]?.vendor).filter(Boolean))].map(v=>`<span class="tag">${esc(v)}</span>`).join(' ')}${p.v?` <span class="tag">${fmtNum(p.v)} avg views</span>`:''}${p.cpr?` <span class="tag">₹${Number(p.cpr).toLocaleString('en-GB')}/reel</span>`:''}</div>
+   <div class="seg pv-seg">${[['ok','Active'],['dead','Removed'],['weak','Low quality'],['good','Worth using']].map(([k,l])=>`<button class="${(p.status||'')===k?'on':''}" onclick="setPv('status','${(p.status||'')===k?'':k}')">${l}</button>`).join('')}</div>
+   <div class="pv-score">${(()=>{const sc=pageScore(p,scoreCtx());return scoreBadge(sc)+`<div class="pv-parts">${sc.parts.map(([l,v])=>`<span>${l}<b>${v}</b></span>`).join('')}${sc.noEng&&p.status!=='dead'?'<span class="sub">No view data yet</span>':''}</div>`;})()}</div>
+   <div class="form-row" style="margin:0 0 8px"><div><label>Avg reel views (check their last 6 reels)</label><input type="text" value="${escA(p.myViews||'')}" placeholder="e.g. 45000" onchange="setPv('myViews',Number(this.value.replace(/[^\\d]/g,''))||null)"></div><div><label>Your note</label><input type="text" value="${escA(p.note||'')}" placeholder="Real comments? Right audience?" onchange="setPv('note',this.value)"></div></div>
+   <input type="hidden" class="pv-note" value="${escA(p.note||'')}" placeholder="Your note on this page (views look real? audience fit?)" onchange="setPv('note',this.value)">`;
+  const fr=document.getElementById('pv-frame');const box=document.getElementById('pv-body');
+  if(isYT){fr.style.display='none';box.querySelector('.pv-fallback').style.display='flex';}
+  else{fr.style.display='block';box.querySelector('.pv-fallback').style.display='none';const src='https://www.instagram.com/'+encodeURIComponent(p.h)+'/embed/';if(fr.src!==src)fr.src=src;}
+  document.getElementById('pv-open').onclick=()=>window.open(url,'_blank','noopener');
+}
+document.addEventListener('keydown',e=>{if(!document.getElementById('pv-sheet')?.classList.contains('open'))return;if(e.target.matches('input,textarea'))return;if(e.key==='Escape')closePreview();if(e.key==='ArrowRight')stepPreview(1);if(e.key==='ArrowLeft')stepPreview(-1);});
 
 function emptyState(icon,t,s){return `<div class="empty-state"><div class="empty-icon">${icon}</div><div class="empty-text">${t}</div><div class="empty-sub">${s}</div></div>`;}
 /* ===================== END PROMO TOOL ADDITIONS ===================== */
