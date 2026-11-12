@@ -480,6 +480,10 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center}
 .pv-score{display:flex;gap:12px;align-items:center;margin:4px 0 12px}
 .pv-score .score::before{background:#232325}
 .pv-parts{display:flex;flex-wrap:wrap;gap:6px}.pv-parts span{font-size:11px;color:var(--muted);background:var(--fill3);padding:3px 8px;border-radius:99px}.pv-parts b{color:var(--text);margin-left:5px}
+.clash{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--sep);font-size:13px}.clash:last-child{border-bottom:none}.clash .tag{flex-shrink:0;margin-top:1px}
+.plan-result{margin-top:6px}.plan-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:6px}.plan-kpis div{background:var(--fill3);border-radius:12px;padding:12px 14px}.plan-kpis b{display:block;font-size:22px;letter-spacing:-.02em}.plan-kpis span{font-size:12px;color:var(--muted)}
+.toolbar>div label{margin-bottom:4px}
+.clash-flag{color:#ffb340;font-size:11px;margin-top:4px}
 </style>
 </head>
 <body>
@@ -582,6 +586,10 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center}
       <button class="nav-btn" onclick="showView('vendors',this)">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
         Vendors &amp; pages
+      </button>
+      <button class="nav-btn" onclick="showView('strategy',this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><polygon points="16.2 7.8 14.1 14.1 7.8 16.2 9.9 9.9 16.2 7.8"/></svg>
+        Promo strategy
       </button>
     </div>
     <div class="lsec-label" style="margin-top:8px">Releases</div>
@@ -801,7 +809,7 @@ function renderRightSidebar(){
 }
 function selectSection(id){selectedSection=id;currentView='section';document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));renderAll();}
 function showView(id,btn){currentView=id;selectedSection=null;document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));if(btn)btn.classList.add('active');renderCenter();renderRightSidebar();}
-function renderCenter(){if(currentView==='section'&&selectedSection)renderSectionDetail();else if(currentView==='dashboard')renderDash();else if(currentView==='analytics')renderAnalytics();else if(currentView==='pitch')renderPitchPage();else if(currentView==='notes')renderNotesPage();else if(currentView==='timeline')renderTimeline();else if(currentView==='details')renderDetails();else if(currentView==='plan')renderPlan();else if(currentView==='outreach')renderOutreach();else if(currentView==='contacts')renderContacts();else if(currentView==='vendors')renderVendors();}
+function renderCenter(){if(currentView==='section'&&selectedSection)renderSectionDetail();else if(currentView==='dashboard')renderDash();else if(currentView==='analytics')renderAnalytics();else if(currentView==='pitch')renderPitchPage();else if(currentView==='notes')renderNotesPage();else if(currentView==='timeline')renderTimeline();else if(currentView==='details')renderDetails();else if(currentView==='plan')renderPlan();else if(currentView==='outreach')renderOutreach();else if(currentView==='contacts')renderContacts();else if(currentView==='vendors')renderVendors();else if(currentView==='strategy')renderStrategy();}
 function renderAll(){renderRelBar();renderLeftSidebar();renderRightSidebar();renderCenter();}
 
 /* DASHBOARD */
@@ -1164,23 +1172,120 @@ const HANDLE_RE=/^@?[a-z0-9._-]{1,60}$/;
 const str=(v,n=200)=>String(v??'').replace(/[\u0000-\u001f]/g,' ').slice(0,n);
 const num=v=>{const x=Number(v);return isFinite(x)&&x>=0?x:null;};
 function safeUrl(u){try{const x=new URL(String(u));return /^https:$/.test(x.protocol)?x.href:'';}catch(e){return '';}}
+/* ---------- VENDOR DATA v2 IMPORT (replace, keep your edits) ---------- */
 function sanitizeVendorData(j){
   if(!j||!Array.isArray(j.pages)||!Array.isArray(j.packages))return {};
-  const packages=j.packages.slice(0,2000).map(p=>({id:str(p.id,40).replace(/[^\w-]/g,''),vendor:str(p.vendor,80),package:str(p.package,120),category:str(p.category,60),priceINR:num(p.priceINR),priceNote:str(p.priceNote,120),pageCount:num(p.pageCount)||0,source:str(p.source,200)})).filter(p=>p.id);
+  const packages=j.packages.slice(0,2000).map(p=>({id:str(p.id,40).replace(/[^\w-]/g,''),vendor:str(p.vendor,80),package:str(p.package,120),category:str(p.category,60),priceINR:num(p.priceINR),priceNote:str(p.priceNote,120),pageCount:num(p.pageCount)||0,source:str(p.source,200),kind:p.kind==='work sheet'?'work sheet':'rate card'})).filter(p=>p.id);
   const ids=new Set(packages.map(p=>p.id));
   const pages=j.pages.slice(0,50000).map(p=>({h:str(p.h,61).toLowerCase(),n:str(p.n,120),f:num(p.f),l:safeUrl(p.l),c:str(p.c,60),o:(Array.isArray(p.o)?p.o:[]).map(x=>str(x,40)).filter(x=>ids.has(x)),...(num(p.v)!=null?{v:num(p.v)}:{}),...(num(p.er)!=null?{er:num(p.er)}:{}),...(num(p.cpr)!=null?{cpr:num(p.cpr)}:{})})).filter(p=>HANDLE_RE.test(p.h)&&p.o.length);
-  return {packages,pages};
+  const vendors={};if(j.vendors&&typeof j.vendors==='object')Object.entries(j.vendors).slice(0,500).forEach(([k,v])=>{vendors[str(k,80)]={phone:str(v&&v.phone,30).replace(/[^\d+ ]/g,'')};});
+  const campaigns=(Array.isArray(j.campaigns)?j.campaigns:[]).slice(0,2000).map(c=>({id:str(c.id,40).replace(/[^\w-]/g,''),relId:'',pkgId:ids.has(str(c.pkgId,40))?str(c.pkgId,40):'',vendor:str(c.vendor,80),package:str(c.package,120),song:str(c.song,80),date:/^\d{4}-\d\d-\d\d$/.test(c.date||'')?c.date:'',cost:num(c.cost)||0,currency:['INR','GBP','USD','EUR'].includes(c.currency)?c.currency:'INR',views:num(c.views),streams:num(c.streams),notes:str(c.notes,300),posts:(Array.isArray(c.posts)?c.posts:[]).slice(0,1000).map(x=>({url:safeUrl(x&&x.url),by:str(x&&x.by,80)})).filter(x=>x.url)})).filter(c=>c.id);
+  const duplicatesRemoved=(Array.isArray(j.duplicatesRemoved)?j.duplicatesRemoved:[]).slice(0,100).map(d=>({removed:str(d.removed,200),keptAs:str(d.keptAs,200)}));
+  return {version:num(j.version)||1,packages,pages,vendors,campaigns,duplicatesRemoved};
 }
 function importVendorJson(input){
   const file=input.files[0];if(!file)return;const rd=new FileReader();
   rd.onload=e=>{try{const j=sanitizeVendorData(JSON.parse(e.target.result));if(!j.pages||!j.packages)throw 0;
-    vdb=vdb||{version:1,packages:[],pages:[],campaigns:[]};
-    const idmap={};j.packages.forEach(p=>{const nid=uid('pk');idmap[p.id]=nid;vdb.packages.push({...p,id:nid});});
-    const byH=Object.fromEntries(vdb.pages.map(p=>[p.h,p]));
-    j.pages.forEach(p=>{const o=p.o.map(x=>idmap[x]);if(byH[p.h]){const e=byH[p.h];e.o=[...new Set([...e.o,...o])];if(!e.f&&p.f)e.f=p.f;}else{const np={...p,o};vdb.pages.push(np);byH[p.h]=np;}});
-    scheduleVendorSave();renderVendors();toast(j.pages.length+' pages imported');}catch(err){toast('That is not a vendor data file');}};
+    vdb=vdb||{version:1,packages:[],pages:[],campaigns:[],vendors:{}};
+    // keep everything you entered: page verdicts, notes, views, vendor contacts, your campaigns
+    const mine=Object.fromEntries((vdb.pages||[]).map(p=>[p.h,p]));
+    j.pages.forEach(p=>{const old=mine[p.h];if(old){['status','note','myViews','checked'].forEach(k=>{if(old[k]!=null&&old[k]!=='')p[k]=old[k];});}});
+    const vend={...(vdb.vendors||{})};Object.entries(j.vendors).forEach(([k,v])=>{vend[k]={...(v||{}),...(vend[k]||{})};if(!vend[k].phone&&v.phone)vend[k].phone=v.phone;});
+    const camps=[...(vdb.campaigns||[])];const have=new Set(camps.map(c=>c.id));j.campaigns.forEach(c=>{if(!have.has(c.id))camps.push(c);});
+    const userPk=(vdb.packages||[]).filter(p=>p.added&&!j.packages.some(x=>x.source===p.source));
+    const keepPages=(vdb.pages||[]).filter(p=>p.o.some(o=>userPk.some(u=>u.id===o)));
+    const byH=Object.fromEntries(j.pages.map(p=>[p.h,p]));keepPages.forEach(p=>{const uo=p.o.filter(o=>userPk.some(u=>u.id===o));if(byH[p.h])byH[p.h].o=[...new Set([...byH[p.h].o,...uo])];else{j.pages.push({...p,o:uo});}});
+    vdb={version:2,packages:[...j.packages,...userPk],pages:j.pages,campaigns:camps,vendors:vend,duplicatesRemoved:j.duplicatesRemoved};
+    scheduleVendorSave();renderVendors();toast(`Updated: ${j.packages.length} packages, ${j.pages.length.toLocaleString()} pages. Your notes and contacts were kept.`,4500);
+  }catch(err){toast('That is not a vendor data file');}};
   rd.readAsText(file);input.value='';
 }
+
+/* ---------- PROMO STRATEGY ---------- */
+let stF={budget:50000,cat:'',mode:'one'};
+function stModel(){
+  const pk=Object.fromEntries((vdb.packages||[]).map(p=>[p.id,p]));
+  const mem={};(vdb.pages||[]).forEach(p=>{if(p.status==='dead')return;p.o.forEach(o=>{(mem[o]=mem[o]||new Set()).add(p.h);});});
+  const fol=Object.fromEntries((vdb.pages||[]).map(p=>[p.h,p.f||0]));
+  const sumF=set=>{let t=0;set.forEach(h=>t+=fol[h]||0);return t;};
+  const pkgs=Object.values(pk).filter(p=>mem[p.id]&&mem[p.id].size);
+  // same vendor overlaps
+  const same=[];for(let i=0;i<pkgs.length;i++)for(let k=i+1;k<pkgs.length;k++){const a=pkgs[i],b=pkgs[k];if(a.vendor!==b.vendor||/unknown/i.test(a.vendor))continue;let n=0;mem[a.id].forEach(h=>{if(mem[b.id].has(h))n++;});if(!n)continue;const pct=n/Math.min(mem[a.id].size,mem[b.id].size);if(pct>=0.1)same.push({a,b,n,pct});}
+  same.sort((x,y)=>y.pct-x.pct);
+  // cross vendor networks
+  const vm={};pkgs.forEach(p=>{vm[p.vendor]=vm[p.vendor]||new Set();mem[p.id].forEach(h=>vm[p.vendor].add(h));});
+  const vs=Object.keys(vm);const cross=[];for(let i=0;i<vs.length;i++)for(let k=i+1;k<vs.length;k++){let n=0;vm[vs[i]].forEach(h=>{if(vm[vs[k]].has(h))n++;});if(n>=10)cross.push({a:vs[i],b:vs[k],n,pct:n/Math.min(vm[vs[i]].size,vm[vs[k]].size)});}
+  cross.sort((x,y)=>y.n-x.n);
+  // per package value
+  const sctx=scoreCtx();const pageBy=Object.fromEntries((vdb.pages||[]).map(p=>[p.h,p]));
+  const val=pkgs.map(p=>{const m=mem[p.id];const f=sumF(m);let excl=0;m.forEach(h=>{if(pageBy[h].o.length===1)excl++;});const sc=[...m].map(h=>pageScore(pageBy[h],sctx).score).filter(x=>x!=null);return {p,size:m.size,f,perK:p.priceINR&&f?p.priceINR/(f/1000):null,perPage:p.priceINR?p.priceINR/m.size:null,excl:excl/m.size,avgScore:sc.length?Math.round(sc.reduce((t,x)=>t+x,0)/sc.length):null};});
+  const multi=(vdb.pages||[]).filter(p=>new Set(p.o.map(o=>pk[o]?.vendor)).size>1).length;
+  return {pk,mem,fol,sumF,pkgs,same,cross,val,multi};
+}
+function planBudget(M,budget,cat,mode){
+  const cands=M.val.filter(v=>v.p.priceINR&&v.f>0&&(!cat||v.p.category===cat||v.p.category==='Mixed'));
+  const run=list=>{const chosen=[],covered=new Set(),skipped=[];let left=budget;
+    while(true){let best=null;
+      list.forEach(v=>{if(chosen.includes(v)||v.p.priceINR>left)return;let nf=0,nn=0;M.mem[v.p.id].forEach(h=>{if(!covered.has(h)){nf+=M.fol[h]||0;nn++;}});const dup=1-nn/M.mem[v.p.id].size;const eff=nf/v.p.priceINR;if(nn&&(!best||eff>best.eff))best={v,eff,nf,nn,dup};});
+      if(!best)break;
+      if(best.dup>0.5){skipped.push({v:best.v,why:Math.round(best.dup*100)+'% of its pages are already in your picks'});chosen.push(best.v);chosen.pop();list=list.filter(x=>x!==best.v);continue;}
+      chosen.push(best.v);M.mem[best.v.p.id].forEach(h=>covered.add(h));left-=best.v.p.priceINR;best.v._nf=best.nf;best.v._nn=best.nn;best.v._dup=best.dup;}
+    const spent=budget-left;return {chosen:chosen.map(v=>({...v,nf:v._nf,nn:v._nn,dup:v._dup})),spent,reach:M.sumF(covered),pages:covered.size,skipped};};
+  if(mode==='mix')return {...run(cands.slice()),vendor:null};
+  let best=null;[...new Set(cands.map(v=>v.p.vendor))].forEach(vn=>{const r=run(cands.filter(v=>v.p.vendor===vn));if(r.chosen.length&&(!best||r.reach>best.reach))best={...r,vendor:vn};});
+  return best||{chosen:[],spent:0,reach:0,pages:0,skipped:[],vendor:null};
+}
+function renderStrategy(){
+  const el=document.getElementById('center-inner');
+  if(!vdb){el.innerHTML=`<div class="pitch-out loading"><div class="spinner"></div><span>Loading vendor data…</span></div>`;loadVendors().then(()=>{if(currentView==='strategy')renderStrategy();});return;}
+  if(!(vdb.packages||[]).length){el.innerHTML=`<div class="eyebrow">Paid promotion</div><div class="page-title">Promo strategy</div>${emptyState('🧭','No vendor data yet','Go to Vendors & pages and use Import data file')}`;return;}
+  const M=stModel();const cats=[...new Set(M.val.map(v=>v.p.category))].filter(c=>c!=='Mixed').sort();
+  const plan=planBudget(M,stF.budget,stF.cat,stF.mode);
+  const totalListings=(vdb.pages||[]).reduce((t,p)=>t+p.o.length,0);
+  const priced=M.val.filter(v=>v.perK).sort((a,b)=>a.perK-b.perK);
+  const unpriced=M.val.filter(v=>!v.p.priceINR&&v.p.kind!=='work sheet');
+  const waBtn=v=>`<button class="btn btn-wa btn-sm" data-v="${escA(v)}" onclick="openWhatsApp(this.dataset.v);setTimeout(()=>{const t=document.getElementById('wa-tpl');if(t){t.value='rates';fillWa();}},50)">${waIcon()} Ask price</button>`;
+  const camps=(vdb.campaigns||[]);
+  el.innerHTML=`<div class="eyebrow">Paid promotion</div><div class="page-title">Promo strategy</div><div class="page-sub">What overlaps, what's good value, and what to buy for your budget</div>
+  <div class="metrics-grid">
+    <div class="metric-card"><div class="metric-val">${(vdb.pages||[]).length.toLocaleString()}</div><div class="metric-lbl">Unique pages</div><div class="metric-sub">from ${totalListings.toLocaleString()} listings across ${M.pkgs.length} packages</div></div>
+    <div class="metric-card"><div class="metric-val">${Math.round(M.multi/(vdb.pages||[1]).length*100)}%</div><div class="metric-lbl">Oversold</div><div class="metric-sub">${M.multi} pages sold by 2+ vendors</div></div>
+    <div class="metric-card"><div class="metric-val">${M.same.length}</div><div class="metric-lbl">Same vendor clashes</div><div class="metric-sub">sheets that repeat each other</div></div>
+    <div class="metric-card"><div class="metric-val">${priced[0]?'₹'+priced[0].perK.toFixed(2):'—'}</div><div class="metric-lbl">Best ₹ per 1K followers</div><div class="metric-sub">${priced[0]?esc(priced[0].p.vendor):'Add prices'}</div></div>
+  </div>
+
+  <div class="card glass-section"><div class="sec-head"><div class="sec-title">✦ Budget planner</div><span class="sub">Picks packages that add the most new followers per ₹ and skips anything mostly repeated</span></div>
+    <div class="toolbar"><div><label>Budget (₹)</label><input type="text" value="${stF.budget}" style="width:140px" onchange="stF.budget=Number(this.value.replace(/[^\\d]/g,''))||0;renderStrategy()"></div>
+    <div><label>Page type</label><select onchange="stF.cat=this.value;renderStrategy()"><option value="">Any</option>${cats.map(c=>`<option ${c===stF.cat?'selected':''}>${esc(c)}</option>`).join('')}</select></div>
+    <div><label>Vendors</label><div class="seg">${[['one','One vendor'],['mix','Mix vendors']].map(([k,l])=>`<button class="${stF.mode===k?'on':''}" onclick="stF.mode='${k}';renderStrategy()">${l}</button>`).join('')}</div></div></div>
+    ${plan.chosen.length?`<div class="plan-result"><div class="plan-kpis"><div><b>₹${plan.spent.toLocaleString('en-GB')}</b><span>spent of ₹${stF.budget.toLocaleString('en-GB')}</span></div><div><b>${fmtNum(plan.reach)}</b><span>unique followers</span></div><div><b>${plan.pages}</b><span>unique pages</span></div><div><b>${plan.reach?'₹'+(plan.spent/(plan.reach/1000)).toFixed(2):'—'}</b><span>per 1K followers</span></div></div>
+      ${plan.vendor?`<div class="field-hint" style="margin:8px 0">Best single vendor for this budget: <strong style="color:var(--text)">${esc(plan.vendor)}</strong></div>`:''}
+      <table class="releases-table"><thead><tr><th>Buy</th><th>Vendor</th><th>Price</th><th>New pages</th><th>New followers</th><th>Repeats</th></tr></thead><tbody>${plan.chosen.map(v=>`<tr><td><strong>${esc(v.p.package)}</strong><br><span class="sub">${esc(v.p.category)}</span></td><td>${esc(v.p.vendor)}</td><td>₹${v.p.priceINR.toLocaleString('en-GB')}</td><td>${v.nn}</td><td>${fmtNum(v.nf)}</td><td>${v.dup?Math.round(v.dup*100)+'%':'0%'}</td></tr>`).join('')}</tbody></table>
+      ${plan.skipped.length?`<div class="field-hint" style="margin-top:8px">Skipped: ${plan.skipped.map(s=>esc(s.v.p.package)+' ('+s.why+')').join('; ')}</div>`:''}</div>`:`<div class="muted-cell">Nothing fits this budget${stF.cat?' and page type':''}. Only packages with a price are planned. Ask vendors for prices below.</div>`}
+  </div>
+
+  <div class="card glass-section"><div class="sec-head"><div class="sec-title">⚠ Don't buy these together</div><span class="sub">Same vendor, different sheets, same pages</span></div>
+    ${M.same.length?M.same.map(s=>`<div class="clash"><span class="tag ${s.pct>=.5?'tag-amber':''}">${Math.round(s.pct*100)}% overlap</span><div><strong>${esc(s.a.vendor)}</strong>: "${esc(s.a.package)}" and "${esc(s.b.package)}" share <strong>${s.n} pages</strong>.<div class="sub">${s.pct>=.5?`Book one of them, or ask ${esc(s.a.vendor)} to swap the ${s.n} repeats for new pages before paying for both.`:`Small overlap. Ask ${esc(s.a.vendor)} to replace the ${s.n} repeats if you book both.`}</div></div></div>`).join(''):'<div class="muted-cell">No clashes between sheets from the same vendor.</div>'}
+  </div>
+
+  <div class="card glass-section"><div class="sec-head"><div class="sec-title">Best deals</div><span class="sub">Priced packages, cheapest reach first</span></div>
+    <div class="table-wrap"><table class="releases-table"><thead><tr><th>Package</th><th>Price</th><th>Pages</th><th>Followers</th><th>₹ / 1K followers</th><th>₹ / page</th><th>Only here</th><th>Avg score</th></tr></thead><tbody>${priced.map((v,i)=>`<tr><td>${i===0?'<span class="tag tag-good">Best value</span> ':''}<strong>${esc(v.p.package)}</strong><br><span class="sub">${esc(v.p.vendor)} · ${esc(v.p.category)}${v.p.kind==='work sheet'?' · price from a past campaign':''}</span></td><td>₹${v.p.priceINR.toLocaleString('en-GB')}</td><td>${v.size}</td><td>${fmtNum(v.f)}</td><td><strong>₹${v.perK.toFixed(2)}</strong></td><td>₹${Math.round(v.perPage).toLocaleString('en-GB')}</td><td>${Math.round(v.excl*100)}%</td><td>${v.avgScore??'—'}</td></tr>`).join('')}</tbody></table></div>
+    <div class="field-hint">"Only here" is the share of pages no other vendor on your list sells. Followers are not views: log real campaign views to confirm a deal.</div>
+  </div>
+
+  <div class="card glass-section"><div class="sec-head"><div class="sec-title">Vendors selling the same network</div><span class="sub">Different vendors, same pages</span></div>
+    ${M.cross.slice(0,8).map(c=>`<div class="clash"><span class="tag ${c.pct>=.4?'tag-amber':''}">${c.n} shared</span><div><strong>${esc(c.a)}</strong> and <strong>${esc(c.b)}</strong> share ${c.n} pages (${Math.round(c.pct*100)}% of the smaller list).<div class="sub">${c.pct>=.4?'Probably the same page network. Get both quotes for the same pages and book the cheaper.':'Some overlap. Avoid booking both for one release without checking.'}</div></div></div>`).join('')||'<div class="muted-cell">No big cross vendor overlaps.</div>'}
+  </div>
+
+  <div class="card glass-section"><div class="sec-head"><div class="sec-title">Missing prices</div><span class="sub">These can't be compared or planned until you have a price</span></div>
+    ${unpriced.length?`<div class="table-wrap"><table class="releases-table"><thead><tr><th>Package</th><th>Pages</th><th>Followers</th><th>Price (₹)</th><th></th></tr></thead><tbody>${unpriced.map(v=>`<tr><td><strong>${esc(v.p.package)}</strong><br><span class="sub">${esc(v.p.vendor)}${v.p.priceNote?' · '+esc(v.p.priceNote):''}</span></td><td>${v.size}</td><td>${fmtNum(v.f)}</td><td><input type="text" class="mini-in" placeholder="₹ ?" onchange="setPkg('${v.p.id}','priceINR',this.value);renderStrategy()"></td><td>${vendorRec(v.p.vendor).phone?waBtn(v.p.vendor):''}</td></tr>`).join('')}</tbody></table></div>`:'<div class="muted-cell">Every package has a price.</div>'}
+  </div>
+
+  <div class="card glass-section"><div class="sec-head"><div class="sec-title">Past campaigns</div><span class="sub">From vendor work sheets and your logs</span></div>
+    ${camps.length?`<div class="table-wrap"><table class="releases-table"><thead><tr><th>Song</th><th>Vendor</th><th>Paid</th><th>Posts</th><th>₹ / post</th><th>Views</th><th>₹ / 1K views</th></tr></thead><tbody>${camps.map(c=>{const n=(c.posts||[]).length;return `<tr><td><strong>${esc(c.song||db.releases.find(r=>r.id===c.relId)?.title||'—')}</strong><br><span class="sub">${esc(c.package||'')}</span></td><td>${esc(c.vendor)}</td><td>${c.cost?fmtMoney(c.cost,c.currency):'<span class="sub">add</span>'}</td><td>${n||'—'}</td><td>${c.cost&&n?fmtMoney(Math.round(c.cost/n),c.currency):'—'}</td><td>${c.views?fmtNum(c.views):'<span class="sub">add in Campaign results</span>'}</td><td>${c.cost&&c.views?fmtMoney((c.cost/(c.views/1000)).toFixed(0),c.currency):'—'}</td></tr>`;}).join('')}</tbody></table></div>`:'<div class="muted-cell">No campaigns yet.</div>'}
+  </div>`;
+}
+
 function guessCategory(t){t=t.toLowerCase();if(/lyric/.test(t))return 'Lyric page';if(/meme/.test(t))return 'Meme page';if(/fan/.test(t))return 'Fan page';if(/reaction/.test(t))return 'YouTube reaction channel';if(/editor|edit/.test(t))return 'Editor page';if(/influencer|creator|creater/.test(t))return 'Influencer';if(/media/.test(t))return 'Media page';if(/aesthetic/.test(t))return 'Aesthetic page';return 'Page';}
 function guessFromName(path){
   const parts=path.split('/');const file=parts.pop().replace(/\.[^.]+$/,'');const folder=parts.length>1?parts[parts.length-1]:'';
@@ -1284,12 +1389,12 @@ function renderVendors(){
   <label class="btn btn-ghost btn-sm file-btn">Import rate cards<input type="file" accept=".xlsx,.xls,.csv" multiple onchange="importRateCards(this)"></label><label class="btn btn-ghost btn-sm file-btn">Import folder<input type="file" webkitdirectory multiple onchange="importRateCards(this)"></label><label class="btn btn-ghost btn-sm file-btn">Import data file<input type="file" accept=".json" onchange="importVendorJson(this)"></label><button class="btn btn-primary btn-sm" onclick="logCampaign()">+ Log campaign</button></div>`;
   if(!vdb.packages.length&&tab!=='campaigns'&&tab!=='directory'){el.innerHTML=head+`<div class="card muted-cell" style="padding:28px">No vendor data yet. Use <strong>Import data file</strong> with the vendor-data.json file to load your existing rate cards, or import a vendor's Excel sheet.</div>`;return;}
   let body='';
-  if(tab==='directory'){body=renderVendorDirectory();}else if(tab==='packages'){
+  if(tab==='directory'){body=renderVendorDirectory();}else if(tab==='packages'){const _M=stModel();const clash={};_M.same.forEach(x=>{(clash[x.a.id]=clash[x.a.id]||[]).push(x.b.package+' ('+Math.round(x.pct*100)+'%)');(clash[x.b.id]=clash[x.b.id]||[]).push(x.a.package+' ('+Math.round(x.pct*100)+'%)');});
     const rows=vdb.packages.map(pk=>{const s=pkgStats(pk);const sharePct=s.ps.length?Math.round(s.shared/s.ps.length*100):0;
       return `<tr><td><input type="text" class="name-in" value="${escA(pk.vendor)}" onchange="setPkg('${pk.id}','vendor',this.value)"><input type="text" class="name-in sub-in" value="${escA(pk.package)}" onchange="setPkg('${pk.id}','package',this.value)"></td><td><span class="tag">${esc(pk.category)}</span></td><td>${s.ps.length}</td><td>${s.fol?fmtNum(s.fol):'<span class="sub">—</span>'}</td>
       <td><input type="text" class="mini-in" value="${escA(s.priceINR??'')}" placeholder="₹ ?" onchange="setPkg('${pk.id}','priceINR',this.value)"></td>
       <td>${s.perK?'₹'+s.perK.toFixed(2):'<span class="sub">—</span>'}</td><td>${sharePct?`<span class="tag ${sharePct>40?'tag-amber':''}">${sharePct}% resold</span>`:'<span class="sub">0%</span>'}</td>
-      <td class="sub">${esc(pk.priceNote||'')}</td><td style="white-space:nowrap"><button class="x-btn" title="WhatsApp this vendor" data-v="${escA(pk.vendor)}" onclick="openWhatsApp(this.dataset.v)">${waIcon()}</button> <button class="x-btn" onclick="deletePkg('${pk.id}')" title="Remove">×</button></td></tr>`;}).join('');
+      <td class="sub">${pk.kind==='work sheet'?'<span class="tag">From a past campaign</span> ':''}${esc(pk.priceNote||'')}${clash[pk.id]?`<div class="clash-flag">⚠ Same vendor overlap with ${clash[pk.id].map(esc).join(', ')}</div>`:''}</td><td style="white-space:nowrap"><button class="x-btn" title="WhatsApp this vendor" data-v="${escA(pk.vendor)}" onclick="openWhatsApp(this.dataset.v)">${waIcon()}</button> <button class="x-btn" onclick="deletePkg('${pk.id}')" title="Remove">×</button></td></tr>`;}).join('');
     body=`<div class="card"><div class="field-hint" style="margin-bottom:10px">Followers are not views. Cost per 1,000 followers is only a rough comparison. Log real campaigns to see what each vendor actually delivers. "Resold" means those pages also appear in another vendor's list, so you may be paying a middleman.</div><div class="table-wrap"><table class="releases-table"><thead><tr><th>Vendor / package</th><th>Category</th><th>Pages</th><th>Followers</th><th>Price (₹)</th><th>₹ per 1K followers</th><th>Overlap</th><th>Note</th><th style="width:70px"></th></tr></thead><tbody>${rows}</tbody></table></div></div>`;
   }else if(tab==='pages'){
     const cats=[...new Set(vdb.pages.map(p=>p.c))].sort();const vendors=[...new Set(vdb.packages.map(p=>p.vendor))].sort();
@@ -1308,7 +1413,7 @@ function renderVendors(){
   }else{
     const cs=(vdb.campaigns||[]).slice().sort((a,b)=>(b.date||'').localeCompare(a.date||''));
     const rows=cs.map(c=>{const rel=db.releases.find(r=>r.id===c.relId);const cpm=c.cost&&c.views?c.cost/(c.views/1000):null;
-      return `<tr><td>${c.date?new Date(c.date+'T00:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}):'—'}</td><td><strong>${esc(c.vendor)}</strong><br><span class="sub">${esc(c.package||'')}</span></td><td>${esc(rel?.title||'—')}</td><td>${fmtMoney(c.cost,c.currency)}</td>
+      return `<tr><td>${c.date?new Date(c.date+'T00:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}):'—'}</td><td><strong>${esc(c.vendor)}</strong><br><span class="sub">${esc(c.package||'')}</span></td><td>${esc(rel?.title||c.song||'—')}${(c.posts||[]).length?`<br><span class="sub">${c.posts.length} posts · <a href="${escA(c.posts[0].url)}" target="_blank" rel="noopener">first post</a></span>`:''}</td><td>${fmtMoney(c.cost,c.currency)}</td>
       <td><input type="text" class="mini-in" value="${escA(c.views??'')}" placeholder="views" onchange="setCampaign('${c.id}','views',this.value)"></td><td>${cpm?fmtMoney(cpm.toFixed(cpm<10?2:0),c.currency):'<span class="sub">add views</span>'}</td>
       <td><input type="text" class="mini-in" value="${escA(c.streams??'')}" placeholder="streams" onchange="setCampaign('${c.id}','streams',this.value)"></td><td class="sub">${esc(c.notes||'')}</td><td><button class="x-btn" onclick="deleteCampaign('${c.id}')">×</button></td></tr>`;}).join('');
     body=`<div class="card"><div class="field-hint" style="margin-bottom:10px">This is the number that matters: cost per 1,000 real views. After two or three campaigns you will know which vendors to keep.</div><div class="table-wrap"><table class="releases-table"><thead><tr><th>Date</th><th>Vendor</th><th>Release</th><th>Paid</th><th>Views</th><th>Cost per 1K views</th><th>Streams</th><th>Notes</th><th></th></tr></thead><tbody>${rows||'<tr><td colspan="9" class="muted-cell">No campaigns logged yet. Press "+ Log campaign" whenever you pay a vendor.</td></tr>'}</tbody></table></div></div>`;
