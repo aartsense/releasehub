@@ -533,6 +533,17 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center}
 .prow{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:9px 4px;border-bottom:1px solid var(--sep);cursor:pointer;font-size:13px}.prow:last-child{border-bottom:none}
 .promo-c{margin-bottom:12px}.promo-k{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:10px}.promo-k div{background:var(--fill3);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column}.promo-k b{font-size:22px;letter-spacing:-.02em}.promo-k small{font-size:13px;color:var(--soft);font-weight:500}.promo-k span{font-size:11.5px;color:var(--muted)}
 .left-l{margin-top:10px;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.board6{grid-template-columns:repeat(6,minmax(140px,1fr))}.ai-card a,.fold-c a{color:#fff;text-decoration:underline;text-underline-offset:2px}
+.seg{display:inline-flex;background:var(--fill2);border-radius:9px;padding:2px;gap:2px}.seg button{border:none;background:transparent;color:var(--muted);font:inherit;font-size:12px;padding:5px 12px;border-radius:7px;cursor:pointer}.seg button.on{background:#fff;color:#000;font-weight:600}.seg-l button{padding:8px 18px;font-size:13px}
+.chip-ok,.chip-warn{display:inline-block;padding:3px 10px;border-radius:999px;font-size:11px;white-space:nowrap;flex-shrink:0}.chip-ok{background:rgba(48,209,88,.16);color:#30d158}.chip-warn{background:rgba(255,179,64,.14);color:#ffb340}
+.pub-row{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--sep)}.pub-row:last-child{border-bottom:none}.pub-row input[type=checkbox]{margin-top:3px;width:16px;height:16px;accent-color:#fff}
+.miss{margin-top:6px;display:flex;flex-wrap:wrap;gap:4px}.miss .tag{background:rgba(255,179,64,.12);color:#ffb340}
+.warn-c{background:rgba(255,179,64,.08)!important}.ok-c{background:rgba(48,209,88,.08)!important}
+.lnk{color:#fff;text-decoration:underline;text-underline-offset:2px;cursor:pointer}.danger-t{color:#ff6961!important}
+details.more{margin-top:10px}details.more summary{cursor:pointer;font-size:12px;color:var(--muted)}
+.fold-c{display:flex;gap:14px;align-items:flex-start}.fold-cb input{width:18px;height:18px;accent-color:#fff;margin-top:3px}.lyr{margin-top:8px;font-size:12.5px;color:var(--muted);font-style:italic;line-height:1.5}
+.plan-p{font-size:13px;line-height:1.6;color:var(--muted);margin:4px 0 10px}.plan-item{display:flex;gap:14px;align-items:flex-start;padding:10px 0;border-top:1px solid var(--sep)}.plan-d{width:130px;flex-shrink:0;font-weight:600;font-size:13px}
+.nr-tl{max-height:180px;overflow-y:auto;background:var(--fill3);border-radius:10px;padding:6px 10px;margin:4px 0 6px}.nr-t{display:flex!important;gap:8px;align-items:center;padding:5px 0;font-size:13px;color:var(--text)!important;text-transform:none!important;letter-spacing:0!important;cursor:pointer}.nr-t input{width:16px;height:16px;accent-color:#fff}
 </style>
 </head>
 <body>
@@ -556,7 +567,7 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center}
 <div class="modal-bg" id="new-release-modal">
   <div class="modal">
     <div class="modal-title">New release</div>
-    <div class="modal-note">All 8 pitches are written as soon as you create the release. Add the story, mood and credits afterwards in Details &amp; splits, then regenerate for stronger pitches.</div>
+    <div class="modal-note">Pick the finished songs that go on this release. Pitches are written as soon as it's created.</div>
     <div class="form-row">
       <div><label>Song / release title</label><input type="text" id="nr-title" placeholder="e.g. Chitthi"></div>
       <div><label>Artist</label><input type="text" id="nr-artist" value="Arjuna Harjai"></div>
@@ -565,7 +576,8 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center}
       <div><label>Release date</label><input type="date" id="nr-date"></div>
       <div><label>Genre</label><input type="text" id="nr-genre" placeholder="e.g. Indie folk"></div>
     </div>
-    <div class="form-row full"><div><label>Distributor</label><input type="text" id="nr-dist" value="The Orchard"></div></div>
+    <div class="form-row"><div><label>Delivered to The Orchard?</label><select id="nr-dist"><option>No</option><option>Yes</option></select></div><div></div></div>
+    <div id="nr-tracks"></div>
     <div class="modal-actions">
       <button class="btn btn-ghost btn-sm" onclick="closeModal()">Cancel</button>
       <button class="btn btn-primary btn-sm" id="create-btn" onclick="createRelease()">Create + generate pitches</button>
@@ -608,7 +620,11 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center}
       </button>
       <button class="nav-btn" onclick="showView('songs',this)">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="5" height="16" rx="1.5"/><rect x="10" y="4" width="5" height="11" rx="1.5"/><rect x="17" y="4" width="4" height="7" rx="1.5"/></svg>
-        Songs
+        Song log
+      </button>
+      <button class="nav-btn" onclick="showView('folder',this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+        Release folder
       </button>
       <button class="nav-btn" onclick="showView('content',this)">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="5" width="18" height="14" rx="3"/><polygon points="10 9 15 12 10 15 10 9"/></svg>
@@ -644,6 +660,10 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center}
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
         Details &amp; splits
       </button>
+      <button class="nav-btn" onclick="showView('publishing',this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M9 15l2 2 4-4"/></svg>
+        Sony publishing
+      </button>
       <button class="nav-btn" onclick="showView('plan',this)">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
         Release plan
@@ -673,6 +693,7 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center}
     <div class="lsec-label" style="margin-top:8px">Releases</div>
     <div class="rel-list" id="rel-list"><div style="font-size:11px;color:var(--soft);padding:4px 8px">No releases yet</div></div>
     <div class="lsidebar-footer">
+      <button class="icon-btn" onclick="logSong()">+ Log a song</button>
       <button class="icon-btn" onclick="openModal()">+ New release</button>
       <button class="icon-btn" onclick="openSettings()">Settings</button>
       <button class="icon-btn signout" onclick="signOut()">Sign out</button>
@@ -710,7 +731,7 @@ const PITCH_TYPES=['bbc_playlist','bbc_intro','bbc_radio','press','curator','syn
 const PITCH_LABELS={bbc_playlist:'BBC Asian Network',bbc_intro:'BBC Introducing',bbc_radio:'BBC Radio 1/2',press:'Press',curator:'Curator',sync:'Sync licensing',blog:'Music blog',spotify:'Spotify editorial'};
 
 const SECTIONS=[
-  {id:'distribution',name:'Distribution',color:'#0a84ff',items:[{id:'d1',label:'Song master delivered to distributor (The Orchard)'},{id:'d2',label:'ISRC code confirmed'},{id:'d3',label:'Metadata locked — title, artist, featuring, genre, language'},{id:'d4',label:'Streaming pre-save links live'},{id:'d5',label:'YouTube Content ID registered'},{id:'d6',label:'Sony Music Publishing registration submitted'}]},
+  {id:'distribution',name:'Distribution',color:'#0a84ff',items:[{id:'d1',label:'Delivered to The Orchard'},{id:'d2',label:'ISRC added for every track'},{id:'d6',label:'Registered with Sony Music Publishing'}]},
   {id:'assets',name:'Creative assets',color:'#bf5af2',items:[{id:'a1',label:'Album art finalised (3000x3000px, RGB)'},{id:'a2',label:'Press photo / EPK image ready'},{id:'a3',label:'Lyric video or visualiser delivered'},{id:'a4',label:'Official music video delivered'},{id:'a5',label:'Short-form reel (15s-30s) ready for Instagram / TikTok'},{id:'a6',label:'Vertical story asset ready'},{id:'a7',label:'Behind-the-scenes content shot (RAP Ville / Deadline Day Films)'}]},
   {id:'social',name:'Content & social',color:'#ff375f',items:[{id:'c1',label:'Instagram content calendar mapped for 4 weeks post-release'},{id:'c2',label:'Reels shot and edited'},{id:'c3',label:'Carousel posts designed (cinematic aesthetic)'},{id:'c4',label:'Caption copy written for all posts'},{id:'c5',label:'Hashtag sets prepared — UK, US, CA, AU South Asian diaspora'},{id:'c6',label:'DM automation numerology sequence set up'},{id:'c7',label:'YouTube community post drafted'}]},
   {id:'promo',name:'Promo strategy',color:'#ff9f0a',items:[{id:'p1',label:'Meta ads campaign structured — awareness and retargeting'},{id:'p2',label:'Ad creatives A/B tested (min 2 variants)'},{id:'p3',label:'Target audience defined and saved in Ads Manager'},{id:'p4',label:'Groover curator outreach submitted (min 15 curators)'},{id:'p5',label:'Spotify editorial pitch submitted (7 days pre-release minimum)'},{id:'p6',label:'Apple Music pitch submitted'},{id:'p7',label:'Press release written and distributed'},{id:'p8',label:'Music blogs and digital press pitched'}]},
@@ -727,9 +748,13 @@ let currentView='overview',selectedSection=null,activePitchType='bbc_playlist';
 function toast(msg,d=2400){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),d);}
 function getActive(){return db.releases.find(r=>r.id===db.activeId)||null;}
 function setActive(id){db.activeId=id;scheduleSave();renderAll();}
-function openModal(){document.getElementById('new-release-modal').classList.add('open');}
+function openModal(ids){migratePub();pendingTracks=Array.isArray(ids)?ids:null;const pre=pendingTracks||[];const box=document.getElementById('nr-tracks');
+  const cand=db.songs.filter(s=>!s.relId&&!s.released).sort((a,b)=>(b.stage==='Release folder')-(a.stage==='Release folder'));
+  box.innerHTML=cand.length?`<label>Tracks on this release</label><div class="nr-tl">${cand.map(s=>`<label class="nr-t"><input type="checkbox" value="${escA(s.id)}" ${pre.includes(s.id)?'checked':''}> ${esc(s.title)} <span class="sub">${esc(s.stage||'')}</span></label>`).join('')}</div><div class="field-hint">Leave all unticked to add a new track named after the release.</div>`:'<div class="field-hint">A track named after the release will be added for publishing.</div>';
+  const first=songById(pre[0]);document.getElementById('nr-title').value=first&&pre.length===1?first.title:'';if(first){document.getElementById('nr-artist').value=first.artist||'Arjuna Harjai';document.getElementById('nr-date').value=first.targetDate||'';if(first.genre)document.getElementById('nr-genre').value=first.genre;}
+  document.getElementById('new-release-modal').classList.add('open');}
 function closeModal(){document.getElementById('new-release-modal').classList.remove('open');}
-function calcPct(rel){const t=SECTIONS.flatMap(s=>s.items).length;const d=Object.values(rel.state||{}).filter(Boolean).length;return t?Math.round(d/t*100):0;}
+function calcPct(rel){const t=SECTIONS.flatMap(s=>s.items).length;const d=doneCount(rel);return t?Math.round(d/t*100):0;}
 function calcSecPct(rel,sec){const d=sec.items.filter(i=>(rel.state||{})[i.id]).length;return sec.items.length?Math.round(d/sec.items.length*100):0;}
 function daysUntil(d){if(!d)return null;return Math.ceil((new Date(d)-new Date())/86400000);}
 function pitchCount(rel){if(!rel?.pitches)return 0;return PITCH_TYPES.filter(t=>rel.pitches[t]&&rel.pitches[t].length>10).length;}
@@ -836,8 +861,11 @@ async function createRelease(){
   if(!title){toast('Enter a release title');return;}
   const btn=document.getElementById('create-btn');
   btn.disabled=true;btn.textContent='Creating…';
-  const rel={id:'r_'+Date.now(),title,artist:document.getElementById('nr-artist').value.trim()||'Arjuna Harjai',date:document.getElementById('nr-date').value||'',genre:document.getElementById('nr-genre').value.trim()||'',dist:document.getElementById('nr-dist').value.trim()||'The Orchard',state:{},notes:{},dates:{},freeNote:'',sectionNotes:{},pitches:{},pitchesGenerating:false,created:Date.now(),activity:[]};
+  const rel={id:'r_'+Date.now(),title,artist:document.getElementById('nr-artist').value.trim()||'Arjuna Harjai',date:document.getElementById('nr-date').value||'',genre:document.getElementById('nr-genre').value.trim()||'',dist:'The Orchard',distributed:document.getElementById('nr-dist').value,state:{},notes:{},dates:{},freeNote:'',sectionNotes:{},pitches:{},pitchesGenerating:false,created:Date.now(),activity:[]};
   db.releases.push(rel);db.activeId=rel.id;
+  const tids=[...document.querySelectorAll('#nr-tracks input:checked')].map(i=>i.value).filter(songById);
+  if(!tids.length){const ns={id:uid('sg'),title,artist:rel.artist,genre:rel.genre,stage:'Release folder',stageDates:{},lyrics:'',language:'',previews:[],writers:[],created:Date.now()};db.songs.push(ns);tids.push(ns.id);}
+  rel.songIds=tids;tids.forEach(id=>{const t=songById(id);t.relId=rel.id;t.stage='Release folder';});syncDist(rel);
   closeModal();document.getElementById('nr-title').value='';
   btn.disabled=false;btn.textContent='Create + generate pitches';
   scheduleSave();renderAll();
@@ -851,6 +879,7 @@ function deleteCurrentRelease(){
   scheduleSave();renderAll();toast('Release deleted');
 }
 function toggleTask(relId,taskId){
+  if(['d1','d2','d6'].includes(taskId)){setActive(relId);selectSection('distribution');toast('Set this in Distribution');return;}
   const rel=db.releases.find(r=>r.id===relId);if(!rel)return;
   const was=!!rel.state[taskId];rel.state[taskId]=!was;
   if(!was){const task=SECTIONS.flatMap(s=>s.items).find(i=>i.id===taskId);rel.activity=rel.activity||[];rel.activity.push({ts:Date.now(),taskId,label:task?task.label:'Task completed'});}
@@ -882,19 +911,19 @@ function renderRightSidebar(){
   const rel=getActive();const el=document.getElementById('section-blocks');const bot=document.getElementById('rsidebar-bottom');
   if(!rel){el.innerHTML='<div style="font-size:11px;color:var(--soft);padding:12px 16px">Select a release</div>';bot.innerHTML='';return;}
   el.innerHTML=SECTIONS.map(sec=>{const done=sec.items.filter(i=>(rel.state||{})[i.id]).length;const t=sec.items.length;const pc=done===t?'pill-done':done>0?'pill-part':'pill-none';return`<div class="sblock-header ${selectedSection===sec.id?'selected':''}" onclick="selectSection('${sec.id}')"><div class="sblock-icon" style="background:${sec.color}15"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="${sec.color}" stroke-width="2.5"><circle cx="12" cy="12" r="9"/></svg></div><span class="sblock-name">${sec.name}</span><span class="sblock-pill ${pc}">${done}/${t}</span></div>`;}).join('');
-  const tot=SECTIONS.flatMap(s=>s.items).length;const don=Object.values(rel.state||{}).filter(Boolean).length;const pct=Math.round(don/tot*100);
+  const tot=SECTIONS.flatMap(s=>s.items).length;const don=doneCount(rel);const pct=Math.round(don/tot*100);
   bot.innerHTML=`<div class="rsidebar-overview"><div class="overview-pct">${pct}%</div><div class="overview-lbl">${esc(rel.title)}</div><div class="overview-track"><div class="overview-fill" style="width:${pct}%"></div></div><div style="font-size:9px;color:var(--soft);margin-top:6px;font-weight:600">${don} of ${tot} tasks done</div></div>`;
 }
 function selectSection(id){selectedSection=id;currentView='section';document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));renderAll();}
 function showView(id,btn){currentView=id;selectedSection=null;document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));if(btn)btn.classList.add('active');renderCenter();renderRightSidebar();}
-function renderCenter(){if(currentView==='overview')return renderOverview();if(currentView==='songs')return renderSongs();if(currentView==='content')return renderContent();if(currentView==='calendar')return renderCalendar();if(currentView==='section'&&selectedSection)renderSectionDetail();else if(currentView==='dashboard')renderDash();else if(currentView==='analytics')renderAnalytics();else if(currentView==='pitch')renderPitchPage();else if(currentView==='notes')renderNotesPage();else if(currentView==='timeline')renderTimeline();else if(currentView==='details')renderDetails();else if(currentView==='plan')renderPlan();else if(currentView==='outreach')renderOutreach();else if(currentView==='contacts')renderContacts();else if(currentView==='vendors')renderVendors();else if(currentView==='strategy')renderStrategy();else if(currentView==='playlisting')renderPlaylisting();}
-function renderAll(){renderRelBar();renderLeftSidebar();renderRightSidebar();renderCenter();}
+function renderCenter(){if(currentView==='folder')return renderFolder();if(currentView==='publishing')return renderPublishing();if(currentView==='overview')return renderOverview();if(currentView==='songs')return renderSongs();if(currentView==='content')return renderContent();if(currentView==='calendar')return renderCalendar();if(currentView==='section'&&selectedSection)renderSectionDetail();else if(currentView==='dashboard')renderDash();else if(currentView==='analytics')renderAnalytics();else if(currentView==='pitch')renderPitchPage();else if(currentView==='notes')renderNotesPage();else if(currentView==='timeline')renderTimeline();else if(currentView==='details')renderDetails();else if(currentView==='plan')renderPlan();else if(currentView==='outreach')renderOutreach();else if(currentView==='contacts')renderContacts();else if(currentView==='vendors')renderVendors();else if(currentView==='strategy')renderStrategy();else if(currentView==='playlisting')renderPlaylisting();}
+function renderAll(){migratePub();db.releases.forEach(syncDist);renderRelBar();renderLeftSidebar();renderRightSidebar();renderCenter();}
 
 /* DASHBOARD */
 function renderDash(){
   const rel=getActive();const el=document.getElementById('center-inner');
   if(!rel){el.innerHTML=`<div class="empty-state"><div class="empty-icon">🎵</div><div class="empty-text">No releases yet</div><div class="empty-sub">Create your first release to get started</div><button class="btn btn-primary" onclick="openModal()">Create release</button></div>`;return;}
-  const tot=SECTIONS.flatMap(s=>s.items).length;const don=Object.values(rel.state||{}).filter(Boolean).length;const pct=Math.round(don/tot*100);const days=daysUntil(rel.date);
+  const tot=SECTIONS.flatMap(s=>s.items).length;const don=doneCount(rel);const pct=Math.round(don/tot*100);const days=daysUntil(rel.date);
   const secBars=SECTIONS.map(s=>{const p=calcSecPct(rel,s);return`<div class="sec-bar-row"><span class="sec-bar-label">${s.name}</span><div class="sec-bar-track"><div class="sec-bar-fill" style="width:${p}%;background:${s.color}"></div></div><span class="sec-bar-num">${p}%</span></div>`;}).join('');
   const pc=pitchCount(rel);const pt=PITCH_TYPES.length;
   const pitchStatus=rel.pitchesGenerating
@@ -907,6 +936,7 @@ function renderDash(){
 
 /* SECTION DETAIL */
 function renderSectionDetail(){
+  if(selectedSection==='distribution'&&getActive())return renderDistribution();
   const rel=getActive();const el=document.getElementById('center-inner');
   if(!rel||!selectedSection){renderDash();return;}
   const sec=SECTIONS.find(s=>s.id===selectedSection);if(!sec)return;
@@ -953,9 +983,9 @@ function renderAnalytics(){
   const el=document.getElementById('center-inner');
   if(!db.releases.length){el.innerHTML=`<div class="empty-state"><div class="empty-icon">📊</div><div class="empty-text">No data yet</div><div class="empty-sub">Create a release and check off tasks</div></div>`;return;}
   const allTot=SECTIONS.flatMap(s=>s.items).length;const rel=getActive();
-  const rows=db.releases.map(r=>{const don=Object.values(r.state||{}).filter(Boolean).length;const pct=Math.round(don/allTot*100);const days=daysUntil(r.date);const st=pct===100?'Complete':days!==null&&days<0?'Post-release':days!==null&&days<=7?'Imminent':'In progress';const sc=pct===100?'#ffffff':days!==null&&days<0?'#c8c8cd':days!==null&&days<=7?'#f2f2f2':'#9aa3b2';const sb=pct===100?'rgba(255,255,255,.10)':days!==null&&days<0?'rgba(200,200,205,.10)':days!==null&&days<=7?'rgba(255,255,255,.10)':'rgba(255,255,255,.05)';return`<tr><td><strong style="font-weight:700">${esc(r.title)}</strong><br><span style="font-size:10px;color:var(--soft)">${esc(r.artist)}</span></td><td>${r.date?new Date(r.date+'T00:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}):'—'}</td><td><div style="display:flex;align-items:center;gap:7px"><div style="flex:1;height:3px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden"><div style="height:100%;width:${pct}%;background:var(--green);border-radius:2px"></div></div><span style="font-size:10px;font-weight:800;color:var(--green);width:28px">${pct}%</span></div></td><td><span class="status-badge" style="background:${sb};color:${sc}">${st}</span></td><td style="font-size:10px;color:var(--muted);font-weight:600">${don}/${allTot}</td></tr>`;}).join('');
+  const rows=db.releases.map(r=>{const don=doneCount(r);const pct=Math.round(don/allTot*100);const days=daysUntil(r.date);const st=pct===100?'Complete':days!==null&&days<0?'Post-release':days!==null&&days<=7?'Imminent':'In progress';const sc=pct===100?'#ffffff':days!==null&&days<0?'#c8c8cd':days!==null&&days<=7?'#f2f2f2':'#9aa3b2';const sb=pct===100?'rgba(255,255,255,.10)':days!==null&&days<0?'rgba(200,200,205,.10)':days!==null&&days<=7?'rgba(255,255,255,.10)':'rgba(255,255,255,.05)';return`<tr><td><strong style="font-weight:700">${esc(r.title)}</strong><br><span style="font-size:10px;color:var(--soft)">${esc(r.artist)}</span></td><td>${r.date?new Date(r.date+'T00:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}):'—'}</td><td><div style="display:flex;align-items:center;gap:7px"><div style="flex:1;height:3px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden"><div style="height:100%;width:${pct}%;background:var(--green);border-radius:2px"></div></div><span style="font-size:10px;font-weight:800;color:var(--green);width:28px">${pct}%</span></div></td><td><span class="status-badge" style="background:${sb};color:${sc}">${st}</span></td><td style="font-size:10px;color:var(--muted);font-weight:600">${don}/${allTot}</td></tr>`;}).join('');
   let secBars='';if(rel)secBars=SECTIONS.map(s=>{const p=calcSecPct(rel,s);return`<div class="hbar-row"><span class="hbar-label">${s.name}</span><div class="hbar-track"><div class="hbar-fill" style="width:${p}%;background:${s.color}"></div></div><span class="hbar-val">${p}%</span></div>`;}).join('');
-  const rDon=rel?Object.values(rel.state||{}).filter(Boolean).length:0;const r2=44,cx=52,cy=52,circ=2*Math.PI*r2;const frac=rel?rDon/allTot:0;const da=`${frac*circ} ${circ}`;
+  const rDon=rel?doneCount(rel):0;const r2=44,cx=52,cy=52,circ=2*Math.PI*r2;const frac=rel?rDon/allTot:0;const da=`${frac*circ} ${circ}`;
   el.innerHTML=`<div class="eyebrow">Progress tracking</div><div class="page-title">Analytics</div><div class="page-sub" style="margin-bottom:18px">All releases</div><div class="analytics-grid">${rel?`<div class="card"><div style="font-size:11px;font-weight:700;margin-bottom:12px">Active — ${esc(rel.title)}</div><div style="display:flex;align-items:center;gap:16px"><svg width="104" height="104" viewBox="0 0 104 104" style="flex-shrink:0"><circle cx="${cx}" cy="${cy}" r="${r2}" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="9"/><circle cx="${cx}" cy="${cy}" r="${r2}" fill="none" stroke="var(--green)" stroke-width="9" stroke-dasharray="${da}" stroke-linecap="round" transform="rotate(-90 ${cx} ${cy})"/><text x="${cx}" y="${cy}" text-anchor="middle" dy=".35em" font-family="Inter" font-weight="900" font-size="15" fill="white">${Math.round(frac*100)}%</text></svg><div><div class="legend-row"><div class="legend-dot" style="background:var(--green)"></div><span class="legend-name">Done</span><span class="legend-val">${rDon}</span></div><div class="legend-row"><div class="legend-dot" style="background:rgba(255,255,255,.1)"></div><span class="legend-name">Remaining</span><span class="legend-val">${allTot-rDon}</span></div></div></div></div>`:''}${rel?`<div class="card"><div style="font-size:11px;font-weight:700;margin-bottom:12px">By section</div>${secBars}</div>`:''}</div><div class="card"><div style="font-size:11px;font-weight:700;margin-bottom:12px">All releases</div><table class="releases-table"><thead><tr><th>Release</th><th>Date</th><th>Progress</th><th>Status</th><th>Tasks</th></tr></thead><tbody>${rows}</tbody></table></div>`;
 }
 
@@ -1064,18 +1094,15 @@ function renderDetails(){
     <td><button class="x-btn" onclick="removeCredit('${c.id}')" title="Remove">×</button></td></tr>`).join('');
   el.innerHTML=`<div class="eyebrow">Release data</div><div class="page-title">Track details &amp; splits</div><div class="page-sub">${esc(rel.title)} — ${esc(rel.artist)}</div>
   <div class="card glass-section"><div class="sec-title">Track</div>
-    <div class="form-grid3">${f('isrc','ISRC','GBXXX2600001')}${f('upc','UPC')}${f('language','Language','Hindi / English')}${f('mood','Mood','Romantic, nostalgic')}${f('bpm','BPM')}${f('key','Key')}${f('duration','Duration','3:24')}${f('link','Smart link or streaming link','https://')}${f('instruments','Main instruments','Guitar, sitar, strings')}</div>
+    <div class="form-grid3">${f('upc','UPC')}${f('mood','Mood','Romantic, nostalgic')}${f('bpm','BPM')}${f('key','Key')}${f('duration','Duration','3:24')}${f('link','Smart link or streaming link','https://')}${f('instruments','Main instruments','Guitar, sitar, strings')}</div>
     <div class="profily-row"><div class="profily-mark">^P</div><div style="flex:1"><label>Profily Super Link</label><input type="text" value="${escA(d.profilyLink||'')}" placeholder="https://profily.co/..." onchange="setDetail('profilyLink',this.value)"><div class="field-hint">Used as the main link in every pitch and outreach email. Live sync with your Profily account (Insights, Auto DMs) switches on once Profily has an API.</div></div><a class="btn btn-ghost btn-sm" href="https://profily.co" target="_blank" rel="noopener">Open Profily</a></div>
     <div class="form-row full"><div><label>Story behind the song (feeds every pitch)</label><textarea onchange="setDetail('story',this.value)" placeholder="What it is about, how it was made, why it matters">${esc(d.story||'')}</textarea></div></div>
     <div class="form-row full"><div><label>Highlights (press, playlists, numbers)</label><textarea onchange="setDetail('highlights',this.value)" placeholder="Previous single hit 1M streams, featured on...">${esc(d.highlights||'')}</textarea></div></div>
   </div>
-  <div class="card glass-section"><div class="sec-head"><div class="sec-title">Credits &amp; splits</div><div class="sec-actions"><button class="btn btn-ghost btn-sm" onclick="addCredit()">+ Add person</button><button class="btn btn-primary btn-sm" onclick="exportSplits()">Export Excel</button></div></div>
-    <div class="field-hint" style="margin-bottom:10px">Writer shares must total 100%. Export follows your Sony Music Publishing delivery columns: WPerf and PPerf are half the share, WContrib, PMech and PSynch equal the share.</div>
-    <div class="table-wrap"><table class="edit-table"><thead><tr><th>Name</th><th>Role</th><th>IPI</th><th>PRO</th><th>Publisher</th><th>Share %</th><th></th></tr></thead><tbody>${credits||'<tr><td colspan="7" class="muted-cell">No credits yet. Add each writer, producer and performer.</td></tr>'}</tbody></table></div>
-    <div id="split-total" class="split-total"></div>
-    <div style="margin-top:10px"><button class="btn btn-ghost btn-sm" onclick="exportAllSplits()">Export all releases in one sheet</button></div>
+  <div class="card glass-section"><div class="sec-head"><div class="sec-title">Tracks, writers &amp; splits</div><div class="sec-actions"><button class="btn btn-primary btn-sm" onclick="showView('publishing',null)">Sony submissions</button></div></div>
+    <div class="field-hint" style="margin-bottom:10px">ISRC, language, writers, PRS / IPRS numbers and splits live on each track, so Sony's sheet fills itself.</div>
+    ${relTracks(rel).map(t=>{const iss=songIssues(t);return `<div class="pub-row"><div style="flex:1;cursor:pointer" onclick="openTrack('${escA(t.id)}')"><strong>${esc(t.title)}</strong> <span class="sub">· ${esc(t.isrc||'no ISRC')} · ${(t.writers||[]).map(x=>esc(wName(writerById(x.wid)))+' '+x.share+'%').join(', ')||'no writers'}</span></div><span class="${t.pubStatus==='submitted'?'chip-ok':iss.length?'chip-warn':'chip-ok'}">${t.pubStatus==='submitted'?'Submitted':iss.length?iss.length+' to fill':'Ready'}</span></div>`;}).join('')||'<div class="muted-cell">No tracks linked. Add one in Distribution.</div>'}
   </div>`;
-  renderSplitTotals();
 }
 
 /* ---------- RELEASE PLAN ---------- */
@@ -1845,17 +1872,17 @@ function renderPreview(){
 document.addEventListener('keydown',e=>{if(!document.getElementById('pv-sheet')?.classList.contains('open'))return;if(e.target.matches('input,textarea'))return;if(e.key==='Escape')closePreview();if(e.key==='ArrowRight')stepPreview(1);if(e.key==='ArrowLeft')stepPreview(-1);});
 
 /* ===================== PIPELINE: SONGS, CONTENT, CALENDAR, OVERVIEW ===================== */
-const STAGES=['Idea','Lyrics','Production','Mix','Master','Delivered','Promotion','Done'];
-const STAGE_OFFSETS={Lyrics:-70,Production:-56,Mix:-42,Master:-35,Delivered:-28,Promotion:-14};
+const STAGES=['Scheduled','Promotion','Done'];
+const STAGE_OFFSETS={};
 const C_STAGES=['Idea','Planned','Shot','Edited','Posted'];
 const C_PLATFORMS=['Instagram','YouTube','YouTube Shorts','TikTok','Facebook','Other'];
 const C_FORMATS=['Reel','Short','Vlog','Live','Carousel','Story','Lyric video','Music video','Other'];
 let pipeF={artist:''},contentF={rel:'',status:''},calM=null,songCur=null;
-function songStage(r){return r.stage||(r.date&&r.date<new Date().toISOString().slice(0,10)?'Promotion':'Idea');}
+function songStage(r){return STAGES.includes(r.stage)?r.stage:(r.date&&r.date<=new Date().toISOString().slice(0,10)?'Promotion':'Scheduled');}
 function artistOk(r){return !pipeF.artist||(r&&r.artist===pipeF.artist);}
 function relsF(){return db.releases.filter(artistOk);}
 function artistPicker(fn){const a=songArtists();return a.length>1?`<select onchange="pipeF.artist=this.value;${fn}()" style="width:auto"><option value="">All artists</option>${a.map(x=>`<option ${x===pipeF.artist?'selected':''}>${esc(x)}</option>`).join('')}</select>`:'';}
-function songArtists(){return [...new Set(db.releases.map(r=>r.artist).filter(Boolean))].sort();}
+function songArtists(){return [...new Set([...db.releases,...(db.songs||[])].map(r=>r.artist).filter(Boolean))].sort();}
 function todayISO(){return new Date().toISOString().slice(0,10);}
 function fmtD(d,o){return d?new Date(d+'T00:00:00').toLocaleDateString('en-GB',o||{day:'numeric',month:'short'}):'';}
 /* links: Spotify / Apple / YouTube for a song */
@@ -1887,17 +1914,16 @@ function addStat(){const r=curSong();const g=id=>Number(document.getElementById(
 function renderSong(){
   const r=curSong();if(!r)return;const st=songStage(r);const sd=r.stageDates||{};const links=r.links||{};const today=todayISO();
   const stageRow=STAGES.map((s,i)=>{const idx=STAGES.indexOf(st);const state=i<idx?'done':i===idx?'now':'';const due=sd[s];const late=due&&due<today&&i>=idx&&s!=='Idea';
-    return `<div class="stg ${state}"><button class="stg-dot" onclick="setSong('stage','${s}')" title="Set stage to ${s}">${i<idx?'✓':''}</button><div class="stg-name">${s}</div>${s==='Idea'||s==='Done'?'<div class="stg-date"></div>':`<input type="date" class="stg-date ${late?'late':''}" value="${escA(due||'')}" onchange="setStageDate('${s}',this.value)">`}</div>`;}).join('');
+    return `<div class="stg ${state}"><button class="stg-dot" onclick="setSong('stage','${s}')" title="Set stage to ${s}">${i<idx?'✓':''}</button><div class="stg-name">${s}</div>${true?'<div class="stg-date"></div>':`<input type="date" class="stg-date ${late?'late':''}" value="${escA(due||'')}" onchange="setStageDate('${s}',this.value)">`}</div>`;}).join('');
   const emb=['spotify','apple','youtube'].map(k=>links[k]&&songEmbed(links[k])).filter(Boolean);
   const stats=(r.stats||[]);const last=stats[stats.length-1],prev=stats[stats.length-2];
   const delta=(k)=>last&&prev?last[k]-prev[k]:null;
   document.getElementById('sg-body').innerHTML=`
   <div class="pv-top"><div><input type="text" class="sg-title" value="${escA(r.title)}" onchange="setSong('title',this.value.trim()||'Untitled')"><div class="sub">${esc(r.artist||'')}${r.date?' · target release '+fmtD(r.date,{day:'numeric',month:'long',year:'numeric'}):''}</div></div><button class="x-btn" onclick="closeSong()">×</button></div>
   <div class="form-row" style="margin-top:12px"><div><label>Artist</label><input type="text" value="${escA(r.artist||'')}" onchange="setSong('artist',this.value.trim())"></div><div><label>Target release date</label><input type="date" value="${escA(r.date||'')}" onchange="setSong('date',this.value)"></div></div>
-  <div class="sg-sec"><div class="sec-head"><div class="sec-title">Progress</div><button class="btn btn-ghost btn-sm" onclick="autoStageDates()">Fill deadlines from release date</button></div><div class="stg-row">${stageRow}</div>
-  <div class="field-hint">Tap a circle to move the song to that stage. Ingestion is set ${db.ingestLead||28} days before release (change in Settings to match The Orchard's lead time).</div></div>
-  <div class="sg-sec"><div class="sec-title">Team</div><div class="form-grid3"><div><label>Writers</label><input type="text" value="${escA(r.writers||'')}" onchange="setSong('writers',this.value)"></div><div><label>Producer</label><input type="text" value="${escA(r.producer||'')}" onchange="setSong('producer',this.value)"></div><div><label>Mix / master engineer</label><input type="text" value="${escA(r.engineer||'')}" onchange="setSong('engineer',this.value)"></div></div>
-  <label>Lyrics and notes</label><textarea rows="4" onchange="setSong('lyrics',this.value)" placeholder="Lyric drafts, references, feedback">${esc(r.lyrics||'')}</textarea></div>
+  <div class="sg-sec"><div class="sec-head"><div class="sec-title">Release status</div></div><div class="stg-row">${stageRow}</div>
+  <div class="field-hint">Moves to Promotion automatically on release day.</div></div>
+  <div class="sg-sec"><div class="sec-title">Tracks</div>${relTracks(r).map(t=>`<div class="ct-mini" onclick="closeSong();openTrack('${escA(t.id)}')">${esc(t.title)} <span class="sub">${esc(t.isrc||'no ISRC')} · ${t.pubStatus==='submitted'?'registered with Sony':'not registered yet'}</span></div>`).join('')||'<div class="sub">No tracks linked.</div>'}</div>
   <div class="sg-sec"><div class="sec-title">Previews</div>
    <div class="pvw-add"><input type="text" id="pvw-label" placeholder="Label (demo v2, mix 3, master...)"><input type="text" id="pvw-url" placeholder="https:// link (Dropbox, Drive, WeTransfer, SoundCloud, audio file)"><button class="btn btn-primary btn-sm" onclick="addPreview()">Add</button></div>
    ${(r.previews||[]).map(p=>{const a=audioSrc(p.url);return `<div class="pvw"><div class="pvw-top"><strong>${esc(p.label)}</strong><span class="sub">${esc(previewHost(p.url))} · ${new Date(p.at).toLocaleDateString('en-GB',{day:'numeric',month:'short'})}</span><span style="flex:1"></span><a class="btn btn-ghost btn-sm" href="${escA(p.url)}" target="_blank" rel="noopener">Open ↗</a><button class="x-btn" onclick="delPreview('${p.id}')">×</button></div>${a?`<audio controls preload="none" src="${escA(a)}"></audio>`:''}</div>`;}).join('')||'<div class="sub">No previews yet. Untitled links are fine, label them later.</div>'}
@@ -1968,10 +1994,11 @@ function calEvents(){
   const ev=[];const add=(d,t,k,id,fn)=>{if(d)ev.push({d,t,k,id,fn});};
   relsF().forEach(r=>{add(r.date,r.title+': release','release',r.id,'song');Object.entries(r.stageDates||{}).forEach(([s,d])=>add(d,r.title+': '+(s==='Delivered'?'ingestion':s.toLowerCase()+' due'),s==='Delivered'?'ingest':'stage',r.id,'song'));
     Object.entries(r.dates||{}).forEach(([tid,d])=>{if((r.state||{})[tid])return;const it=SECTIONS.flatMap(x=>x.items).find(i=>i.id===tid);if(it)add(d,r.title+': '+it.label,'task',r.id,'plan');});});
+  (db.songs||[]).filter(x=>!x.relId&&!x.released&&songArtistOk(x)).forEach(x=>{add(x.targetDate,x.title+': target release','release',x.id,'track');Object.entries(x.stageDates||{}).forEach(([st,d])=>{if(SONG_STAGES.indexOf(st)>=SONG_STAGES.indexOf(x.stage||'Melody'))add(d,x.title+': '+st.toLowerCase()+' due','stage',x.id,'track');});});
   (db.content||[]).filter(c=>!pipeF.artist||artistOk(db.releases.find(r=>r.id===c.relId))).forEach(c=>{add(c.shootDate,'Shoot: '+c.title,'shoot',c.id,'content');add(c.postDate,(c.status==='Posted'?'Posted: ':'Post: ')+c.title,'post',c.id,'content');});
   return ev;
 }
-function calOpen(fn,id){if(fn==='song')openSong(id);else if(fn==='content')openContent(id);else{setActive(id);showView('plan',null);}}
+function calOpen(fn,id){if(fn==='track')return openTrack(id);if(fn==='song')openSong(id);else if(fn==='content')openContent(id);else{setActive(id);showView('plan',null);}}
 function renderCalendar(){
   const el=document.getElementById('center-inner');const now=new Date();calM=calM||{y:now.getFullYear(),m:now.getMonth()};
   const first=new Date(calM.y,calM.m,1);const start=new Date(first);start.setDate(1-((first.getDay()+6)%7));
@@ -1998,19 +2025,19 @@ function promoStatus(r){
 function renderOverview(){
   const el=document.getElementById('center-inner');const today=todayISO();const in7=addDays(today,7);
   if(!vdb&&accessToken)loadVendors().then(()=>{if(currentView==='overview')renderOverview();});
-  const counts=STAGES.map(s=>[s,relsF().filter(r=>songStage(r)===s).length]);
+  migratePub();const counts=SONG_STAGES.map(s=>[s,db.songs.filter(x=>!x.relId&&!x.released&&songArtistOk(x)&&(x.stage||'Melody')===s).length]);
   const ev=calEvents().filter(e=>e.d<=in7&&!/^Posted/.test(e.t)&&!(e.k==='release'&&e.d<today)).sort((a,b)=>a.d.localeCompare(b.d));
   const overdue=ev.filter(e=>e.d<today),week=ev.filter(e=>e.d>=today);
   const promo=relsF().filter(r=>songStage(r)==='Promotion');
   el.innerHTML=`<div class="eyebrow">Aart Sense</div><div class="page-title">Overview</div><div class="page-sub">${new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'})}${pipeF.artist?' · '+esc(pipeF.artist):' · all artists'}</div>
   ${songArtists().length>1?`<div class="toolbar">${artistPicker('renderOverview')}</div>`:''}
-  <div class="pipe-strip">${counts.map(([s,n])=>`<div class="pipe-s ${n?'':'zero'}" onclick="showView('songs',null)"><b>${n}</b><span>${s}</span></div>`).join('')}</div>
+  <div class="pipe-strip">${counts.map(([s,n])=>`<div class="pipe-s ${n?'':'zero'}" onclick="showView('${s==='Release folder'?'folder':'songs'}',null)"><b>${n}</b><span>${s}</span></div>`).join('')}</div>
   <div class="ov-grid">
    <div class="card"><div class="sec-head"><div class="sec-title">This week</div><span class="sub">${overdue.length?`<span class="late-t">${overdue.length} overdue</span> · `:''}${week.length} coming up</span></div>
     ${[...overdue.map(e=>[e,true]),...week.map(e=>[e,false])].slice(0,12).map(([e,late])=>`<div class="wk ${late?'late':''}" onclick="calOpen('${e.fn}','${e.id}')"><span class="wk-d">${late?'Overdue':fmtD(e.d,{weekday:'short',day:'numeric'})}</span><i class="dot k-${e.k}"></i><span>${esc(e.t)}</span></div>`).join('')||'<div class="muted-cell">Nothing due this week.</div>'}
    </div>
    <div class="card"><div class="sec-head"><div class="sec-title">Songs in production</div><button class="btn btn-ghost btn-sm" onclick="showView('songs',null)">Open board</button></div>
-    ${relsF().filter(r=>['Idea','Lyrics','Production','Mix','Master','Delivered'].includes(songStage(r))).map(r=>{const s=songStage(r);const i=STAGES.indexOf(s);const nxt=STAGES[i+1];const due=(r.stageDates||{})[nxt];return `<div class="prow" onclick="openSong('${r.id}')"><div><strong>${esc(r.title)}</strong>${pipeF.artist?'':` <span class="sub">· ${esc(r.artist||'')}</span>`}<div class="sub">${s}${due?' · '+nxt+' due '+fmtD(due):''}${r.date?' · release '+fmtD(r.date):''}</div></div><div class="mini-bar w"><i style="width:${Math.round(i/(STAGES.length-1)*100)}%"></i></div></div>`;}).join('')||'<div class="muted-cell">No songs in production. Add one on the Songs board.</div>'}
+    ${db.songs.filter(x=>!x.relId&&!x.released&&songArtistOk(x)&&WIP_STAGES.includes(x.stage||'Melody')).map(x=>{const st=x.stage||'Melody';const i=SONG_STAGES.indexOf(st);const due=(x.stageDates||{})[st];return `<div class="prow" onclick="openTrack('${escA(x.id)}')"><div><strong>${esc(x.title)}</strong>${pipeF.artist?'':` <span class="sub">· ${esc(x.artist||'')}</span>`}<div class="sub">${st}${due?' due '+fmtD(due):''}${x.targetDate?' · target '+fmtD(x.targetDate):''}</div></div><div class="mini-bar w"><i style="width:${Math.round(i/5*100)}%"></i></div></div>`;}).join('')||'<div class="muted-cell">No songs in production. Log one with + Log a song.</div>'}
    </div>
   </div>
   <div class="sec-head" style="margin:22px 0 10px"><div class="sec-title">In promotion</div><span class="sub">What's gone out and what's left</span></div>
@@ -2025,7 +2052,7 @@ function renderOverview(){
     </div>
     <div class="mini-bar w" style="margin:10px 0 4px"><i style="width:${pct}%"></i></div><div class="sub">Release checklist ${p.done}/${p.total} done</div>
     ${p.left.length?`<div class="left-l"><span class="sub">Still to do:</span> ${p.left.map(x=>`<span class="tag">${esc(x)}</span>`).join(' ')}</div>`:''}
-   </div>`;}).join('')||'<div class="card muted-cell">No songs in promotion. Move a song to "Promotion" on the Songs board when its campaign starts.</div>'}`;
+   </div>`;}).join('')||'<div class="card muted-cell">No releases in promotion. A release shows here from its release day.</div>'}`;
 }
 /* ===================== END PIPELINE ===================== */
 
@@ -2039,6 +2066,394 @@ function restoreAuth(){try{const a=JSON.parse(sessionStorage.getItem('rh_auth')|
 function authExpired(){clearAuth();accessToken=null;document.getElementById('main-shell').style.display='none';document.getElementById('auth-screen').style.display='flex';toast('Your Google session ended. Sign in again, it takes one click.',4000);}
 window.onload=function(){restoreAuth();const s=document.createElement('script');s.src='https://accounts.google.com/gsi/client';s.onload=initGoogle;document.head.appendChild(s);
   document.addEventListener('click',e=>{const a=e.target.closest('a[href^="http"]');if(!a)return;e.preventDefault();window.open(a.href,'_blank','noopener');},true);};
+/* ===================== SONG LOG, RELEASE FOLDER, SONY PUBLISHING ===================== */
+const SONY_TPL={"rows":[["Non-Library Song Delivery Sheet","","","","","","","","","","No dots or dashes. T plus 10 numbers only","","","","","Combine A&C shares to CA","","","","Use \"UNS\" when the society is truly Unknown and use \"NS\" for truly unaffiliated writers","","","","","","","","","","","","","","","","","If Publ control is different for foreign, repeat lines and speicify Territory","","","","","","","","","","","","","","","Specify here any Artist AKAs"],[],[],[],["TEMPO CODES"],["PRIMARY / MAIN","","","PARTICIPANT(S)","","","Work Identity Fields","","","","","","","","","Writer Identity Fields (repeat lines for each writer/publisher combination)","","","","","","Writer AKA Fields (copy columns to repeat)","","","","Writer Share Fields","","","","Publisher Fields","","","","","","","","Misc","","","","Alternative Title AKA fields (copy columns to repeat)","","","","Recording Info (copy columns to repeat)","","","","","","Artist AKA fields (copy columns to repeat)"],["Client Code"," Contract Code"," Subcontract #","Client Code (PARTICIPANT)","Contract Code (PARTICIPANT)"," Subcontract # (PARTICIPANT)","Tempo Song Code","Co-Originating Office","Co-Originating Office Sign Off","© Year","ISWC","Society Work Number","Society (of Work Number)","Song Title","Work Territory Controlled","CAP","Writer Ctrl?","Writer\n(Last)","Writer\n(First)","Writer Society Affiliation","Writer\nIPI ","Writer AKA(s) to add to Tempo","Writer AKA(s) IPI, if different","Writer AKA Type (choose from above listing)","Script Type (defaults to Latin, unless specified)","Writer Contrib. %","Writer Collect Mech %","Writer Collect Perf %","Writer Collect Synch %","Publisher Name","Publ Soc. Affiliation","Publ IPI","Publ Ctrl %","Publ Collect Mech %","Publ Collect\nPerf %","Publ Collect Synch %","Territory for Shares Pictue","Sample/\nArrangement Info","Song Notes","Specific GCA set-up Instructions","Local Reg Date","Alternative Titles","Title Type","Language","Script Type (defaults to Latin, unless specified)","Artist","ISNI","ISRC","Album Title","1st Release Date","Label","Artist AKA(s)","Artist AKA Type (choose from above listing)","Script Type (defaults to Latin, unless specified)"],["Mandatory","Mandatory","Mandatory","Mandatory \nif participant","Mandatory \nif participant","Mandatory \nif participant","Mandatory \nif existing song","","","","","","","Mandatory","Mandatory","Mandatory","Mandatory","Mandatory","Mandatory if known","Mandatory","Mandatory if known","","","","","Mandatory","Mandatory","Mandatory","Mandatory","Mandatory","","Mandatory\n(if controlled)","Mandatory","Mandatory","Mandatory","Mandatory"],[],["Mandatory to fill, If you do not have please reach out to me","Mandatory to fill, If you do not have please reach out to me","","Mandatory to fill, If you do not have please reach out to me","Mandatory to fill, If you do not have please reach out to me","","Applicable for tracks that you send for amendments/modification","INDIA","NA","year of release","If you have, can be blank if you do not have","Tunecode(PRS), Internal no. (IPRS), etc, if you have them","Society of Work Number that you have used","Title","Territory control as per our agreement","C = Composer, A = Author, P = Publisher, AR = Arranger(only in case of traditional/public domain tracks)","Yes","Mandatory","Mandatory if known","","","Stage name or artist name if any","","fill in only if you put stage name/artist name","","Contribution of writer","Mechanical collection share","performance collection share","Synch share","Publisher Name as mentioned in agreement","","","","","","","If Publ control is different for foreign, repeat lines and specify Territory (if applicable fill in)","NA","NA","NA","Registration date of IPRS (leave blank if you are not aware)","Alt. titles if any","","Language","Script code from the script code sheet","Name of the performer/singer","ISNI code if you have","Mandatory field","Album title/song title(in case of a single release)","Mandatory field","Mandatory field","If any","fill in only if you put stage name/artist name","Script code from the script code sheet (can be left blank)"]],"merges":["P6:U6","T1:T5","G6:O6","X1:X5","A5:F5","Z6:AC6","BA1:BA5","AD6:AK6","AL6:AO6","AZ1:AZ5","A1:D1","P1:P5","K1:K5","AT6:AY6","AZ6:BB6","A6:C6","V6:Y6","D6:F6","AP6:AS6","AK1:AK5"],"widths":[17.0,17.2,17.7,14.9,15.2,11.0,25.1,10.8,13.0,10.1,56.9,12.5,12.4,49.5,12.2,38.2,13.9,15.1,23.1,108.2,13.1,12.6,10.9,12.2,9.4,8.9,13.0,13.0,13.0,30.0,8.9,10.0,8.9,13.0,13.0,13.0,82.6,6.5,48.0,8.5,12.2,13.2,7.5,10.0,13.1,66.9,10.4,13.4,64.4,12.1,19.8,58.4,13.9,13.0]}
+;
+const SONG_STAGES=['Melody','Production','Lyrics','Recording','Mix','Release folder'];
+const WIP_STAGES=SONG_STAGES.slice(0,5);
+const SOCIETIES=['PRS','IPRS','IPRS/PRS','ASCAP','BMI','SOCAN','APRA','GEMA','SACEM','NS','UNS'];
+const ROLE_OPTS=[['C','Composer (music)'],['A','Author (lyrics)'],['CA','Composer + author'],['AR','Arranger (public domain only)']];
+const LANGS=['Hindi','Punjabi','English','Urdu','Bengali','Marathi','Tamil','Telugu','Spanish','Instrumental'];
+const ISRC_RE=/^[A-Z]{2}[A-Z0-9]{3}\d{7}$/,ISWC_RE=/^T\d{10}$/;
+let trackCur=null,pubTab='submit',pubSel={},pubShowAll=false,pendingTracks=null,lastExport=null,folderSel={};
+
+/* ---------- data ---------- */
+function splitName(n){const p=String(n||'').trim().split(/\s+/).filter(Boolean);if(!p.length)return {first:'',last:''};if(p.length===1)return {first:'',last:p[0]};return {first:p.slice(0,-1).join(' '),last:p[p.length-1]};}
+function normName(s){return String(s||'').toLowerCase().replace(/[^a-z]/g,'');}
+function digits(s){return String(s??'').replace(/\D/g,'');}
+function writerById(id){return (db.writers||[]).find(w=>w.id===id);}
+function wName(w){return w?([w.first,w.last].filter(Boolean).join(' ')||'Unnamed'):'Pick a writer';}
+function findWriter(first,last,ipi){const d=digits(ipi);return (db.writers||[]).find(w=>d&&digits(w.ipi)===d)||(db.writers||[]).find(w=>normName(w.first+w.last)===normName(first+last)&&normName(first+last));}
+function defSigned(){return 'Yes';}
+function addWriter(o){const w={id:uid('wr'),first:o.first||'',last:o.last||'',society:o.society||'',ipi:digits(o.ipi),aka:o.aka||'',akaType:o.akaType||'',notes:o.notes||'',signed:o.signed||defSigned(o.first,o.last)};db.writers.push(w);return w;}
+function songById(id){return (db.songs||[]).find(s=>s.id===id);}
+function songRel(s){return s&&s.relId?db.releases.find(r=>r.id===s.relId):null;}
+function songRelDate(s){return songRel(s)?.date||s.releaseDate||'';}
+function songReleased(s){const d=songRelDate(s);return !!(s.released||(d&&d<=todayISO()));}
+function relTracks(rel){return (rel.songIds||[]).map(songById).filter(Boolean);}
+function splitSum(s){return Math.round((s.writers||[]).reduce((a,x)=>a+(Number(x.share)||0),0)*100)/100;}
+function r3(n){return Math.round(n*1000)/1000;}
+
+function migratePub(){
+  db.songs=db.songs||[];db.writers=db.writers||[];db.pubSettings=Object.assign({office:'INDIA',territory:'WW',publisher:'Aart Sense Studios Limited',label:'Aart Sense Records'},db.pubSettings||{});db.pubConflicts=db.pubConflicts||[];
+  db.writers.forEach(w=>{if(!w.signed)w.signed=defSigned(w.first,w.last);});
+  if(db.pubV===1){db.songs.forEach(s=>(s.writers||[]).forEach(x=>{const w=writerById(x.wid);if(w)x.ctrl=w.signed;}));db.pubV=2;}
+  if(db.pubV>=2)return;
+  const keep=[];const map={Idea:'Melody',Lyrics:'Lyrics',Production:'Production',Mix:'Mix',Master:'Mix'};
+  (db.releases||[]).forEach(r=>{
+    if(r.songIds){keep.push(r);return;}
+    const d=r.details||{};
+    const wip=!!map[r.stage]&&!r.date&&!Object.values(r.state||{}).some(Boolean)&&!Object.keys(r.pitches||{}).length&&!(db.content||[]).some(c=>c.relId===r.id);
+    const s={id:uid('sg'),title:r.title,artist:r.artist||'',stage:wip?map[r.stage]:'Release folder',stageDates:{},lyrics:r.lyrics||'',language:d.language||'',mood:d.mood||'',genre:r.genre||'',previews:r.previews||[],isrc:String(d.isrc||'').toUpperCase().replace(/[^A-Z0-9]/g,''),writers:[],created:r.created||Date.now()};
+    (r.credits||[]).filter(c=>c.name&&!['Producer','Performer'].includes(c.role)).forEach(c=>{const n=splitName(c.name);const w=findWriter(n.first,n.last,c.ipi)||addWriter({...n,society:c.pro,ipi:c.ipi});s.writers.push({wid:w.id,role:c.role==='Composer'?'C':c.role==='Lyricist'?'A':'CA',share:Number(c.share)||0,ctrl:w.signed});});
+    db.songs.push(s);
+    if(wip)return;
+    r.songIds=[s.id];s.relId=r.id;if(!r.distributed)r.distributed=r.date&&r.date<=todayISO()?'Yes':'';keep.push(r);
+  });
+  db.releases=keep;if(!keep.find(r=>r.id===db.activeId))db.activeId=keep[0]?.id||null;
+  db.songs.forEach(s=>(s.writers||[]).forEach(x=>{const w=writerById(x.wid);if(w)x.ctrl=w.signed;}));db.pubV=2;
+}
+function syncDist(rel){
+  const t=relTracks(rel);rel.state=rel.state||{};
+  rel.state.d1=rel.distributed==='Yes';
+  rel.state.d2=!!t.length&&t.every(s=>ISRC_RE.test(s.isrc||''));
+  rel.state.d6=!!t.length&&t.every(s=>s.pubStatus==='submitted');
+}
+function doneCount(rel){const ids=SECTIONS.flatMap(s=>s.items).map(i=>i.id);return ids.filter(i=>(rel.state||{})[i]).length;}
+
+/* ---------- readiness for Sony ---------- */
+function settingsIssues(){const st=db.pubSettings||{};const m=[];if(!st.client||!st.contract)m.push('Client and contract codes');if(!st.publisher)m.push('Publisher name');if(!st.label)m.push('Label name');return m;}
+function songIssues(s){
+  const m=[];
+  if(!songRelDate(s))m.push('Release date');
+  if(!s.isrc)m.push('ISRC');else if(!ISRC_RE.test(s.isrc))m.push('ISRC format');
+  if(s.iswc&&!ISWC_RE.test(s.iswc))m.push('ISWC format');
+  if(!s.language)m.push('Language');
+  if(!(s.writers||[]).length)m.push('Writers');
+  else{
+    const t=splitSum(s);if(Math.abs(t-100)>0.01)m.push('Splits add to '+t+'%');
+    s.writers.forEach(x=>{const w=writerById(x.wid);if(!w){m.push('A writer row has no writer picked');return;}
+      if(!w.last)m.push(wName(w)+': surname');if(!w.society)m.push(wName(w)+': society');
+      if(!w.ipi&&!['NS','UNS'].includes(w.society))m.push(wName(w)+': IPI');if(!x.role)m.push(wName(w)+': role');});
+  }
+  return [...new Set(m)];
+}
+function dupIsrc(s){return s.isrc&&(db.songs||[]).find(o=>o.id!==s.id&&o.isrc===s.isrc&&o.pubStatus==='submitted');}
+
+/* ---------- Sony export ---------- */
+function colIdx(L){let n=0;for(const ch of L)n=n*26+ch.charCodeAt(0)-64;return n-1;}
+function excelSerial(iso){const [y,m,d]=iso.split('-').map(Number);return (Date.UTC(y,m-1,d)-Date.UTC(1899,11,30))/864e5;}
+function numOr(v){const t=String(v??'').trim();return /^\d+$/.test(t)?Number(t):t;}
+function sonyRows(s){
+  const st=db.pubSettings||{};const rel=songRel(s);const date=songRelDate(s);
+  const album=s.album||rel?.album||rel?.title||s.title;const perf=s.performer||rel?.artist||s.artist||'';
+  return (s.writers||[]).map(x=>{
+    const w=writerById(x.wid)||{};const c=r3(Number(x.share)||0);const ctrl=x.ctrl==='No'?'No':'Yes';const row=new Array(54).fill('');
+    const set=(L,v)=>{row[colIdx(L)]=v;};
+    set('A',numOr(st.client));set('B',numOr(st.contract));set('C',numOr(st.sub));set('D',numOr(st.pClient));set('E',numOr(st.pContract));set('F',numOr(st.pSub));
+    set('G',s.tempo||'');set('H',st.office||'INDIA');set('J',date?Number(date.slice(0,4)):'');set('K',s.iswc||'');set('L',s.workNo||'');set('M',s.workSoc||'');
+    set('N',s.title);set('O',st.territory||'WW');set('P',x.role||'');set('Q',ctrl.toUpperCase());set('R',w.last||'');set('S',w.first||'');set('T',w.society||'');set('U',w.ipi||'');
+    set('V',w.aka||'');set('X',w.aka?(w.akaType||''):'');
+    set('Z',c);set('AA',0);set('AB',r3(c/2));set('AC',0);
+    set('AD',st.publisher||'');set('AE',st.pubSociety||'');set('AF',st.pubIpi||'');set('AG',c);set('AH',c);set('AI',r3(c/2));set('AJ',c);
+    set('AO',s.regDate||'');set('AP',s.altTitle||'');set('AR',s.language||'');set('AT',perf);set('AV',s.isrc||'');set('AW',album);
+    if(date)row[colIdx('AX')]={t:'n',v:excelSerial(date),z:'dd/mm/yyyy'};
+    set('AY',st.label||'');set('AZ',s.artistAka||'');
+    return row;});
+}
+function quarterName(){const d=new Date();return d.getFullYear()+' Q'+(Math.floor(d.getMonth()/3)+1);}
+function exportSony(ids,corr){
+  if(typeof XLSX==='undefined'){toast('Excel library still loading, try again');return;}
+  const si=settingsIssues();if(si.length){toast('Fill Publishing → Setup first: '+si.join(', '),4000);pubTab='setup';renderPublishing();return;}
+  const all=ids.map(songById).filter(Boolean);const songs=all.filter(s=>!songIssues(s).length);const skipped=all.filter(s=>songIssues(s).length);
+  if(!songs.length){toast(skipped.length?'None of these are complete yet. Missing on '+skipped.slice(0,4).map(x=>x.title+': '+songIssues(x).join(', ')).join(' / '):'Pick at least one song marked Ready',7000);return;}
+  const aoa=SONY_TPL.rows.map(r=>{const x=r.slice();while(x.length<54)x.push('');return x;});
+  songs.forEach(s=>sonyRows(s).forEach(r=>aoa.push(r)));
+  const ws=XLSX.utils.aoa_to_sheet(aoa.map(r=>r.map(v=>v===''||(v&&typeof v==='object')?null:v)));
+  aoa.forEach((r,ri)=>r.forEach((v,ci)=>{if(v&&typeof v==='object')ws[XLSX.utils.encode_cell({r:ri,c:ci})]=v;}));
+  ws['!merges']=SONY_TPL.merges.map(m=>XLSX.utils.decode_range(m));
+  ws['!cols']=SONY_TPL.widths.map(w=>({wch:Math.min(w,60)}));
+  const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'Song Delivery Sheet');
+  const q=quarterName();XLSX.writeFile(wb,corr?`Song_Delivery_ASR_corrections_${String(corr).replace(/[^\w]+/g,'_')}.xlsx`:`Song_Delivery_ASR_${q.replace(' ','')}.xlsx`);
+  if(!corr)lastExport={ids:songs.map(s=>s.id),batch:q};renderPublishing();
+  toast(songs.length+' song'+(songs.length===1?'':'s')+' exported in Sony format'+(skipped.length?'. Left out (incomplete): '+skipped.map(x=>x.title).join(', '):''),skipped.length?8000:2400);
+}
+function markSubmitted(){
+  if(!lastExport)return;const b=(document.getElementById('pb-batch')?.value||lastExport.batch).trim()||lastExport.batch;
+  lastExport.ids.forEach(id=>{const s=songById(id);if(s){s.pubStatus='submitted';s.pubBatch=b;s.pubDate=todayISO();}});
+  pubSel={};lastExport=null;db.releases.forEach(syncDist);scheduleSave();renderPublishing();renderRightSidebar();toast('Marked as submitted to Sony');
+}
+function reexportBatch(el){const b=el.dataset.b;exportSony(db.songs.filter(s=>s.pubStatus==='submitted'&&(s.pubBatch||'No batch')===b).map(s=>s.id),b);}
+function unsubmit(id){const s=songById(id);if(!s||!confirm('Move "'+s.title+'" back to To submit?'))return;s.pubStatus='';s.pubBatch='';s.pubDate='';db.releases.forEach(syncDist);scheduleSave();renderPublishing();}
+
+/* ---------- import a past Sony sheet ---------- */
+function isoFrom(v){if(v instanceof Date&&!isNaN(v))return `${v.getFullYear()}-${String(v.getMonth()+1).padStart(2,'0')}-${String(v.getDate()).padStart(2,'0')}`;const t=String(v||'').trim();const m=t.match(/^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{4})$/);if(m)return `${m[3]}-${m[2].padStart(2,'0')}-${m[1].padStart(2,'0')}`;return /^\d{4}-\d{2}-\d{2}/.test(t)?t.slice(0,10):'';}
+function conflict(msg){db.pubConflicts=db.pubConflicts||[];if(!db.pubConflicts.includes(msg))db.pubConflicts.push(msg);}
+async function importSonySheet(input){
+  const files=[...(input.files||[])];input.value='';if(!files.length)return;
+  if(typeof XLSX==='undefined'){toast('Excel library still loading, try again');return;}
+  let nSongs=0,nNew=0,nW=0;
+  for(const file of files){
+    if(file.size>8e6){toast(file.name+' is too large');continue;}
+    let rows;try{const wb=XLSX.read(await file.arrayBuffer(),{cellDates:true});rows=XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{header:1,defval:'',raw:true});}catch(e){toast('Could not read '+file.name);continue;}
+    const hi=rows.findIndex(r=>String(r[13]).trim()==='Song Title');if(hi<0){toast(file.name+' is not a Sony song delivery sheet');continue;}
+    const batch=file.name.replace(/\.[^.]+$/,'').replace(/[_]+/g,' ').slice(0,60);
+    const g=(r,L)=>r[colIdx(L)];const S=(r,L)=>String(g(r,L)??'').trim();
+    const st=db.pubSettings;
+    const setS=(k,v,label)=>{v=String(v??'').trim();if(!v)return;if(!st[k]||(k==='territory'&&st[k]==='WW'&&!st._terrSet)||(k==='office'&&st[k]==='INDIA'&&!st._offSet)){st[k]=v;if(k==='territory')st._terrSet=1;if(k==='office')st._offSet=1;return;}if(['publisher','label'].includes(k))return;else if(st[k].toLowerCase()!==v.toLowerCase())conflict(`${label}: your sheets use both "${st[k]}" and "${v}". Sony needs one consistent value.`);};
+    const groups=new Map();
+    rows.slice(hi+1).forEach(r=>{const title=S(r,'N');if(!title||title==='Title'||S(r,'AV')==='Mandatory field'||S(r,'R')==='Mandatory')return;
+      const key=(S(r,'AV')||title).toUpperCase();if(!groups.has(key))groups.set(key,[]);groups.get(key).push(r);});
+    groups.forEach(list=>{
+      const r0=list[0];
+      setS('client',g(r0,'A'),'Client code');setS('contract',g(r0,'B'),'Contract code');setS('sub',g(r0,'C'),'Subcontract');setS('pClient',g(r0,'D'),'Participant client code');setS('pContract',g(r0,'E'),'Participant contract code');setS('pSub',g(r0,'F'),'Participant subcontract');
+      setS('office',g(r0,'H'),'Co-originating office');setS('territory',g(r0,'O'),'Territory');setS('publisher',g(r0,'AD'),'Publisher name');setS('pubIpi',g(r0,'AF'),'Publisher IPI');setS('pubSociety',g(r0,'AE'),'Publisher society');setS('label',g(r0,'AY'),'Label');
+      const isrc=S(r0,'AV').toUpperCase().replace(/[^A-Z0-9]/g,'');const title=S(r0,'N');
+      let s=(db.songs||[]).find(o=>isrc&&o.isrc===isrc)||(db.songs||[]).find(o=>!o.isrc&&normName(o.title)===normName(title));
+      if(s&&s.pubStatus==='submitted'&&s.pubBatch&&s.pubBatch!==batch)conflict(`"${title}" is in both "${s.pubBatch}" and "${batch}". Check with Sony that it isn't registered twice.`);
+      const writers=list.map(r=>{const first=S(r,'S'),last=S(r,'R'),ipi=digits(g(r,'U')),soc=S(r,'T');let w=findWriter(first,last,ipi);
+        if(!w){w=addWriter({first,last,society:soc,ipi,aka:S(r,'V'),akaType:S(r,'X')});nW++;}
+        else{if(ipi&&!w.ipi)w.ipi=ipi;if(soc&&!w.society)w.society=soc;else if(soc&&w.society!==soc)conflict(`${wName(w)}: society is "${w.society}" in one sheet and "${soc}" in another.`);
+          if(ipi&&normName(w.first+w.last)!==normName(first+last))conflict(`IPI ${ipi} is "${wName(w)}" in one sheet and "${first} ${last}" in another. Use the legal name registered with the society.`);
+          if(S(r,'V')&&!w.aka)w.aka=S(r,'V');}
+        const q=S(r,'Q');return {wid:w.id,role:S(r,'P')||'CA',share:Number(g(r,'Z'))||0,ctrl:/^no$/i.test(q)?'No':/^yes$/i.test(q)?'Yes':w.signed};});
+      const rd=isoFrom(g(r0,'AX'));const lang=S(r0,'AR');
+      if(!s){s={id:uid('sg'),title,artist:S(r0,'AT'),stage:'Release folder',released:true,stageDates:{},lyrics:'',language:'',previews:[],writers:[],created:Date.now()};db.songs.push(s);nNew++;}
+      Object.assign(s,{isrc:s.isrc||isrc,iswc:s.iswc||S(r0,'K').replace(/[^T\d]/g,''),language:s.language||lang,performer:s.performer||S(r0,'AT'),album:s.album||S(r0,'AW'),altTitle:s.altTitle||S(r0,'AP'),releaseDate:s.releaseDate||rd,writers:s.writers?.length?s.writers:writers});
+      if(!songRelDate(s)&&!rd&&g(r0,'J'))s.releaseYear=String(g(r0,'J'));
+      if(s.pubStatus!=='submitted'){s.pubStatus='submitted';s.pubBatch=batch;s.pubDate=todayISO();}
+      nSongs++;
+    });
+  }
+  scheduleSave();renderPublishing();
+  toast(`${nSongs} songs read (${nNew} new), ${nW} writers added`,4000);
+}
+
+/* ---------- drawer for a logged song ---------- */
+function ensureTrackDrawer(){if(document.getElementById('tr-sheet'))return;
+  document.body.insertAdjacentHTML('beforeend','<div class="pv-scrim" id="tr-scrim" onclick="closeTrack()"></div><aside class="pv-sheet sg-sheet" id="tr-sheet" aria-label="Song"><div id="tr-body" class="sg-body"></div></aside>'+
+  '<div class="modal-bg" id="wr-modal"><div class="modal"><div class="modal-title" id="wr-title">Writer</div><div id="wr-body"></div><div class="modal-actions"><button class="btn btn-ghost btn-sm" id="wr-del" onclick="deleteWriter()">Delete</button><span style="flex:1"></span><button class="btn btn-ghost btn-sm" onclick="closeWriter()">Cancel</button><button class="btn btn-primary btn-sm" onclick="saveWriter()">Save</button></div></div></div>'+
+  `<datalist id="dl-soc">${SOCIETIES.map(s=>`<option value="${s}">`).join('')}</datalist><datalist id="dl-lang">${LANGS.map(s=>`<option value="${s}">`).join('')}</datalist>`);}
+function openTrack(id){ensureTrackDrawer();trackCur=id;document.getElementById('tr-scrim').classList.add('open');document.getElementById('tr-sheet').classList.add('open');renderTrack();}
+function closeTrack(){document.getElementById('tr-scrim')?.classList.remove('open');document.getElementById('tr-sheet')?.classList.remove('open');trackCur=null;renderCenter();}
+function curTrack(){return songById(trackCur);}
+function setTrack(k,v){const s=curTrack();if(!s)return;
+  if(k==='isrc')v=String(v).toUpperCase().replace(/[^A-Z0-9]/g,'');if(k==='iswc')v=String(v).toUpperCase().replace(/[^T\d]/g,'');
+  s[k]=typeof v==='string'?v.trim():v;
+  if(k==='stage'){s.activity=s.activity||[];s.activity.push({ts:Date.now(),label:'Stage: '+v});}
+  const rel=songRel(s);if(rel)syncDist(rel);scheduleSave();renderTrack();}
+function setTrackStageDate(i,v){const s=curTrack();s.stageDates=s.stageDates||{};s.stageDates[SONG_STAGES[i]]=v;scheduleSave();renderTrack();}
+function setTW(i,k,v){const s=curTrack();const x=s.writers[i];if(!x)return;
+  if(k==='wid'&&v==='__new'){openWriter(null,{song:s.id,idx:i});return;}
+  x[k]=k==='share'?(Number(String(v).replace(/[^\d.]/g,''))||0):v;if(k==='wid'){const w=writerById(v);if(w)x.ctrl=w.signed;}scheduleSave();renderTrack();}
+function addTW(){const s=curTrack();s.writers=s.writers||[];const left=Math.max(0,r3(100-splitSum(s)));s.writers.push({wid:'',role:'CA',share:left,ctrl:'No'});scheduleSave();renderTrack();}
+function delTW(i){const s=curTrack();s.writers.splice(i,1);scheduleSave();renderTrack();}
+function evenTW(){const s=curTrack();const n=(s.writers||[]).length;if(!n)return;const base=Math.floor(10000/n)/100;s.writers.forEach((x,i)=>x.share=i===n-1?r3(100-base*(n-1)):base);scheduleSave();renderTrack();}
+function addTrackPreview(){const s=curTrack();const l=document.getElementById('tpv-label').value.trim(),u=safeUrl(document.getElementById('tpv-url').value.trim());if(!u){toast('Paste a full https link');return;}s.previews=s.previews||[];s.previews.unshift({id:uid('pw'),label:l||'Untitled',url:u,at:Date.now()});scheduleSave();renderTrack();}
+function delTrackPreview(pid){const s=curTrack();s.previews=(s.previews||[]).filter(p=>p.id!==pid);scheduleSave();renderTrack();}
+function deleteTrack(){const s=curTrack();if(!s||!confirm('Delete "'+s.title+'" from the song log? Cannot be undone.'))return;
+  db.releases.forEach(r=>{if(r.songIds)r.songIds=r.songIds.filter(x=>x!==s.id);});db.songs=db.songs.filter(x=>x.id!==s.id);scheduleSave();closeTrack();renderAll();}
+function writerOptions(sel){return `<option value="">Pick a writer…</option>${[...db.writers].sort((a,b)=>wName(a).localeCompare(wName(b))).map(w=>`<option value="${escA(w.id)}" ${w.id===sel?'selected':''}>${esc(wName(w))}${w.society?' · '+esc(w.society):''}</option>`).join('')}<option value="__new">+ Add a new writer…</option>`;}
+function pubEditor(s){
+  const t=splitSum(s);const iss=songIssues(s);const dup=dupIsrc(s);
+  const rows=(s.writers||[]).map((x,i)=>{const w=writerById(x.wid);return `<tr>
+    <td><select onchange="setTW(${i},'wid',this.value)">${writerOptions(x.wid)}</select><div class="sub">${w?`${esc(w.society||'no society')} · IPI ${esc(w.ipi||'—')} · <a class="lnk" onclick="openWriter('${escA(w.id)}')">edit</a>`:''}</div></td>
+    <td><select onchange="setTW(${i},'role',this.value)">${ROLE_OPTS.map(([v,l])=>`<option value="${v}" ${v===x.role?'selected':''}>${l}</option>`).join('')}</select></td>
+    <td><input type="text" value="${escA(x.share)}" style="width:70px" onchange="setTW(${i},'share',this.value)"></td>
+    <td><div class="seg"><button class="${x.ctrl!=='No'?'on':''}" onclick="setTW(${i},'ctrl','Yes')">Yes</button><button class="${x.ctrl==='No'?'on':''}" onclick="setTW(${i},'ctrl','No')">No</button></div></td>
+    <td><button class="x-btn" onclick="delTW(${i})" title="Remove">×</button></td></tr>`;}).join('');
+  return `<div class="sg-sec"><div class="sec-head"><div class="sec-title">Publishing (Sony delivery sheet)</div><span class="${iss.length?'chip-warn':'chip-ok'}">${s.pubStatus==='submitted'?'Submitted · '+esc(s.pubBatch||''):iss.length?iss.length+' to fill':'Ready to submit'}</span></div>
+   <div class="form-grid3"><div><label>ISRC</label><input type="text" value="${escA(s.isrc||'')}" placeholder="12 characters" onchange="setTrack('isrc',this.value)"></div>
+    <div><label>Language (lyrics)</label><input type="text" list="dl-lang" value="${escA(s.language||'')}" placeholder="Hindi / English" onchange="setTrack('language',this.value)"></div>
+    <div><label>Performer on the recording</label><input type="text" value="${escA(s.performer||'')}" placeholder="${escA(songRel(s)?.artist||s.artist||'')}" onchange="setTrack('performer',this.value)"></div></div>
+   ${dup?`<div class="field-hint late-t">This ISRC was already submitted with "${esc(dup.title)}" (${esc(dup.pubBatch||'')}).</div>`:''}
+   <table class="edit-table"><thead><tr><th>Writer</th><th>Role</th><th>Share %</th><th>Writer ctrl</th><th></th></tr></thead><tbody>${rows||'<tr><td colspan="5" class="muted-cell">No writers yet.</td></tr>'}</tbody></table>
+   <div class="sec-actions" style="margin:6px 0"><button class="btn btn-ghost btn-sm" onclick="addTW()">+ Add writer</button>${(s.writers||[]).length>1?'<button class="btn btn-ghost btn-sm" onclick="evenTW()">Split evenly</button>':''}<span class="sub" style="margin-left:auto;${Math.abs(t-100)>0.01?'color:#ffb340':''}">Total ${t}%</span></div>
+   <div class="field-hint">Writer ctrl = Yes means ${esc(db.pubSettings.publisher||'your publishing company')} owns and controls this writer's publishing and mechanical share on the song. The writer still collects their own writer share through PRS / IPRS. Set No only for a writer whose publishing sits with someone else. Shares fill the sheet automatically (writer performance = half, publisher control, mech and synch = full).</div>
+   <details class="more"><summary>More fields (ISWC, alt title, amendments)</summary><div class="form-grid3" style="margin-top:10px">
+    <div><label>ISWC (T + 10 digits)</label><input type="text" value="${escA(s.iswc||'')}" onchange="setTrack('iswc',this.value)"></div>
+    <div><label>Alternative title</label><input type="text" value="${escA(s.altTitle||'')}" onchange="setTrack('altTitle',this.value)"></div>
+    <div><label>Album title (if not the single)</label><input type="text" value="${escA(s.album||'')}" placeholder="${escA(songRel(s)?.album||songRel(s)?.title||s.title)}" onchange="setTrack('album',this.value)"></div>
+    <div><label>Tempo song code (amendments only)</label><input type="text" value="${escA(s.tempo||'')}" onchange="setTrack('tempo',this.value)"></div>
+    <div><label>Society work no. (Tunecode etc.)</label><input type="text" value="${escA(s.workNo||'')}" onchange="setTrack('workNo',this.value)"></div>
+    <div><label>Artist AKA</label><input type="text" value="${escA(s.artistAka||'')}" onchange="setTrack('artistAka',this.value)"></div></div></details>
+   ${iss.length&&s.pubStatus!=='submitted'?`<div class="miss">Still needed: ${iss.map(x=>`<span class="tag">${esc(x)}</span>`).join(' ')}</div>`:''}
+  </div>`;
+}
+function renderTrack(){
+  const s=curTrack();if(!s)return;const st=s.stage||'Melody';const idx=SONG_STAGES.indexOf(st);const today=todayISO();const sd=s.stageDates||{};const rel=songRel(s);
+  const stageRow=SONG_STAGES.map((n,i)=>{const due=sd[n];const late=due&&due<today&&i>=idx;return `<div class="stg ${i<idx?'done':i===idx?'now':''}"><button class="stg-dot" onclick="setTrack('stage','${n}')" title="Move to ${n}">${i<idx?'✓':''}</button><div class="stg-name">${n}</div>${i===5?'<div class="stg-date"></div>':`<input type="date" class="stg-date ${late?'late':''}" value="${escA(due||'')}" onchange="setTrackStageDate(${i},this.value)">`}</div>`;}).join('');
+  document.getElementById('tr-body').innerHTML=`
+  <div class="pv-top"><div style="flex:1"><input type="text" class="sg-title" value="${escA(s.title)}" onchange="setTrack('title',this.value||'Untitled')"><div class="sub">${esc(s.artist||'')}${s.released?' · released':''}</div></div><button class="x-btn" onclick="closeTrack()">×</button></div>
+  <div class="form-grid3" style="margin-top:12px"><div><label>Artist</label><input type="text" value="${escA(s.artist||'')}" onchange="setTrack('artist',this.value)"></div><div><label>Mood</label><input type="text" value="${escA(s.mood||'')}" placeholder="Longing, hopeful" onchange="setTrack('mood',this.value)"></div><div><label>Target release date</label><input type="date" value="${escA(s.targetDate||'')}" onchange="setTrack('targetDate',this.value)"></div></div>
+  <div class="sg-sec"><div class="sec-head"><div class="sec-title">Progress</div>${st==='Mix'?'<button class="btn btn-primary btn-sm" onclick="setTrack(\'stage\',\'Release folder\')">Send to release folder</button>':''}</div><div class="stg-row">${stageRow}</div>
+   <div class="field-hint">Tap a circle to move the song. Dates are your own deadlines for each stage.</div></div>
+  <div class="sg-sec"><div class="sec-title">Lyrics</div><textarea rows="7" onchange="setTrack('lyrics',this.value)" placeholder="Paste the lyrics. The release folder reads them to suggest dates.">${esc(s.lyrics||'')}</textarea></div>
+  ${pubEditor(s)}
+  <div class="sg-sec"><div class="sec-title">Previews</div>
+   <div class="pvw-add"><input type="text" id="tpv-label" placeholder="Demo v2, mix 3…"><input type="text" id="tpv-url" placeholder="https:// link"><button class="btn btn-primary btn-sm" onclick="addTrackPreview()">Add</button></div>
+   ${(s.previews||[]).map(p=>{const a=audioSrc(p.url);return `<div class="pvw"><div class="pvw-top"><strong>${esc(p.label)}</strong><span class="sub">${esc(previewHost(p.url))}</span><span style="flex:1"></span><a class="btn btn-ghost btn-sm" href="${escA(p.url)}" target="_blank" rel="noopener">Open ↗</a><button class="x-btn" onclick="delTrackPreview('${escA(p.id)}')">×</button></div>${a?`<audio controls preload="none" src="${escA(a)}"></audio>`:''}</div>`;}).join('')||'<div class="sub">No previews yet.</div>'}</div>
+  <div class="sg-sec"><div class="sec-title">Release</div>${rel?`<div class="sub">On <strong>${esc(rel.title)}</strong>${rel.date?' · out '+fmtD(rel.date,{day:'numeric',month:'long',year:'numeric'}):' · no date yet'}</div><button class="btn btn-ghost btn-sm" style="margin-top:8px" onclick="setActive('${escA(rel.id)}');closeTrack();selectSection('distribution')">Open release</button>`
+    :s.released?`<div class="sub">Released ${esc(songRelDate(s)?fmtD(songRelDate(s),{day:'numeric',month:'long',year:'numeric'}):s.releaseYear||'')} (imported from a Sony sheet)</div>`
+    :st==='Release folder'?`<button class="btn btn-primary btn-sm" onclick="closeTrack();openModal(['${escA(s.id)}'])">Create release from this song</button>`:'<div class="sub">Not in a release yet. Send it to the release folder when the mix is done.</div>'}</div>
+  <div class="sg-sec"><button class="btn btn-ghost btn-sm danger-t" onclick="deleteTrack()">Delete song</button></div>`;
+}
+
+/* ---------- writers directory ---------- */
+let wrCtx=null;
+function openWriter(id,ctx){ensureTrackDrawer();wrCtx=ctx||null;const w=writerById(id)||{id:'',first:'',last:'',society:'',ipi:'',aka:'',akaType:'',notes:''};
+  document.getElementById('wr-title').textContent=w.id?wName(w):'New writer';
+  document.getElementById('wr-body').innerHTML=`<input type="hidden" id="wr-id" value="${escA(w.id)}">
+  <div class="form-row"><div><label>First name</label><input type="text" id="wr-first" value="${escA(w.first)}"></div><div><label>Surname (as registered)</label><input type="text" id="wr-last" value="${escA(w.last)}"></div></div>
+  <div class="form-row"><div><label>Society</label><input type="text" id="wr-soc" list="dl-soc" value="${escA(w.society)}" placeholder="PRS, IPRS, NS if none"></div><div><label>IPI / CAE number</label><input type="text" id="wr-ipi" value="${escA(w.ipi)}" placeholder="9 to 11 digits"></div></div>
+  <div class="form-row"><div><label>Stage name / AKA</label><input type="text" id="wr-aka" value="${escA(w.aka)}"></div><div><label>AKA type</label><input type="text" id="wr-akat" value="${escA(w.akaType)}" placeholder="Ask Sony if unsure"></div></div>
+  <div class="form-row"><div><label>Writer ctrl (writer controlled by ${esc(db.pubSettings.publisher||'your publisher')})</label><select id="wr-signed"><option ${w.signed!=='Yes'?'selected':''}>No</option><option ${w.signed==='Yes'?'selected':''}>Yes</option></select></div><div></div></div>
+  <div class="form-row full"><div><label>Notes</label><input type="text" id="wr-notes" value="${escA(w.notes)}" placeholder="Signed to us? Contact, manager…"></div></div>
+  <div class="field-hint">Find the IPI on the PRS or IPRS member portal. Use NS for writers with no society and leave the IPI empty.</div>`;
+  document.getElementById('wr-del').style.display=w.id?'':'none';document.getElementById('wr-modal').classList.add('open');}
+function closeWriter(){document.getElementById('wr-modal').classList.remove('open');if(wrCtx&&trackCur)renderTrack();wrCtx=null;}
+function saveWriter(){const g=i=>document.getElementById(i).value.trim();const id=g('wr-id');
+  const rec={first:g('wr-first'),last:g('wr-last'),society:g('wr-soc').toUpperCase(),ipi:digits(g('wr-ipi')),aka:g('wr-aka'),akaType:g('wr-akat'),notes:g('wr-notes'),signed:g('wr-signed')==='Yes'?'Yes':'No'};
+  if(!rec.last){toast('Surname is required');return;}
+  if(rec.ipi&&(rec.ipi.length<9||rec.ipi.length>11)){toast('IPI numbers are 9 to 11 digits');return;}
+  const clash=rec.ipi&&db.writers.find(w=>w.id!==id&&w.ipi===rec.ipi);if(clash){toast('That IPI already belongs to '+wName(clash));return;}
+  let w;if(id){w=writerById(id);const ch=w.signed!==rec.signed;Object.assign(w,rec);if(ch)db.songs.forEach(s=>(s.writers||[]).forEach(x=>{if(x.wid===w.id)x.ctrl=w.signed;}));}else w=addWriter(rec);
+  if(wrCtx){const s=songById(wrCtx.song);if(s&&s.writers[wrCtx.idx]){s.writers[wrCtx.idx].wid=w.id;s.writers[wrCtx.idx].ctrl=w.signed;}}
+  scheduleSave();closeWriter();if(currentView==='publishing')renderPublishing();toast('Writer saved');}
+function deleteWriter(){const id=document.getElementById('wr-id').value;const used=db.songs.filter(s=>(s.writers||[]).some(x=>x.wid===id));
+  if(used.length){toast('Used on '+used.length+' song'+(used.length===1?'':'s')+'. Remove them from those songs first.',3500);return;}
+  if(!confirm('Delete this writer?'))return;db.writers=db.writers.filter(w=>w.id!==id);scheduleSave();closeWriter();renderPublishing();}
+
+/* ---------- song log board ---------- */
+function logSong(){migratePub();const s={id:uid('sg'),title:'Untitled '+(db.songs.length+1),artist:pipeF.artist||db.releases[0]?.artist||'Arjuna Harjai',stage:'Melody',stageDates:{},lyrics:'',language:'',previews:[],writers:[],created:Date.now()};
+  const me=db.writers.find(w=>normName(w.first+w.last)==='arjunaharjai');if(me)s.writers.push({wid:me.id,role:'C',share:50,ctrl:'Yes'});
+  db.songs.push(s);scheduleSave();if(currentView!=='songs')showView('songs',null);else renderSongs();openTrack(s.id);}
+function moveTrack(id,d){const s=songById(id);const i=SONG_STAGES.indexOf(s.stage||'Melody');s.stage=SONG_STAGES[Math.max(0,Math.min(SONG_STAGES.length-1,i+d))];scheduleSave();renderCenter();}
+function songArtistOk(s){return !pipeF.artist||s.artist===pipeF.artist;}
+function renderSongs(){
+  migratePub();const el=document.getElementById('center-inner');const today=todayISO();
+  const list=db.songs.filter(s=>!s.relId&&!s.released&&songArtistOk(s));
+  el.innerHTML=`<div class="eyebrow">Pipeline</div><div class="page-title">Song log</div><div class="page-sub">Songs being written and made. When the mix is done, send it to the release folder.</div>
+  <div class="toolbar">${artistPicker('renderSongs')}<span style="flex:1"></span><button class="btn btn-ghost btn-sm" onclick="showView('folder',null)">Release folder (${db.songs.filter(s=>s.stage==='Release folder'&&!s.relId&&!s.released).length})</button><button class="btn btn-primary btn-sm" onclick="logSong()">+ Log a song</button></div>
+  <div class="board board6">${SONG_STAGES.map(st=>{const cs=list.filter(s=>(s.stage||'Melody')===st);return `<div class="col"><div class="col-h">${st}<span>${cs.length}</span></div>${cs.map(s=>{const i=SONG_STAGES.indexOf(st);const nxt=SONG_STAGES[i+1];const due=(s.stageDates||{})[st];const late=due&&due<today&&i<5;const iss=songIssues(s).length;
+    return `<div class="scard" onclick="openTrack('${escA(s.id)}')"><div class="scard-t">${esc(s.title)}</div><div class="sub">${esc(s.artist||'')}</div>${due&&i<5?`<div class="sub ${late?'late-t':''}">${late?'Overdue: ':''}${st} by ${fmtD(due)}</div>`:''}${s.targetDate?`<div class="sub">Target ${fmtD(s.targetDate)}</div>`:''}<div class="mini-bar"><i style="width:${Math.round(i/5*100)}%"></i></div><div class="scard-f"><span class="sub">${iss?iss+' publishing gaps':'Publishing ready'}</span><span onclick="event.stopPropagation()"><button class="x-btn" onclick="moveTrack('${escA(s.id)}',-1)" title="Back">‹</button>${nxt?`<button class="x-btn" onclick="moveTrack('${escA(s.id)}',1)" title="${nxt}">›</button>`:''}</span></div></div>`;}).join('')}</div>`;}).join('')}</div>`;
+}
+
+/* ---------- release folder ---------- */
+function folderSongs(){return db.songs.filter(s=>s.stage==='Release folder'&&!s.relId&&!s.released&&songArtistOk(s));}
+function toggleFolderSel(el){folderSel[el.dataset.id]=el.checked;renderFolder();}
+function createFromFolder(){const ids=folderSongs().filter(s=>folderSel[s.id]).map(s=>s.id);if(!ids.length){toast('Tick the songs for this release');return;}folderSel={};openModal(ids);}
+function applyPlanDate(el){const s=songById(el.dataset.id);if(!s)return;s.targetDate=el.dataset.date;scheduleSave();renderFolder();toast('Target date set for '+s.title);}
+function renderFolder(){
+  migratePub();const el=document.getElementById('center-inner');const songs=folderSongs();const plan=db.calPlan;const nSel=songs.filter(s=>folderSel[s.id]).length;
+  const planHtml=plan?`<div class="card ai-card"><div class="sec-head"><div class="sec-title"><span class="ai-text">✦ Suggested release calendar</span></div><span class="sub">${new Date(plan.at).toLocaleDateString('en-GB',{day:'numeric',month:'short'})}${plan.web?' · used live web search':' · general knowledge only, not live trends'}</span></div>
+    ${plan.market?`<p class="plan-p">${esc(plan.market)}</p>`:''}
+    ${(plan.plan||[]).map(p=>{const s=songById(p.id);const wd=/^\d{4}-\d{2}-\d{2}$/.test(p.date||'')?new Date(p.date+'T00:00:00').toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short',year:'numeric'}):esc(p.date||'');
+      return `<div class="plan-item"><div class="plan-d">${wd}</div><div style="flex:1"><strong>${esc(s?.title||p.title||'')}</strong><div class="sub">${esc(p.fit||'')}</div><div class="sub">${esc(p.why||'')}</div></div>${s&&/^\d{4}-\d{2}-\d{2}$/.test(p.date||'')?`<button class="btn btn-ghost btn-sm" data-id="${escA(s.id)}" data-date="${escA(p.date)}" onclick="applyPlanDate(this)">${s.targetDate===p.date?'✓ Set':'Use date'}</button>`:''}</div>`;}).join('')}
+    ${(plan.risks||[]).length?`<div class="sub" style="margin-top:8px">Watch out: ${plan.risks.map(esc).join(' · ')}</div>`:''}
+    ${(plan.sources||[]).length?`<div class="sub" style="margin-top:8px">Sources: ${plan.sources.map(x=>`<a href="${escA(x.url)}" target="_blank" rel="noopener noreferrer">${esc(x.title||previewHost(x.url))}</a>`).join(' · ')}</div>`:''}
+    <div class="field-hint">A suggestion, not a guarantee. Check dates against your own plans and Orchard lead time before locking them.</div></div>`:'';
+  el.innerHTML=`<div class="eyebrow">Pipeline</div><div class="page-title">Release folder</div><div class="page-sub">Finished songs waiting for a release date</div>
+  <div class="toolbar">${artistPicker('renderFolder')}<span style="flex:1"></span><button class="btn btn-ai btn-sm" id="cal-btn" onclick="suggestCalendar()">✦ Suggest release calendar</button><button class="btn btn-primary btn-sm" onclick="createFromFolder()" ${nSel?'':'disabled'}>Create release${nSel>1?' ('+nSel+' tracks)':''}</button></div>
+  ${planHtml}
+  ${songs.map(s=>{const lines=String(s.lyrics||'').split('\n').map(x=>x.trim()).filter(Boolean).slice(0,2);const iss=songIssues(s);
+    return `<div class="card fold-c"><label class="fold-cb"><input type="checkbox" data-id="${escA(s.id)}" ${folderSel[s.id]?'checked':''} onchange="toggleFolderSel(this)"></label><div style="flex:1;cursor:pointer" onclick="openTrack('${escA(s.id)}')"><div class="sec-title" style="margin:0">${esc(s.title)}</div><div class="sub">${esc(s.artist||'')}${s.language?' · '+esc(s.language):''}${s.mood?' · '+esc(s.mood):''}${s.targetDate?' · target '+fmtD(s.targetDate,{day:'numeric',month:'short',year:'numeric'}):''}</div>
+    ${lines.length?`<div class="lyr">${lines.map(esc).join('<br>')}</div>`:'<div class="sub late-t">No lyrics yet, so the calendar can only use title and mood.</div>'}</div><span class="${iss.length?'chip-warn':'chip-ok'}">${iss.length?iss.length+' publishing gaps':'Publishing ready'}</span></div>`;}).join('')||emptyState('📁','Release folder is empty','Move a song here from the Song log once its mix is done')}`;
+}
+async function askClaudeWeb(prompt,maxTokens){
+  const s=getSettings();if(!s.apiKey)throw new Error('NO_KEY');
+  const call=async tools=>{const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':s.apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:s.model||DEFAULT_MODEL,max_tokens:maxTokens,messages:[{role:'user',content:prompt}],...(tools?{tools:[{type:'web_search_20250305',name:'web_search',max_uses:5}]}:{})})});const j=await r.json();if(!r.ok)throw new Error(j?.error?.message||('API error '+r.status));return j;};
+  let j,web=true;try{j=await call(true);}catch(e){if(e.message==='NO_KEY')throw e;web=false;j=await call(false);}
+  const text=(j.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('');
+  const sources=[];(j.content||[]).filter(b=>b.type==='web_search_tool_result'&&Array.isArray(b.content)).forEach(b=>b.content.forEach(x=>{const u=safeUrl(x.url);if(u&&sources.length<6&&!sources.find(y=>y.url===u))sources.push({url:u,title:String(x.title||'').slice(0,80)});}));
+  return {text,web,sources};
+}
+async function suggestCalendar(){
+  const songs=folderSongs();if(!songs.length){toast('No songs in the release folder yet');return;}
+  if(!getSettings().apiKey){noKeyMsg();return;}
+  const btn=document.getElementById('cal-btn');if(btn){btn.disabled=true;btn.textContent='✦ Reading lyrics and the market…';}
+  const today=todayISO();
+  const existing=db.releases.filter(r=>r.date&&r.date>=addDays(today,-120)).map(r=>`${r.date}: "${r.title}" by ${r.artist}`).join('\n')||'none';
+  const sl=songs.map(s=>`- id: ${s.id}\n  title: ${s.title}\n  artist: ${s.artist}\n  language: ${s.language||'unknown'}\n  mood: ${s.mood||'unknown'}\n  genre: ${s.genre||'unknown'}\n  lyrics: ${String(s.lyrics||'(none)').slice(0,1200).replace(/\n+/g,' / ')}`).join('\n');
+  const prompt=`You plan releases for Aart Sense Records, an independent label working with Indian and UK South Asian audiences, distributed by The Orchard. Today is ${today}.
+First, search the web for what matters for releasing music in India and the South Asian diaspora over the next 6 months: festival and wedding seasons, big film soundtracks or albums dropping that would bury a small release, and what moods and languages are currently doing well on Spotify India and Instagram Reels.
+Then read each song's lyrics, work out what it is about and which moment or season it suits, and give each song one release date.
+Rules: release on a Friday. Earliest date is ${addDays(today,(Number(db.ingestLead)||28)+7)} (The Orchard needs delivery ${db.ingestLead||28} days ahead). Keep at least 4 weeks between releases by the same artist, including these existing releases:
+${existing}
+Songs:
+${sl}
+Reply with ONLY this JSON, no other text:
+{"market":"2 to 4 plain sentences on what you found and how it shapes the plan","plan":[{"id":"song id","title":"song title","date":"YYYY-MM-DD","fit":"one sentence on what the lyrics are about and who they speak to","why":"one sentence on why this date"}],"risks":["short risk"]}`;
+  try{
+    const {text,web,sources}=await askClaudeWeb(prompt,3000);
+    const m=text.match(/\{[\s\S]*\}/);if(!m)throw new Error('Claude did not return a plan');
+    const p=JSON.parse(m[0]);
+    db.calPlan={at:Date.now(),web,sources,market:String(p.market||'').slice(0,800),risks:(Array.isArray(p.risks)?p.risks:[]).slice(0,5).map(x=>String(x).slice(0,200)),
+      plan:(Array.isArray(p.plan)?p.plan:[]).slice(0,30).map(x=>({id:String(x.id||''),title:String(x.title||'').slice(0,120),date:String(x.date||'').slice(0,10),fit:String(x.fit||'').slice(0,300),why:String(x.why||'').slice(0,300)}))};
+    scheduleSave();toast(web?'Calendar ready':'Calendar ready (web search not available on your API key, so no live trends)',4000);
+  }catch(e){toast(e.message==='NO_KEY'?'Add your Claude API key in Settings':'Could not build the calendar: '+e.message,4000);}
+  if(currentView==='folder')renderFolder();
+}
+
+/* ---------- release: distribution ---------- */
+function setRel(k,v){const rel=getActive();if(!rel)return;rel[k]=v;syncDist(rel);scheduleSave();renderAll();}
+function setTrackIsrc(el){const s=songById(el.dataset.id);if(!s)return;s.isrc=el.value.toUpperCase().replace(/[^A-Z0-9]/g,'');const rel=getActive();if(rel)syncDist(rel);scheduleSave();renderAll();}
+function addTrackToRel(el){const rel=getActive();const id=el.value;el.value='';if(!rel||!id)return;if(id==='__new'){const s={id:uid('sg'),title:rel.title,artist:rel.artist,stage:'Release folder',stageDates:{},lyrics:'',language:'',previews:[],writers:[],created:Date.now()};db.songs.push(s);rel.songIds=[...(rel.songIds||[]),s.id];s.relId=rel.id;}else{const s=songById(id);rel.songIds=[...(rel.songIds||[]),id];s.relId=rel.id;s.stage='Release folder';}syncDist(rel);scheduleSave();renderAll();}
+function removeTrackFromRel(el){const rel=getActive();const s=songById(el.dataset.id);if(!rel||!s||!confirm('Take "'+s.title+'" off this release? It goes back to the release folder.'))return;rel.songIds=(rel.songIds||[]).filter(x=>x!==s.id);s.relId=null;syncDist(rel);scheduleSave();renderAll();}
+function renderDistribution(){
+  const rel=getActive();const el=document.getElementById('center-inner');const t=relTracks(rel);const yn=rel.distributed||'';
+  const free=db.songs.filter(s=>!s.relId&&!s.released);
+  el.innerHTML=`<div class="eyebrow">Release</div><div class="page-title">Distribution</div><div class="page-sub">${esc(rel.title)} · The Orchard handles metadata, pre-saves and Content ID</div>
+  <div class="card"><div class="form-grid3"><div><label>Delivered to The Orchard?</label><div class="seg seg-l"><button class="${yn==='Yes'?'on':''}" onclick="setRel('distributed','Yes')">Yes</button><button class="${yn==='No'?'on':''}" onclick="setRel('distributed','No')">No</button></div></div>
+   <div><label>Release date</label><input type="date" value="${escA(rel.date||'')}" onchange="setRel('date',this.value)"></div>
+   <div><label>Release / album title for Sony</label><input type="text" value="${escA(rel.album||'')}" placeholder="${escA(rel.title)}" onchange="setRel('album',this.value.trim())"></div></div></div>
+  <div class="card"><div class="sec-head"><div class="sec-title">Tracks, ISRC and publishing</div><select onchange="addTrackToRel(this)" style="width:auto"><option value="">+ Add a track…</option>${free.map(s=>`<option value="${escA(s.id)}">${esc(s.title)} (${esc(s.stage||'')})</option>`).join('')}<option value="__new">New track named after this release</option></select></div>
+   <table class="edit-table"><thead><tr><th>Track</th><th>ISRC</th><th>Sony publishing</th><th></th></tr></thead><tbody>
+   ${t.map(s=>{const iss=songIssues(s);const bad=s.isrc&&!ISRC_RE.test(s.isrc);return `<tr><td><a class="lnk" onclick="openTrack('${escA(s.id)}')">${esc(s.title)}</a></td><td><input type="text" data-id="${escA(s.id)}" value="${escA(s.isrc||'')}" placeholder="12 characters" onchange="setTrackIsrc(this)" ${bad?'style="color:#ffb340"':''}></td>
+    <td>${s.pubStatus==='submitted'?`<span class="chip-ok">Submitted · ${esc(s.pubBatch||'')}</span>`:iss.length?`<span class="chip-warn" title="${escA(iss.join(', '))}">${iss.length} to fill</span> <a class="lnk" onclick="openTrack('${escA(s.id)}')">fill in</a>`:'<span class="chip-ok">Ready to submit</span>'}</td>
+    <td><button class="x-btn" data-id="${escA(s.id)}" onclick="removeTrackFromRel(this)" title="Remove">×</button></td></tr>`;}).join('')||'<tr><td colspan="4" class="muted-cell">No tracks linked. Add one so it can be registered with Sony.</td></tr>'}</tbody></table>
+   <div class="sec-actions" style="margin-top:10px"><button class="btn btn-ghost btn-sm" onclick="showView('publishing',null)">Go to Sony submissions</button></div></div>`;
+}
+
+/* ---------- publishing page ---------- */
+function setPubTab(t){pubTab=t;renderPublishing();}
+function togglePubSel(el){pubSel[el.dataset.id]=el.checked;renderPublishing();}
+function selectAllReady(){pubCandidates().filter(s=>!songIssues(s).length).forEach(s=>pubSel[s.id]=true);renderPublishing();}
+function pubCandidates(){return db.songs.filter(s=>s.pubStatus!=='submitted'&&(pubShowAll||songReleased(s)||songRel(s)));}
+function setPubSetting(el){db.pubSettings[el.dataset.k]=el.value.trim();scheduleSave();}
+function dismissConflict(i){db.pubConflicts.splice(i,1);scheduleSave();renderPublishing();}
+function renderPublishing(){
+  migratePub();const el=document.getElementById('center-inner');if(currentView!=='publishing'){return;}
+  const tabs=[['submit','To submit'],['done','Submitted'],['writers','Writers'],['setup','Setup']].map(([k,l])=>`<button class="ptab ${pubTab===k?'active':''}" onclick="setPubTab('${k}')">${l}</button>`).join('');
+  let body='';const si=settingsIssues();
+  if(pubTab==='submit'){
+    const list=pubCandidates();const ready=list.filter(s=>!songIssues(s).length);const sel=list.filter(s=>pubSel[s.id]&&!songIssues(s).length);
+    body=`${si.length?`<div class="card warn-c">Before exporting, fill in Setup: ${si.map(esc).join(', ')}. <a class="lnk" onclick="setPubTab('setup')">Open Setup</a> or import a past Sony sheet there.</div>`:''}
+    ${lastExport?`<div class="card ok-c"><div class="sec-title" style="margin:0 0 6px">Sheet downloaded. Once you've sent it to Sony, mark ${lastExport.ids.length===1?'this song':'these '+lastExport.ids.length+' songs'} as submitted.</div><div class="toolbar" style="margin:0"><input type="text" id="pb-batch" value="${escA(lastExport.batch)}" style="flex:0 0 160px;width:160px"><button class="btn btn-primary btn-sm" onclick="markSubmitted()">Mark as submitted</button><button class="btn btn-ghost btn-sm" onclick="lastExport=null;renderPublishing()">Not yet</button></div></div>`:''}
+    <div class="toolbar"><label class="sub" style="display:flex;gap:6px;align-items:center"><input type="checkbox" ${pubShowAll?'checked':''} onchange="pubShowAll=this.checked;renderPublishing()"> Include unreleased songs</label><span style="flex:1"></span><button class="btn btn-ghost btn-sm" onclick="selectAllReady()" ${ready.length?'':'disabled'}>Select all ready (${ready.length})</button><button class="btn btn-primary btn-sm" onclick="exportSony(Object.keys(pubSel).filter(k=>pubSel[k]))" ${sel.length&&!si.length?'':'disabled'}>Export Sony sheet (${sel.length})</button></div>
+    <div class="card">${list.map(s=>{const iss=songIssues(s);const dup=dupIsrc(s);const d=songRelDate(s);return `<div class="pub-row"><input type="checkbox" data-id="${escA(s.id)}" ${pubSel[s.id]&&!iss.length?'checked':''} ${iss.length?'disabled':''} onchange="togglePubSel(this)"><div style="flex:1;cursor:pointer" onclick="openTrack('${escA(s.id)}')"><strong>${esc(s.title)}</strong> <span class="sub">· ${esc(s.performer||songRel(s)?.artist||s.artist||'')}${d?' · '+fmtD(d,{day:'numeric',month:'short',year:'numeric'}):' · no release date'}${(s.writers||[]).length?' · '+s.writers.length+' writer'+(s.writers.length===1?'':'s'):''}</span>
+      ${iss.length?`<div class="miss">${iss.map(x=>`<span class="tag">${esc(x)}</span>`).join(' ')}</div>`:''}${dup?`<div class="sub late-t">Same ISRC already submitted as "${esc(dup.title)}"</div>`:''}</div><span class="${iss.length?'chip-warn':'chip-ok'}">${iss.length?'Fill in':'Ready'}</span></div>`;}).join('')||'<div class="muted-cell">Nothing waiting. Released songs that are not yet registered show here.</div>'}</div>
+    <div class="field-hint">The export copies Sony's Non-Library Song Delivery Sheet: their header rows, one line per writer, Writer ctrl as Yes/No and the language filled in, as they asked after Q3.</div>`;
+  }else if(pubTab==='done'){
+    const sub=db.songs.filter(s=>s.pubStatus==='submitted');const by={};sub.forEach(s=>{(by[s.pubBatch||'No batch']=by[s.pubBatch||'No batch']||[]).push(s);});
+    body=Object.entries(by).sort((a,b)=>b[0].localeCompare(a[0])).map(([b,l])=>`<div class="card"><div class="sec-head"><div class="sec-title">${esc(b)}</div><div class="sec-actions"><span class="sub">${l.length} song${l.length===1?'':'s'}</span><button class="btn btn-ghost btn-sm" data-b="${escA(b)}" onclick="reexportBatch(this)">Export corrected sheet</button></div></div>${l.map(s=>`<div class="pub-row"><div style="flex:1;cursor:pointer" onclick="openTrack('${escA(s.id)}')"><strong>${esc(s.title)}</strong> <span class="sub">· ${esc(s.isrc||'no ISRC')} · ${(s.writers||[]).map(x=>esc(wName(writerById(x.wid)))+' '+x.share+'%').join(', ')}</span></div><button class="btn btn-ghost btn-sm" onclick="unsubmit('${escA(s.id)}')">Undo</button></div>`).join('')}</div>`).join('')||emptyState('📄','Nothing submitted yet','Export a sheet from To submit, or import your past Sony sheets in Setup');
+  }else if(pubTab==='writers'){
+    const cnt=id=>db.songs.filter(s=>(s.writers||[]).some(x=>x.wid===id)).length;
+    body=`<div class="toolbar"><span class="sub">Saved once, picked from a list on every song.</span><span style="flex:1"></span><button class="btn btn-primary btn-sm" onclick="openWriter(null)">+ Add writer</button></div><div class="card"><table class="edit-table"><thead><tr><th>Writer</th><th>Society</th><th>IPI</th><th>Writer ctrl</th><th>AKA</th><th>Songs</th><th></th></tr></thead><tbody>
+    ${[...db.writers].sort((a,b)=>wName(a).localeCompare(wName(b))).map(w=>`<tr><td><strong>${esc(wName(w))}</strong></td><td>${esc(w.society||'—')}</td><td>${esc(w.ipi||(['NS','UNS'].includes(w.society)?'not needed':'missing'))}</td><td>${w.signed==='Yes'?'Yes':'No'}</td><td>${esc(w.aka||'')}</td><td>${cnt(w.id)}</td><td><button class="btn btn-ghost btn-sm" onclick="openWriter('${escA(w.id)}')">Edit</button></td></tr>`).join('')||'<tr><td colspan="7" class="muted-cell">No writers yet. Import a past Sony sheet in Setup to fill this list.</td></tr>'}</tbody></table></div>`;
+  }else{
+    const st=db.pubSettings;const f=(k,l,ph='')=>`<div><label>${l}</label><input type="text" data-k="${k}" value="${escA(st[k]||'')}" placeholder="${escA(ph)}" onchange="setPubSetting(this)"></div>`;
+    body=`<div class="card"><div class="sec-head"><div class="sec-title">Import past Sony sheets</div><label class="btn btn-ai btn-sm" style="cursor:pointer">Choose .xlsx files<input type="file" accept=".xlsx,.xls" multiple hidden onchange="importSonySheet(this)"></label></div>
+     <div class="field-hint" style="margin:0">Pick the delivery sheets you've sent before (like Song_Delivery_ASR_2026Q1 and New_Q3_2026_Submission). The app saves every writer with society and IPI, fills the codes below, and marks those songs as already submitted so they don't get sent twice. Nothing is uploaded anywhere except your own Google Drive. Your publisher and label names stay as set below.</div></div>
+     ${(db.pubConflicts||[]).length?`<div class="card warn-c"><div class="sec-title" style="margin:0 0 8px">Fix these before the next sheet</div>${db.pubConflicts.map((c,i)=>`<div class="pub-row"><span style="flex:1">${esc(c)}</span><button class="x-btn" onclick="dismissConflict(${i})" title="Done">×</button></div>`).join('')}</div>`:''}
+     <div class="card"><div class="sec-title">Your Sony codes and names</div><div class="form-grid3">
+      ${f('client','Client code (A)')}${f('contract','Contract code (B)')}${f('sub','Subcontract # (C)','1')}${f('pClient','Participant client code (D)')}${f('pContract','Participant contract code (E)')}${f('pSub','Participant subcontract # (F)','2')}
+      ${f('publisher','Publisher name, exactly as in the agreement')}${f('pubIpi','Publisher IPI')}${f('pubSociety','Publisher society')}${f('label','Label (AY)')}${f('office','Co-originating office','INDIA')}${f('territory','Territory controlled','WW')}</div>
+      <div class="field-hint">These go on every row of every sheet you export.</div></div>`;
+  }
+  el.innerHTML=`<div class="eyebrow">Publishing</div><div class="page-title">Sony Music Publishing</div><div class="page-sub">Register released songs with Sony in their delivery sheet format</div><div class="pitch-tabs" style="margin-bottom:16px">${tabs}</div>${body}`;
+}
+
 </script>
 </body>
 </html>
