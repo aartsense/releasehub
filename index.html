@@ -2131,7 +2131,8 @@ function normName(s){return String(s||'').toLowerCase().replace(/[^a-z]/g,'');}
 function digits(s){return String(s??'').replace(/\D/g,'');}
 function writerById(id){return (db.writers||[]).find(w=>w.id===id);}
 function wName(w){return w?([w.first,w.last].filter(Boolean).join(' ')||'Unnamed'):'Pick a writer';}
-function findWriter(first,last,ipi){const d=digits(ipi);const n=normName(first+last);return (db.writers||[]).find(w=>d&&digits(w.ipi)===d)||(n&&(db.writers||[]).find(w=>normName(w.first+w.last)===n||String(w.aka||'').split(/;\s*/).some(a=>normName(a)===n)));}
+function findWriter(first,last,ipi){const d=digits(ipi);const n=normName(first+last);const f1=normName(String(first||'').split(/\s+/)[0]);
+  const fz=n&&(db.writers||[]).find(w=>normName(w.last)===normName(last)&&normName(last)&&f1&&normName(String(w.first||'').split(/\s+/)[0])===f1&&(!d||!w.ipi||digits(w.ipi)===d));if(d&&!(db.writers||[]).some(w=>digits(w.ipi)===d)&&fz)return fz;return (db.writers||[]).find(w=>d&&digits(w.ipi)===d)||(n&&(db.writers||[]).find(w=>normName(w.first+w.last)===n||String(w.aka||'').split(/;\s*/).some(a=>normName(a)===n)))||fz||undefined;}
 function defSigned(){return 'Yes';}
 function addWriter(o){const w={id:uid('wr'),first:o.first||'',last:o.last||'',society:o.society||'',ipi:digits(o.ipi),aka:o.aka||'',akaType:o.akaType||'',notes:o.notes||'',signed:o.signed||defSigned(o.first,o.last)};db.writers.push(w);return w;}
 function songById(id){return (db.songs||[]).find(s=>s.id===id);}
@@ -2333,17 +2334,18 @@ async function importSonySheet(input){
     const batch=file.name.replace(/\.[^.]+$/,'').replace(/[_]+/g,' ').slice(0,60);
     const g=(r,L)=>r[colIdx(L)];const S=(r,L)=>String(g(r,L)??'').trim();
     const st=db.pubSettings;
-    const setS=(k,v,label)=>{v=String(v??'').trim();if(!v)return;if(!st[k]||(k==='territory'&&st[k]==='WW'&&!st._terrSet)||(k==='office'&&st[k]==='INDIA'&&!st._offSet)){st[k]=v;if(k==='territory')st._terrSet=1;if(k==='office')st._offSet=1;return;}if(['publisher','label'].includes(k))return;else if(st[k].toLowerCase()!==v.toLowerCase())conflict(`${label}: your sheets use both "${st[k]}" and "${v}". Sony needs one consistent value.`);};
+    const setS=(k,v,label)=>{v=String(v??'').trim();if(!v)return;if(k==='territory'&&/^(WW|World)$/i.test(v)&&/^(WW|World)$/i.test(st[k]||''))return;if(!st[k]||(k==='territory'&&st[k]==='WW'&&!st._terrSet)||(k==='office'&&st[k]==='INDIA'&&!st._offSet)){st[k]=v;if(k==='territory')st._terrSet=1;if(k==='office')st._offSet=1;return;}if(['publisher','label'].includes(k))return;else if(st[k].toLowerCase()!==v.toLowerCase())conflict(`${label}: your sheets use both "${st[k]}" and "${v}". Sony needs one consistent value.`);};
     const groups=new Map();
     rows.slice(hi+1).forEach(r=>{const title=S(r,'N');if(!title||title==='Title'||S(r,'AV')==='Mandatory field'||S(r,'R')==='Mandatory')return;
-      const key=(S(r,'AV')||title).toUpperCase();if(!groups.has(key))groups.set(key,[]);groups.get(key).push(r);});
+      const key=(S(r,'AV')+'|'+normName(title)).toUpperCase();if(!groups.has(key))groups.set(key,[]);groups.get(key).push(r);});
     groups.forEach(list=>{
       const r0=list[0];
       setS('client',g(r0,'A'),'Client code');setS('contract',g(r0,'B'),'Contract code');setS('sub',g(r0,'C'),'Subcontract');setS('pClient',g(r0,'D'),'Participant client code');setS('pContract',g(r0,'E'),'Participant contract code');setS('pSub',g(r0,'F'),'Participant subcontract');
       setS('office',g(r0,'H'),'Co-originating office');setS('territory',g(r0,'O'),'Territory');setS('publisher',g(r0,'AD'),'Publisher name');setS('pubIpi',g(r0,'AF'),'Publisher IPI');setS('pubSociety',g(r0,'AE'),'Publisher society');setS('label',g(r0,'AY'),'Label');
       const isrc=S(r0,'AV').toUpperCase().replace(/[^A-Z0-9]/g,'');const title=S(r0,'N');
-      let s=(db.songs||[]).find(o=>isrc&&o.isrc===isrc)||(db.songs||[]).find(o=>!o.isrc&&normName(o.title)===normName(title));
-      if(s&&s.pubStatus==='submitted'&&s.pubBatch&&s.pubBatch!==batch)conflict(`"${title}" is in both "${s.pubBatch}" and "${batch}". Check with Sony that it isn't registered twice.`);
+      let s=(db.songs||[]).find(o=>isrc&&o.isrc===isrc&&normName(o.title)===normName(title))||(db.songs||[]).find(o=>normName(o.title)===normName(title)&&(!o.isrc||!isrc||o.isrc===isrc))||(db.songs||[]).find(o=>isrc&&o.isrc===isrc&&!o.title);
+      const twin=isrc&&(db.songs||[]).find(o=>o!==s&&o.isrc===isrc&&normName(o.title)!==normName(title));if(twin)conflict(`"${title}" and "${twin.title}" have the same ISRC (${isrc}). One of them is wrong; check The Orchard.`);
+      if(s&&s.pubStatus==='submitted'&&s.pubBatch&&s.pubBatch!==batch&&!/^Registered /.test(s.pubBatch)&&!(s.isrc&&isrc&&s.isrc!==isrc))conflict(`"${title}" is in both "${s.pubBatch}" and "${batch}". Check with Sony that it isn't registered twice.`);
       const writers=list.map(r=>{const first=S(r,'S'),last=S(r,'R'),ipi=digits(g(r,'U')),soc=S(r,'T');let w=findWriter(first,last,ipi);
         if(!w){w=addWriter({first,last,society:soc,ipi,aka:S(r,'V'),akaType:S(r,'X')});nW++;}
         else{if(ipi&&!w.ipi)w.ipi=ipi;if(soc&&!w.society)w.society=soc;else if(soc&&w.society!==soc)conflict(`${wName(w)}: society is "${w.society}" in one sheet and "${soc}" in another.`);
@@ -2358,6 +2360,7 @@ async function importSonySheet(input){
       nSongs++;
     });
   }
+  db.pubConflicts=(db.pubConflicts||[]).filter(c=>!/^Add (society and IPI|the IPI) for /.test(c));{const nw=db.writers.filter(x=>!x.ipi&&!['NS','UNS'].includes(x.society));if(nw.length)conflict('Add the IPI for '+nw.map(wName).join(', ')+' in Writers, so future sheets with them are complete.');}
   logPub(`Imported ${files.map(f=>f.name).join(', ')}: ${nSongs} songs read, ${nNew} new, ${nW} writers added`);
   scheduleSave();renderPublishing();
   toast(`${nSongs} songs read (${nNew} new), ${nW} writers added`,4000);
@@ -2593,7 +2596,7 @@ function renderPublishing(){
     ${[...db.writers].sort((a,b)=>wName(a).localeCompare(wName(b))).map(w=>`<tr><td><strong>${esc(wName(w))}</strong></td><td>${esc(w.society||'—')}</td><td>${esc(w.ipi||(['NS','UNS'].includes(w.society)?'not needed':'missing'))}</td><td>${w.signed==='Yes'?'Yes':'No'}</td><td>${esc(w.aka||'')}</td><td>${cnt(w.id)}</td><td><button class="btn btn-ghost btn-sm" onclick="openWriter('${escA(w.id)}')">Edit</button></td></tr>`).join('')||'<tr><td colspan="7" class="muted-cell">No writers yet. Import a past Sony sheet in Setup to fill this list.</td></tr>'}</tbody></table></div>`;
   }else{
     const st=db.pubSettings;const f=(k,l,ph='')=>`<div><label>${l}</label><input type="text" data-k="${k}" value="${escA(st[k]||'')}" placeholder="${escA(ph)}" onchange="setPubSetting(this)"></div>`;
-    body=`<div class="card"><div class="sec-head"><div class="sec-title">Import past delivery sheets</div><label class="btn btn-ai btn-sm" style="cursor:pointer">Choose .xlsx files<input type="file" accept=".xlsx,.xls" multiple hidden onchange="importSonySheet(this)"></label></div>
+    body=`<div class="card"><div class="sec-head"><div class="sec-title">Import past delivery sheets</div><label class="btn btn-ai btn-sm" style="cursor:pointer">Choose .xlsx files<input type="file" accept=".xlsx,.xls,.xlsb" multiple hidden onchange="importSonySheet(this)"></label></div>
      <div class="field-hint" style="margin:0">Pick delivery sheets you've sent before, or the Song Interested Parties export from Sony's SCORE dashboard. The app saves every writer with society and IPI, fills the codes below, and marks those songs as already submitted so they don't get sent twice. Nothing is uploaded anywhere except your own Google Drive. Your publisher and label names stay as set below.</div></div>
      ${(db.pubConflicts||[]).length?`<div class="card warn-c"><div class="sec-title" style="margin:0 0 8px">Fix these before the next sheet</div>${db.pubConflicts.map((c,i)=>`<div class="pub-row"><span style="flex:1">${esc(c)}</span><button class="x-btn" onclick="dismissConflict(${i})" title="Done">×</button></div>`).join('')}</div>`:''}
      <div class="card"><div class="sec-title">Who registers and collects for you</div>
