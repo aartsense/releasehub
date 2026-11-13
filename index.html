@@ -544,7 +544,46 @@ details.more{margin-top:10px}details.more summary{cursor:pointer;font-size:12px;
 .fold-c{display:flex;gap:14px;align-items:flex-start}.fold-cb input{width:18px;height:18px;accent-color:#fff;margin-top:3px}.lyr{margin-top:8px;font-size:12.5px;color:var(--muted);font-style:italic;line-height:1.5}
 .plan-p{font-size:13px;line-height:1.6;color:var(--muted);margin:4px 0 10px}.plan-item{display:flex;gap:14px;align-items:flex-start;padding:10px 0;border-top:1px solid var(--sep)}.plan-d{width:130px;flex-shrink:0;font-weight:600;font-size:13px}
 .nr-tl{max-height:180px;overflow-y:auto;background:var(--fill3);border-radius:10px;padding:6px 10px;margin:4px 0 6px}.nr-t{display:flex!important;gap:8px;align-items:center;padding:5px 0;font-size:13px;color:var(--text)!important;text-transform:none!important;letter-spacing:0!important;cursor:pointer}.nr-t input{width:16px;height:16px;accent-color:#fff}
+.batch-t{font-size:17px!important;font-weight:600;background:transparent!important;box-shadow:none!important;padding:2px 0!important;flex:1;min-width:200px}
+.lnk-mute{background:none;border:none;color:var(--soft);font:inherit;font-size:12px;cursor:pointer;padding:4px 6px}.lnk-mute:hover{color:#fff;text-decoration:underline}
+
+/* ===== Day theme ===== */
+html.light{--bg:#f5f5f7;--text:#1d1d1f;--muted:rgba(60,60,67,.68);--soft:rgba(60,60,67,.45);--border:rgba(0,0,0,.08);--border2:rgba(0,0,0,.12);--sep:rgba(60,60,67,.15);--fill1:rgba(118,118,128,.20);--fill2:rgba(118,118,128,.12);--fill3:rgba(118,118,128,.08);--card:#ffffff;--card2:#f2f2f7;--green:#1d1d1f;--green-soft:#3a3a3c;--green-dim:rgba(0,0,0,.06);--green-dim2:rgba(0,0,0,.04);--green-glow:rgba(0,0,0,.08);--amber:#c93400;--amber-dim:rgba(255,149,0,.14);--red:#c93400;--red-dim:rgba(255,149,0,.14)}
+html.light body{background:#f5f5f7}
+html.light body::before{opacity:.45}
+html.light .lsidebar,html.light .rsidebar{background:rgba(255,255,255,.75)}
+html.light .rel-bar{background:rgba(245,245,247,.78)}
+html.light .card,html.light .metric-card,html.light .pitch-out-card,html.light .note-card,html.light .free-notes-card,html.light .tl-card,html.light .context-form,html.light .out-card{box-shadow:0 1px 2px rgba(0,0,0,.04),0 4px 16px rgba(0,0,0,.04)}
+html.light .task-row{background:#fff}html.light .task-row:hover{background:#f2f2f7}
+html.light .btn-primary,html.light .ptab.active,html.light .seg button.on,html.light .cal-d.today .cal-n,html.light .auth-btn,html.light .wa-ico,html.light .profily-mark{background:#1d1d1f;color:#fff}
+html.light .btn-primary:hover,html.light .auth-btn:hover{background:#3a3a3c}
+html.light .btn-ai{color:#1d1d1f;background:linear-gradient(#fff,#fff) padding-box,var(--ai) border-box}
+html.light .cb.checked,html.light .stg.done .stg-dot{background:#1d1d1f;border-color:#1d1d1f;color:#fff}
+html.light .cb.checked svg polyline{stroke:#fff}
+html.light .stg.now .stg-name,html.light .lnk,html.light .ai-card a,html.light .fold-c a,html.light .lnk-mute:hover{color:#1d1d1f}
+html.light .plv-card.on{border-color:#1d1d1f}
+html.light .k-release{background:#1d1d1f;color:#fff}
+html.light .ptab-ready-dot{border-color:#fff}
+html.light .modal,html.light .auth-card{background:#fff;box-shadow:0 30px 80px rgba(0,0,0,.18)}
+html.light .modal-bg{background:rgba(0,0,0,.25)}
+html.light .pv-sheet{background:rgba(255,255,255,.94)}
+html.light #toast{background:rgba(29,29,31,.92);color:#fff}
+html.light .auth-screen{background:#f5f5f7}
+html.light select option{background:#fff;color:#1d1d1f}
+html.light .col{background:rgba(0,0,0,.035)}
+html.light .scard{background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.06)}html.light .scard:hover{background:#fafafa}
+html.light .spark polyline{stroke:#1d1d1f}
+html.light .chip-ok{color:#1a7f37;background:rgba(52,199,89,.14)}
+html.light .chip-warn{color:#b25000;background:rgba(255,149,0,.14)}
+html.light .late-t,html.light .miss .tag{color:#b25000!important}
+html.light .warn-c{background:#fff8ee!important}html.light .ok-c{background:#f0fbf3!important}
+html.light .sg-embed{background:#e5e5ea}
+html.light .sec-bar-track,html.light .hbar-track,html.light .overview-track,html.light .mini-bar,html.light .big-track,html.light .prog-track{background:rgba(118,118,128,.16)!important}
+.theme-btn{display:flex;align-items:center;justify-content:center;gap:6px}
+.dl-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;align-items:end}@media(max-width:1000px){.dl-grid{grid-template-columns:repeat(3,1fr)}}
+.log-row{display:flex;gap:14px;padding:7px 0;border-bottom:1px solid var(--sep);font-size:12.5px}.log-row:last-of-type{border-bottom:none}.log-d{color:var(--soft);width:150px;flex-shrink:0}
 </style>
+<script>try{if(localStorage.getItem('rh_theme')==='light')document.documentElement.classList.add('light')}catch(e){}</script>
 </head>
 <body>
 <div id="toast"></div>
@@ -662,7 +701,7 @@ details.more{margin-top:10px}details.more summary{cursor:pointer;font-size:12px;
       </button>
       <button class="nav-btn" onclick="showView('publishing',this)">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M9 15l2 2 4-4"/></svg>
-        Sony publishing
+        Publishing
       </button>
       <button class="nav-btn" onclick="showView('plan',this)">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
@@ -695,6 +734,7 @@ details.more{margin-top:10px}details.more summary{cursor:pointer;font-size:12px;
     <div class="lsidebar-footer">
       <button class="icon-btn" onclick="logSong()">+ Log a song</button>
       <button class="icon-btn" onclick="openModal()">+ New release</button>
+      <button class="icon-btn theme-btn" id="theme-btn" onclick="toggleTheme()">☀︎ Day theme</button>
       <button class="icon-btn" onclick="openSettings()">Settings</button>
       <button class="icon-btn signout" onclick="signOut()">Sign out</button>
     </div>
@@ -731,7 +771,7 @@ const PITCH_TYPES=['bbc_playlist','bbc_intro','bbc_radio','press','curator','syn
 const PITCH_LABELS={bbc_playlist:'BBC Asian Network',bbc_intro:'BBC Introducing',bbc_radio:'BBC Radio 1/2',press:'Press',curator:'Curator',sync:'Sync licensing',blog:'Music blog',spotify:'Spotify editorial'};
 
 const SECTIONS=[
-  {id:'distribution',name:'Distribution',color:'#0a84ff',items:[{id:'d1',label:'Delivered to The Orchard'},{id:'d2',label:'ISRC added for every track'},{id:'d6',label:'Registered with Sony Music Publishing'}]},
+  {id:'distribution',name:'Distribution',color:'#0a84ff',items:[{id:'d1',label:'Delivered to The Orchard'},{id:'d2',label:'ISRC added for every track'},{id:'d6',label:'Registered for publishing'}]},
   {id:'assets',name:'Creative assets',color:'#bf5af2',items:[{id:'a1',label:'Album art finalised (3000x3000px, RGB)'},{id:'a2',label:'Press photo / EPK image ready'},{id:'a3',label:'Lyric video or visualiser delivered'},{id:'a4',label:'Official music video delivered'},{id:'a5',label:'Short-form reel (15s-30s) ready for Instagram / TikTok'},{id:'a6',label:'Vertical story asset ready'},{id:'a7',label:'Behind-the-scenes content shot (RAP Ville / Deadline Day Films)'}]},
   {id:'social',name:'Content & social',color:'#ff375f',items:[{id:'c1',label:'Instagram content calendar mapped for 4 weeks post-release'},{id:'c2',label:'Reels shot and edited'},{id:'c3',label:'Carousel posts designed (cinematic aesthetic)'},{id:'c4',label:'Caption copy written for all posts'},{id:'c5',label:'Hashtag sets prepared — UK, US, CA, AU South Asian diaspora'},{id:'c6',label:'DM automation numerology sequence set up'},{id:'c7',label:'YouTube community post drafted'}]},
   {id:'promo',name:'Promo strategy',color:'#ff9f0a',items:[{id:'p1',label:'Meta ads campaign structured — awareness and retargeting'},{id:'p2',label:'Ad creatives A/B tested (min 2 variants)'},{id:'p3',label:'Target audience defined and saved in Ads Manager'},{id:'p4',label:'Groover curator outreach submitted (min 15 curators)'},{id:'p5',label:'Spotify editorial pitch submitted (7 days pre-release minimum)'},{id:'p6',label:'Apple Music pitch submitted'},{id:'p7',label:'Press release written and distributed'},{id:'p8',label:'Music blogs and digital press pitched'}]},
@@ -747,6 +787,10 @@ let currentView='overview',selectedSection=null,activePitchType='bbc_playlist';
 
 function toast(msg,d=2400){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),d);}
 function getActive(){return db.releases.find(r=>r.id===db.activeId)||null;}
+const REL_VIEWS=['dashboard','analytics','pitch','notes','timeline','details','plan','outreach','section'];
+function openRelease(id){db.activeId=id;scheduleSave();if(!REL_VIEWS.includes(currentView)){currentView='dashboard';selectedSection=null;document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',/showView\('dashboard'/.test(b.getAttribute('onclick')||'')));}renderAll();}
+function toggleTheme(){const l=document.documentElement.classList.toggle('light');try{localStorage.setItem('rh_theme',l?'light':'dark')}catch(e){}themeLabel();}
+function themeLabel(){const b=document.getElementById('theme-btn');if(b)b.textContent=document.documentElement.classList.contains('light')?'☾ Night theme':'☀︎ Day theme';}
 function setActive(id){db.activeId=id;scheduleSave();renderAll();}
 function openModal(ids){migratePub();pendingTracks=Array.isArray(ids)?ids:null;const pre=pendingTracks||[];const box=document.getElementById('nr-tracks');
   const cand=db.songs.filter(s=>!s.relId&&!s.released).sort((a,b)=>(b.stage==='Release folder')-(a.stage==='Release folder'));
@@ -873,8 +917,8 @@ async function createRelease(){
 }
 function deleteCurrentRelease(){
   const rel=getActive();if(!rel)return;
-  if(!confirm('Delete "'+rel.title+'"? Cannot be undone.'))return;
-  db.releases=db.releases.filter(r=>r.id!==rel.id);
+  if(!confirm('Delete the release "'+rel.title+'"? Its songs stay in your Song log and Release folder. Cannot be undone.'))return;
+  db.releases=db.releases.filter(r=>r.id!==rel.id);(db.songs||[]).forEach(t=>{if(t.relId===rel.id)t.relId=null;});
   db.activeId=db.releases.length?db.releases[db.releases.length-1].id:null;
   scheduleSave();renderAll();toast('Release deleted');
 }
@@ -904,7 +948,7 @@ function renderRelBar(){
 function renderLeftSidebar(){
   const el=document.getElementById('rel-list');
   if(!db.releases.length){el.innerHTML='<div style="font-size:11px;color:var(--soft);padding:4px 8px">No releases yet</div>';return;}
-  el.innerHTML=db.releases.map(r=>{const pct=calcPct(r);const col=pct===100?'var(--green)':pct>0?'var(--amber)':'var(--soft)';return`<div class="rel-item ${r.id===db.activeId?'active':''}" onclick="setActive('${r.id}')"><div class="rel-dot" style="background:${col}"></div><span class="rel-name">${esc(r.title)}</span><span class="rel-pct">${pct}%</span></div>`;}).join('');
+  el.innerHTML=db.releases.map(r=>{const pct=calcPct(r);const col=pct===100?'var(--green)':pct>0?'var(--amber)':'var(--soft)';return`<div class="rel-item ${r.id===db.activeId?'active':''}" onclick="openRelease('${r.id}')"><div class="rel-dot" style="background:${col}"></div><span class="rel-name">${esc(r.title)}</span><span class="rel-pct">${pct}%</span></div>`;}).join('');
   updatePitchBadge();
 }
 function renderRightSidebar(){
@@ -917,7 +961,7 @@ function renderRightSidebar(){
 function selectSection(id){selectedSection=id;currentView='section';document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));renderAll();}
 function showView(id,btn){currentView=id;selectedSection=null;document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));if(btn)btn.classList.add('active');renderCenter();renderRightSidebar();}
 function renderCenter(){if(currentView==='folder')return renderFolder();if(currentView==='publishing')return renderPublishing();if(currentView==='overview')return renderOverview();if(currentView==='songs')return renderSongs();if(currentView==='content')return renderContent();if(currentView==='calendar')return renderCalendar();if(currentView==='section'&&selectedSection)renderSectionDetail();else if(currentView==='dashboard')renderDash();else if(currentView==='analytics')renderAnalytics();else if(currentView==='pitch')renderPitchPage();else if(currentView==='notes')renderNotesPage();else if(currentView==='timeline')renderTimeline();else if(currentView==='details')renderDetails();else if(currentView==='plan')renderPlan();else if(currentView==='outreach')renderOutreach();else if(currentView==='contacts')renderContacts();else if(currentView==='vendors')renderVendors();else if(currentView==='strategy')renderStrategy();else if(currentView==='playlisting')renderPlaylisting();}
-function renderAll(){migratePub();db.releases.forEach(syncDist);renderRelBar();renderLeftSidebar();renderRightSidebar();renderCenter();}
+function renderAll(){themeLabel();migratePub();db.releases.forEach(syncDist);renderRelBar();renderLeftSidebar();renderRightSidebar();renderCenter();}
 
 /* DASHBOARD */
 function renderDash(){
@@ -1099,8 +1143,8 @@ function renderDetails(){
     <div class="form-row full"><div><label>Story behind the song (feeds every pitch)</label><textarea onchange="setDetail('story',this.value)" placeholder="What it is about, how it was made, why it matters">${esc(d.story||'')}</textarea></div></div>
     <div class="form-row full"><div><label>Highlights (press, playlists, numbers)</label><textarea onchange="setDetail('highlights',this.value)" placeholder="Previous single hit 1M streams, featured on...">${esc(d.highlights||'')}</textarea></div></div>
   </div>
-  <div class="card glass-section"><div class="sec-head"><div class="sec-title">Tracks, writers &amp; splits</div><div class="sec-actions"><button class="btn btn-primary btn-sm" onclick="showView('publishing',null)">Sony submissions</button></div></div>
-    <div class="field-hint" style="margin-bottom:10px">ISRC, language, writers, PRS / IPRS numbers and splits live on each track, so Sony's sheet fills itself.</div>
+  <div class="card glass-section"><div class="sec-head"><div class="sec-title">Tracks, writers &amp; splits</div><div class="sec-actions"><button class="btn btn-primary btn-sm" onclick="showView('publishing',null)">Publishing</button></div></div>
+    <div class="field-hint" style="margin-bottom:10px">ISRC, language, writers, PRS / IPRS numbers and splits live on each track, so the publishing sheet fills itself.</div>
     ${relTracks(rel).map(t=>{const iss=songIssues(t);return `<div class="pub-row"><div style="flex:1;cursor:pointer" onclick="openTrack('${escA(t.id)}')"><strong>${esc(t.title)}</strong> <span class="sub">· ${esc(t.isrc||'no ISRC')} · ${(t.writers||[]).map(x=>esc(wName(writerById(x.wid)))+' '+x.share+'%').join(', ')||'no writers'}</span></div><span class="${t.pubStatus==='submitted'?'chip-ok':iss.length?'chip-warn':'chip-ok'}">${t.pubStatus==='submitted'?'Submitted':iss.length?iss.length+' to fill':'Ready'}</span></div>`;}).join('')||'<div class="muted-cell">No tracks linked. Add one in Distribution.</div>'}
   </div>`;
 }
@@ -2075,7 +2119,7 @@ const SOCIETIES=['PRS','IPRS','IPRS/PRS','ASCAP','BMI','SOCAN','APRA','GEMA','SA
 const ROLE_OPTS=[['C','Composer (music)'],['A','Author (lyrics)'],['CA','Composer + author'],['AR','Arranger (public domain only)']];
 const LANGS=['Hindi','Punjabi','English','Urdu','Bengali','Marathi','Tamil','Telugu','Spanish','Instrumental'];
 const ISRC_RE=/^[A-Z]{2}[A-Z0-9]{3}\d{7}$/,ISWC_RE=/^T\d{10}$/;
-let trackCur=null,pubTab='submit',pubSel={},pubShowAll=false,pendingTracks=null,lastExport=null,folderSel={};
+let pubLogAll=false,trackCur=null,pubTab='submit',pubSel={},pubShowAll=false,pendingTracks=null,lastExport=null,folderSel={};
 
 /* ---------- data ---------- */
 function splitName(n){const p=String(n||'').trim().split(/\s+/).filter(Boolean);if(!p.length)return {first:'',last:''};if(p.length===1)return {first:'',last:p[0]};return {first:p.slice(0,-1).join(' '),last:p[p.length-1]};}
@@ -2083,7 +2127,7 @@ function normName(s){return String(s||'').toLowerCase().replace(/[^a-z]/g,'');}
 function digits(s){return String(s??'').replace(/\D/g,'');}
 function writerById(id){return (db.writers||[]).find(w=>w.id===id);}
 function wName(w){return w?([w.first,w.last].filter(Boolean).join(' ')||'Unnamed'):'Pick a writer';}
-function findWriter(first,last,ipi){const d=digits(ipi);return (db.writers||[]).find(w=>d&&digits(w.ipi)===d)||(db.writers||[]).find(w=>normName(w.first+w.last)===normName(first+last)&&normName(first+last));}
+function findWriter(first,last,ipi){const d=digits(ipi);const n=normName(first+last);return (db.writers||[]).find(w=>d&&digits(w.ipi)===d)||(n&&(db.writers||[]).find(w=>normName(w.first+w.last)===n||String(w.aka||'').split(/;\s*/).some(a=>normName(a)===n)));}
 function defSigned(){return 'Yes';}
 function addWriter(o){const w={id:uid('wr'),first:o.first||'',last:o.last||'',society:o.society||'',ipi:digits(o.ipi),aka:o.aka||'',akaType:o.akaType||'',notes:o.notes||'',signed:o.signed||defSigned(o.first,o.last)};db.writers.push(w);return w;}
 function songById(id){return (db.songs||[]).find(s=>s.id===id);}
@@ -2097,6 +2141,8 @@ function r3(n){return Math.round(n*1000)/1000;}
 function migratePub(){
   db.songs=db.songs||[];db.writers=db.writers||[];db.pubSettings=Object.assign({office:'INDIA',territory:'WW',publisher:'Aart Sense Studios Limited',label:'Aart Sense Records'},db.pubSettings||{});db.pubConflicts=db.pubConflicts||[];
   db.writers.forEach(w=>{if(!w.signed)w.signed=defSigned(w.first,w.last);});
+  db.deals=db.deals||[];if(!db.deals.length)db.deals.push({id:uid('dl'),name:'Sony Music Publishing',start:'',end:'',notes:''});
+  {const cd=curDeal();db.songs.forEach(s=>{s.regs=s.regs||[];if(cd&&s.pubStatus==='submitted'&&!s.regs.some(r=>r.deal===cd.id&&!r.ended))s.regs.push({deal:cd.id,batch:s.pubBatch||'',submitted:s.pubDate||'',confirmed:'',ended:''});});}
   if(db.pubV===1){db.songs.forEach(s=>(s.writers||[]).forEach(x=>{const w=writerById(x.wid);if(w)x.ctrl=w.signed;}));db.pubV=2;}
   if(db.pubV>=2)return;
   const keep=[];const map={Idea:'Melody',Lyrics:'Lyrics',Production:'Production',Mix:'Mix',Master:'Mix'};
@@ -2119,6 +2165,10 @@ function syncDist(rel){
   rel.state.d2=!!t.length&&t.every(s=>ISRC_RE.test(s.isrc||''));
   rel.state.d6=!!t.length&&t.every(s=>s.pubStatus==='submitted');
 }
+function curDeal(){db.deals=db.deals||[];return db.deals.find(d=>!d.end)||null;}
+function dealById(id){return (db.deals||[]).find(d=>d.id===id);}
+function adminName(){return curDeal()?.name||'your publisher';}
+function regLine(r){const d=dealById(r.deal);return `${esc(d?.name||'Unknown')}: sent ${r.submitted?fmtD(r.submitted,{day:'numeric',month:'short',year:'numeric'}):'date not set'}${r.confirmed?' · confirmed '+fmtD(r.confirmed,{day:'numeric',month:'short',year:'numeric'}):''}${r.ended?' · moved away '+fmtD(r.ended,{day:'numeric',month:'short',year:'numeric'}):''}`;}
 function doneCount(rel){const ids=SECTIONS.flatMap(s=>s.items).map(i=>i.id);return ids.filter(i=>(rel.state||{})[i]).length;}
 
 /* ---------- readiness for Sony ---------- */
@@ -2180,15 +2230,94 @@ function exportSony(ids,corr){
 }
 function markSubmitted(){
   if(!lastExport)return;const b=(document.getElementById('pb-batch')?.value||lastExport.batch).trim()||lastExport.batch;
-  lastExport.ids.forEach(id=>{const s=songById(id);if(s){s.pubStatus='submitted';s.pubBatch=b;s.pubDate=todayISO();}});
-  pubSel={};lastExport=null;db.releases.forEach(syncDist);scheduleSave();renderPublishing();renderRightSidebar();toast('Marked as submitted to Sony');
+  const dl=curDeal();lastExport.ids.forEach(id=>{const s=songById(id);if(s){s.pubStatus='submitted';s.pubBatch=b;s.pubDate=todayISO();s.regs=s.regs||[];if(dl)s.regs.push({deal:dl.id,batch:b,submitted:todayISO(),confirmed:'',ended:''});}});
+  logPub(`Sent ${lastExport.ids.length} song${lastExport.ids.length===1?'':'s'} to ${adminName()} as "${b}": `+lastExport.ids.map(i=>songById(i)?.title).filter(Boolean).join(', '));
+  pubSel={};lastExport=null;db.releases.forEach(syncDist);scheduleSave();renderPublishing();renderRightSidebar();toast('Marked as submitted to '+adminName());
 }
+function setBatchField(el){const b=el.dataset.b,k=el.dataset.k,v=el.value.trim();const dl=curDeal();if(!dl)return;
+  db.songs.forEach(s=>(s.regs||[]).forEach(r=>{if(r.deal===dl.id&&!r.ended&&(r.batch||'No batch')===b){if(k==='batch'){r.batch=v||b;s.pubBatch=v||b;}else{r[k]=v;if(k==='submitted')s.pubDate=v;}}}));scheduleSave();renderPublishing();}
+function setDeal(el){const d=dealById(el.dataset.id);if(!d)return;const k=el.dataset.k,o=d[k]||'',v=el.value.trim();if(o!==v&&k!=='notes')logPub(`${d.name}: ${k==='name'?'name':k==='start'?'start date':'end date'} changed from "${o||'blank'}" to "${v||'blank'}"`);d[k]=v;scheduleSave();renderPublishing();}
+function switchDeal(){const name=document.getElementById('nd-name').value.trim(),date=document.getElementById('nd-date').value;if(!name||!date){toast('Add the new company and the date the switch happens');return;}
+  const old=curDeal();const moving=db.songs.filter(s=>s.pubStatus==='submitted');
+  if(!confirm(`Switch from ${old?old.name:'no administrator'} to ${name} on ${date}? ${moving.length} registered songs will be marked as moved away from ${old?old.name:'the old company'} and listed under To submit for ${name}. The history is kept.`))return;
+  if(old){old.end=date;db.songs.forEach(s=>(s.regs||[]).forEach(r=>{if(r.deal===old.id&&!r.ended)r.ended=date;}));}
+  db.songs.forEach(s=>{s.pubStatus='';s.pubBatch='';s.pubDate='';});
+  logPub(`Changed company from ${old?old.name:'none'} to ${name} on ${date}. ${moving.length} songs marked as moved away and listed for registration with ${name}.`);
+  db.deals.push({id:uid('dl'),name,start:date,end:'',notes:''});db.releases.forEach(syncDist);scheduleSave();pubTab='submit';renderPublishing();toast(moving.length+' songs ready to register with '+name,4000);}
+function logPub(t){db.pubLog=db.pubLog||[];db.pubLog.unshift({at:new Date().toISOString(),t:String(t).slice(0,300)});if(db.pubLog.length>500)db.pubLog.length=500;}
+let dlF={basis:'reg',from:'',to:'',fmt:'summary'};
+function regOf(s){return (s.regs||[]).slice().sort((a,b)=>String(b.submitted||b.confirmed||'').localeCompare(String(a.submitted||a.confirmed||'')))[0]||null;}
+function catDate(s,basis){if(basis==='rel')return songRelDate(s)||(s.releaseYear?String(s.releaseYear)+'-01-01':'');const r=regOf(s);return r?(r.submitted||r.confirmed||''):'';}
+function catYears(){const y=new Set();db.songs.forEach(s=>{['reg','rel'].forEach(b=>{const d=catDate(s,b);if(d)y.add(d.slice(0,4));});});return [...y].sort().reverse();}
+function setDl(el){dlF[el.dataset.k]=el.value;if(el.dataset.k==='year'){dlF.from=el.value?el.value+'-01-01':'';dlF.to=el.value?el.value+'-12-31':'';}renderPublishing();}
+function dlSongs(){return db.songs.filter(s=>(s.regs||[]).length||s.pubStatus==='submitted').filter(s=>{if(!dlF.from&&!dlF.to)return true;const d=catDate(s,dlF.basis);return !!d&&(!dlF.from||d>=dlF.from)&&(!dlF.to||d<=dlF.to);});}
+function downloadCatalogue(){
+  if(typeof XLSX==='undefined'){toast('Excel library still loading, try again');return;}
+  const list=dlSongs();if(!list.length){toast('No songs in that window');return;}
+  const win=(dlF.from||dlF.to)?`${dlF.from||'start'} to ${dlF.to||'today'}`:'all';
+  if(dlF.fmt==='sony'){exportSony(list.map(s=>s.id),'catalogue '+win);return;}
+  const st=db.pubSettings;const dn=id=>dealById(id)?.name||'';
+  const songs=list.map(s=>{const r=regOf(s);return {'Song title':s.title,'Sony song code':s.tempo||'','ISWC':s.iswc||'','ISRC':s.isrc||'','Language':s.language||'','Performer':s.performer||songRel(s)?.artist||s.artist||'','Album':s.album||songRel(s)?.album||songRel(s)?.title||'','Release date':songRelDate(s)||s.releaseYear||'',
+    'Writers':(s.writers||[]).map(x=>{const w=writerById(x.wid)||{};return `${wName(w)} (${x.role||'?'}, ${x.share}%, ${w.society||'no society'} ${w.ipi||''})`.trim();}).join('; '),
+    'Publisher':st.publisher||'','Registered with':r?dn(r.deal):'','Batch':r?.batch||'','Sent':r?.submitted||'','Confirmed':r?.confirmed||'','Moved away':r?.ended||'','Status':r?.ended?'Moved':r?.confirmed?'Registered':r?'Sent, waiting':'Not registered'};});
+  const wrows=[];list.forEach(s=>(s.writers||[]).forEach(x=>{const w=writerById(x.wid)||{};wrows.push({'Song title':s.title,'Sony song code':s.tempo||'','Writer first name':w.first||'','Writer surname':w.last||'','Stage name':w.aka||'','Role':x.role||'','Share %':x.share,'Society':w.society||'','IPI':w.ipi||'','Writer ctrl':x.ctrl==='No'?'No':'Yes'});}));
+  const hist=[];list.forEach(s=>(s.regs||[]).forEach(r=>hist.push({'Song title':s.title,'Company':dn(r.deal),'Batch':r.batch||'','Sent':r.submitted||'','Confirmed':r.confirmed||'','Moved away':r.ended||''})));
+  const deals=(db.deals||[]).map(d=>({'Company':d.name,'From':d.start||'','To':d.end||'current','Notes':d.notes||''}));
+  const log=(db.pubLog||[]).map(l=>({'When':l.at.slice(0,16).replace('T',' '),'Change':l.t}));
+  const wb=XLSX.utils.book_new();const add=(rows,name,w)=>{const ws=XLSX.utils.json_to_sheet(rows.length?rows:[{'':'Nothing yet'}]);ws['!cols']=w.map(x=>({wch:x}));XLSX.utils.book_append_sheet(wb,ws,name);};
+  add(songs,'Songs',[28,14,14,14,16,26,22,12,70,24,22,26,11,11,11,13]);add(wrows,'Writers and splits',[28,14,14,14,16,6,8,9,12,10]);add(hist,'Registration history',[28,22,26,11,11,11]);add(deals,'Publishers',[24,11,11,30]);add(log,'Change log',[17,90]);
+  XLSX.writeFile(wb,`Aart Sense catalogue ${win.replace(/[^\w ]+/g,'-')}.xlsx`);toast(list.length+' songs downloaded');}
 function reexportBatch(el){const b=el.dataset.b;exportSony(db.songs.filter(s=>s.pubStatus==='submitted'&&(s.pubBatch||'No batch')===b).map(s=>s.id),b);}
-function unsubmit(id){const s=songById(id);if(!s||!confirm('Move "'+s.title+'" back to To submit?'))return;s.pubStatus='';s.pubBatch='';s.pubDate='';db.releases.forEach(syncDist);scheduleSave();renderPublishing();}
+function unsubmit(id){const s=songById(id);if(!s||!confirm('Mark "'+s.title+'" as NOT sent to '+adminName()+'? Use this only if it was marked by mistake. It moves back to To submit and its registration record is removed. Nothing is sent to '+adminName()+'.'))return;logPub(`"${s.title}" marked as not sent to ${adminName()}`);const dl=curDeal();s.regs=(s.regs||[]).filter(r=>!(dl&&r.deal===dl.id&&!r.ended));s.pubStatus='';s.pubBatch='';s.pubDate='';db.releases.forEach(syncDist);scheduleSave();renderPublishing();}
 
 /* ---------- import a past Sony sheet ---------- */
 function isoFrom(v){if(v instanceof Date&&!isNaN(v))return `${v.getFullYear()}-${String(v.getMonth()+1).padStart(2,'0')}-${String(v.getDate()).padStart(2,'0')}`;const t=String(v||'').trim();const m=t.match(/^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{4})$/);if(m)return `${m[3]}-${m[2].padStart(2,'0')}-${m[1].padStart(2,'0')}`;return /^\d{4}-\d{2}-\d{2}/.test(t)?t.slice(0,10):'';}
 function conflict(msg){db.pubConflicts=db.pubConflicts||[];if(!db.pubConflicts.includes(msg))db.pubConflicts.push(msg);}
+function monISO(t){const m=String(t||'').trim().match(/^(\d{1,2})-([A-Za-z]{3})-(\d{4})$/);if(!m)return isoFrom(t);const mo='janfebmaraprmayjunjulaugsepoctnovdec'.indexOf(m[2].toLowerCase())/3+1;return `${m[3]}-${String(mo).padStart(2,'0')}-${m[1].padStart(2,'0')}`;}
+function importCR01Rows(rows,hi){
+  const H=rows[hi].map(x=>String(x).trim());const c=n=>H.indexOf(n);const dl=curDeal();let n=0,added=0,w=0;const songs=new Map();const missing={};
+  rows.slice(hi+1).forEach(r=>{const no=String(r[c('Song No.')]??'').trim();if(!/^\d+$/.test(no))return;
+    if(!songs.has(no))songs.set(no,{title:String(r[c('Song Title')]).trim(),entry:monISO(r[c('Tempo Entry Date')]),yr:String(r[c('Copyright Year')]||'').trim(),iswc:String(r[c('ISWC')]||'').trim(),label:String(r[c('Label')]||'').trim(),artist:String(r[c('Artist Name')]||r[c('Artists')]||'').trim(),ws:new Map()});
+    const sg=songs.get(no);const wn=String(r[c('Writer(s)')]||'').trim();if(!wn)return;
+    if(!sg.ws.has(wn))sg.ws.set(wn,{name:wn,cap:String(r[c('Writer Capacity Code')]||'').trim(),share:Number(r[c('Writer Contrib %')])||0,soc:String(r[c('Writer Performance Society')]||'').trim(),ipi:digits(r[c('Writer CAE/IPI')])});});
+  songs.forEach((sg,no)=>{n++;
+    const writers=[...sg.ws.values()].map(x=>{const nm=splitName(x.name);let wt=findWriter(nm.first,nm.last,x.ipi);if(!wt){wt=addWriter({...nm,society:x.soc==='NS'&&!x.ipi?'':x.soc,ipi:x.ipi});w++;}
+      else{if(!wt.ipi&&x.ipi)wt.ipi=x.ipi;if(!wt.society&&x.soc&&x.soc!=='NS')wt.society=x.soc;}
+      if((wt.ipi||wt.society)&&(x.soc==='NS'||!x.ipi)&&!['NS','UNS'].includes(wt.society)){(missing[wName(wt)]=missing[wName(wt)]||{w:wt,songs:[]}).songs.push(sg.title);}
+      return {wid:wt.id,role:x.cap||'',share:x.share,ctrl:wt.signed};});
+    const batch='Registered '+(sg.entry?fmtD(sg.entry,{day:'numeric',month:'short',year:'numeric'}):'earlier');
+    let s=db.songs.find(x=>x.tempo===no)||db.songs.find(x=>normName(x.title)===normName(sg.title));
+    if(!s){s={id:uid('sg'),title:sg.title,artist:sg.artist||'Arjuna Harjai',stage:'Release folder',released:true,stageDates:{},lyrics:'',language:'',previews:[],writers,created:Date.now(),regs:[]};db.songs.push(s);added++;}
+    s.tempo=no;if(sg.iswc&&!s.iswc)s.iswc=sg.iswc.replace(/[^T\d]/g,'');if(sg.yr&&!songRelDate(s))s.releaseYear=sg.yr;if(!s.performer&&sg.artist)s.performer=sg.artist;
+    if(!(s.writers||[]).length)s.writers=writers;else (s.writers||[]).forEach(x=>{const m=writers.find(y=>y.wid===x.wid);if(m&&!x.role)x.role=m.role;});
+    s.regs=s.regs||[];let rg=dl&&s.regs.find(x=>x.deal===dl.id&&!x.ended);
+    if(dl&&!rg){rg={deal:dl.id,batch,submitted:'',confirmed:'',ended:''};s.regs.push(rg);}
+    if(rg){const fromScore=!rg.batch||/from SCORE/.test(rg.batch);if(!rg.submitted)rg.submitted=sg.entry;if(!rg.confirmed||fromScore)rg.confirmed=sg.entry;if(fromScore)rg.batch=batch;s.pubBatch=rg.batch;s.pubDate=rg.submitted;}
+    s.pubStatus='submitted';
+    if(/pvt/i.test(sg.label))conflict(`"${sg.title}": Sony has the label as "${sg.label}". Ask them to change it to ${db.pubSettings.label||'your current label name'}.`);
+  });
+  Object.values(missing).forEach(m=>conflict(`Sony holds ${wName(m.w)} with no society or IPI on ${m.songs.length} song${m.songs.length===1?'':'s'} (${m.songs.slice(0,4).join(', ')}${m.songs.length>4?'…':''}). Ask Sony to add ${m.w.society||'their society'} ${m.w.ipi||''} so the writer royalties match.`));
+  return {n,added,w};
+}
+function importScoreRows(rows){
+  const dl=curDeal();let n=0,added=0,w=0;const today=todayISO();const batch='Registered earlier (from SCORE)';
+  rows.forEach(r=>{const code=String(r[0]??'').trim(),title=String(r[1]??'').trim(),wr=String(r[2]??'').trim();if(!/^\d+$/.test(code)||!title)return;n++;
+    const parts=wr.split(/,\s*(?=[^,()]+\()/).map(x=>{const m=x.match(/^(.*?)\s*\(([\d.]+)%\)\s*$/);return m?{name:m[1].trim(),share:Number(m[2])}:null;}).filter(Boolean);
+    const writers=parts.map(p=>{const nm=splitName(p.name);let wt=findWriter(nm.first,nm.last,'');if(!wt){wt=addWriter({...nm});w++;}return {wid:wt.id,role:'',share:p.share,ctrl:wt.signed};});
+    let s=db.songs.find(x=>x.tempo===code)||db.songs.find(x=>normName(x.title)===normName(title));
+    if(s){s.tempo=code;
+      const a=(s.writers||[]).map(x=>x.wid+':'+Number(x.share)).sort().join(),b=writers.map(x=>x.wid+':'+Number(x.share)).sort().join();
+      if(s.writers?.length&&a!==b)conflict(`"${s.title}": Sony's SCORE shows ${wr}, but the release hub has ${(s.writers||[]).map(x=>wName(writerById(x.wid))+' '+x.share+'%').join(', ')}. Check which is right.`);
+      if(!s.writers?.length)s.writers=writers;
+      if(s.pubStatus!=='submitted'){s.pubStatus='submitted';s.pubBatch=batch;s.pubDate='';}
+      s.regs=s.regs||[];let rg=dl&&s.regs.find(x=>x.deal===dl.id&&!x.ended);if(dl&&!rg){rg={deal:dl.id,batch:s.pubBatch||batch,submitted:'',confirmed:'',ended:''};s.regs.push(rg);}if(rg&&!rg.confirmed)rg.confirmed=today;
+    }else{
+      s={id:uid('sg'),title,artist:'Arjuna Harjai',stage:'Release folder',released:true,stageDates:{},lyrics:'',language:'',previews:[],writers,tempo:code,created:Date.now(),pubStatus:'submitted',pubBatch:batch,pubDate:'',regs:dl?[{deal:dl.id,batch,submitted:'',confirmed:today,ended:''}]:[]};
+      db.songs.push(s);added++;}
+  });
+  const nw=db.writers.filter(x=>!x.ipi&&!['NS','UNS'].includes(x.society));if(nw.length)conflict('Add society and IPI for '+nw.map(wName).join(', ')+' in Writers, so future sheets with them are complete.');
+  return {n,added,w};
+}
 async function importSonySheet(input){
   const files=[...(input.files||[])];input.value='';if(!files.length)return;
   if(typeof XLSX==='undefined'){toast('Excel library still loading, try again');return;}
@@ -2196,7 +2325,7 @@ async function importSonySheet(input){
   for(const file of files){
     if(file.size>8e6){toast(file.name+' is too large');continue;}
     let rows;try{const wb=XLSX.read(await file.arrayBuffer(),{cellDates:true});rows=XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{header:1,defval:'',raw:true});}catch(e){toast('Could not read '+file.name);continue;}
-    const hi=rows.findIndex(r=>String(r[13]).trim()==='Song Title');if(hi<0){toast(file.name+' is not a Sony song delivery sheet');continue;}
+    const hi=rows.findIndex(r=>String(r[13]).trim()==='Song Title');const ci=rows.findIndex(r=>r.includes('Song No.')&&r.includes('Writer Capacity Code'));if(ci>=0){const c=importCR01Rows(rows,ci);nSongs+=c.n;nNew+=c.added;nW+=c.w;continue;}if(hi<0){const si=rows.findIndex(r=>String(r[0]).trim()==='Song'&&String(r[1]).trim()==='Song Title');if(si>=0){const c=importScoreRows(rows.slice(si+1));nSongs+=c.n;nNew+=c.added;nW+=c.w;continue;}toast(file.name+' is not a delivery sheet or SCORE export');continue;}
     const batch=file.name.replace(/\.[^.]+$/,'').replace(/[_]+/g,' ').slice(0,60);
     const g=(r,L)=>r[colIdx(L)];const S=(r,L)=>String(g(r,L)??'').trim();
     const st=db.pubSettings;
@@ -2221,10 +2350,11 @@ async function importSonySheet(input){
       if(!s){s={id:uid('sg'),title,artist:S(r0,'AT'),stage:'Release folder',released:true,stageDates:{},lyrics:'',language:'',previews:[],writers:[],created:Date.now()};db.songs.push(s);nNew++;}
       Object.assign(s,{isrc:s.isrc||isrc,iswc:s.iswc||S(r0,'K').replace(/[^T\d]/g,''),language:s.language||lang,performer:s.performer||S(r0,'AT'),album:s.album||S(r0,'AW'),altTitle:s.altTitle||S(r0,'AP'),releaseDate:s.releaseDate||rd,writers:s.writers?.length?s.writers:writers});
       if(!songRelDate(s)&&!rd&&g(r0,'J'))s.releaseYear=String(g(r0,'J'));
-      if(s.pubStatus!=='submitted'){s.pubStatus='submitted';s.pubBatch=batch;s.pubDate=todayISO();}
+      if(s.pubStatus!=='submitted'){s.pubStatus='submitted';s.pubBatch=batch;s.pubDate='';}
       nSongs++;
     });
   }
+  logPub(`Imported ${files.map(f=>f.name).join(', ')}: ${nSongs} songs read, ${nNew} new, ${nW} writers added`);
   scheduleSave();renderPublishing();
   toast(`${nSongs} songs read (${nNew} new), ${nW} writers added`,4000);
 }
@@ -2262,7 +2392,7 @@ function pubEditor(s){
     <td><input type="text" value="${escA(x.share)}" style="width:70px" onchange="setTW(${i},'share',this.value)"></td>
     <td><div class="seg"><button class="${x.ctrl!=='No'?'on':''}" onclick="setTW(${i},'ctrl','Yes')">Yes</button><button class="${x.ctrl==='No'?'on':''}" onclick="setTW(${i},'ctrl','No')">No</button></div></td>
     <td><button class="x-btn" onclick="delTW(${i})" title="Remove">×</button></td></tr>`;}).join('');
-  return `<div class="sg-sec"><div class="sec-head"><div class="sec-title">Publishing (Sony delivery sheet)</div><span class="${iss.length?'chip-warn':'chip-ok'}">${s.pubStatus==='submitted'?'Submitted · '+esc(s.pubBatch||''):iss.length?iss.length+' to fill':'Ready to submit'}</span></div>
+  return `<div class="sg-sec"><div class="sec-head"><div class="sec-title">Publishing</div><span class="${iss.length?'chip-warn':'chip-ok'}">${s.pubStatus==='submitted'?'Submitted · '+esc(s.pubBatch||''):iss.length?iss.length+' to fill':'Ready to submit'}</span></div>
    <div class="form-grid3"><div><label>ISRC</label><input type="text" value="${escA(s.isrc||'')}" placeholder="12 characters" onchange="setTrack('isrc',this.value)"></div>
     <div><label>Language (lyrics)</label><input type="text" list="dl-lang" value="${escA(s.language||'')}" placeholder="Hindi / English" onchange="setTrack('language',this.value)"></div>
     <div><label>Performer on the recording</label><input type="text" value="${escA(s.performer||'')}" placeholder="${escA(songRel(s)?.artist||s.artist||'')}" onchange="setTrack('performer',this.value)"></div></div>
@@ -2277,6 +2407,7 @@ function pubEditor(s){
     <div><label>Tempo song code (amendments only)</label><input type="text" value="${escA(s.tempo||'')}" onchange="setTrack('tempo',this.value)"></div>
     <div><label>Society work no. (Tunecode etc.)</label><input type="text" value="${escA(s.workNo||'')}" onchange="setTrack('workNo',this.value)"></div>
     <div><label>Artist AKA</label><input type="text" value="${escA(s.artistAka||'')}" onchange="setTrack('artistAka',this.value)"></div></div></details>
+   ${(s.regs||[]).length?`<div class="field-hint"><strong>Registration history</strong><br>${s.regs.map(regLine).join('<br>')}</div>`:''}
    ${iss.length&&s.pubStatus!=='submitted'?`<div class="miss">Still needed: ${iss.map(x=>`<span class="tag">${esc(x)}</span>`).join(' ')}</div>`:''}
   </div>`;
 }
@@ -2408,11 +2539,11 @@ function renderDistribution(){
    <div><label>Release date</label><input type="date" value="${escA(rel.date||'')}" onchange="setRel('date',this.value)"></div>
    <div><label>Release / album title for Sony</label><input type="text" value="${escA(rel.album||'')}" placeholder="${escA(rel.title)}" onchange="setRel('album',this.value.trim())"></div></div></div>
   <div class="card"><div class="sec-head"><div class="sec-title">Tracks, ISRC and publishing</div><select onchange="addTrackToRel(this)" style="width:auto"><option value="">+ Add a track…</option>${free.map(s=>`<option value="${escA(s.id)}">${esc(s.title)} (${esc(s.stage||'')})</option>`).join('')}<option value="__new">New track named after this release</option></select></div>
-   <table class="edit-table"><thead><tr><th>Track</th><th>ISRC</th><th>Sony publishing</th><th></th></tr></thead><tbody>
+   <table class="edit-table"><thead><tr><th>Track</th><th>ISRC</th><th>Publishing</th><th></th></tr></thead><tbody>
    ${t.map(s=>{const iss=songIssues(s);const bad=s.isrc&&!ISRC_RE.test(s.isrc);return `<tr><td><a class="lnk" onclick="openTrack('${escA(s.id)}')">${esc(s.title)}</a></td><td><input type="text" data-id="${escA(s.id)}" value="${escA(s.isrc||'')}" placeholder="12 characters" onchange="setTrackIsrc(this)" ${bad?'style="color:#ffb340"':''}></td>
     <td>${s.pubStatus==='submitted'?`<span class="chip-ok">Submitted · ${esc(s.pubBatch||'')}</span>`:iss.length?`<span class="chip-warn" title="${escA(iss.join(', '))}">${iss.length} to fill</span> <a class="lnk" onclick="openTrack('${escA(s.id)}')">fill in</a>`:'<span class="chip-ok">Ready to submit</span>'}</td>
     <td><button class="x-btn" data-id="${escA(s.id)}" onclick="removeTrackFromRel(this)" title="Remove">×</button></td></tr>`;}).join('')||'<tr><td colspan="4" class="muted-cell">No tracks linked. Add one so it can be registered with Sony.</td></tr>'}</tbody></table>
-   <div class="sec-actions" style="margin-top:10px"><button class="btn btn-ghost btn-sm" onclick="showView('publishing',null)">Go to Sony submissions</button></div></div>`;
+   <div class="sec-actions" style="margin-top:10px"><button class="btn btn-ghost btn-sm" onclick="showView('publishing',null)">Go to Publishing</button></div></div>`;
 }
 
 /* ---------- publishing page ---------- */
@@ -2420,38 +2551,58 @@ function setPubTab(t){pubTab=t;renderPublishing();}
 function togglePubSel(el){pubSel[el.dataset.id]=el.checked;renderPublishing();}
 function selectAllReady(){pubCandidates().filter(s=>!songIssues(s).length).forEach(s=>pubSel[s.id]=true);renderPublishing();}
 function pubCandidates(){return db.songs.filter(s=>s.pubStatus!=='submitted'&&(pubShowAll||songReleased(s)||songRel(s)));}
-function setPubSetting(el){db.pubSettings[el.dataset.k]=el.value.trim();scheduleSave();}
+function setPubSetting(el){const k=el.dataset.k,o=db.pubSettings[k]||'',v=el.value.trim();if(o!==v)logPub(`Setting "${k}" changed from "${o||'blank'}" to "${v||'blank'}"`);db.pubSettings[k]=v;scheduleSave();}
 function dismissConflict(i){db.pubConflicts.splice(i,1);scheduleSave();renderPublishing();}
 function renderPublishing(){
   migratePub();const el=document.getElementById('center-inner');if(currentView!=='publishing'){return;}
-  const tabs=[['submit','To submit'],['done','Submitted'],['writers','Writers'],['setup','Setup']].map(([k,l])=>`<button class="ptab ${pubTab===k?'active':''}" onclick="setPubTab('${k}')">${l}</button>`).join('');
+  const tabs=[['submit','To submit'],['done','Catalogue'],['writers','Writers'],['setup','Setup']].map(([k,l])=>`<button class="ptab ${pubTab===k?'active':''}" onclick="setPubTab('${k}')">${l}</button>`).join('');
   let body='';const si=settingsIssues();
   if(pubTab==='submit'){
     const list=pubCandidates();const ready=list.filter(s=>!songIssues(s).length);const sel=list.filter(s=>pubSel[s.id]&&!songIssues(s).length);
     body=`${si.length?`<div class="card warn-c">Before exporting, fill in Setup: ${si.map(esc).join(', ')}. <a class="lnk" onclick="setPubTab('setup')">Open Setup</a> or import a past Sony sheet there.</div>`:''}
-    ${lastExport?`<div class="card ok-c"><div class="sec-title" style="margin:0 0 6px">Sheet downloaded. Once you've sent it to Sony, mark ${lastExport.ids.length===1?'this song':'these '+lastExport.ids.length+' songs'} as submitted.</div><div class="toolbar" style="margin:0"><input type="text" id="pb-batch" value="${escA(lastExport.batch)}" style="flex:0 0 160px;width:160px"><button class="btn btn-primary btn-sm" onclick="markSubmitted()">Mark as submitted</button><button class="btn btn-ghost btn-sm" onclick="lastExport=null;renderPublishing()">Not yet</button></div></div>`:''}
+    ${lastExport?`<div class="card ok-c"><div class="sec-title" style="margin:0 0 6px">Sheet downloaded. Once you've sent it to ${esc(adminName())}, mark ${lastExport.ids.length===1?'this song':'these '+lastExport.ids.length+' songs'} as submitted.</div><div class="toolbar" style="margin:0"><input type="text" id="pb-batch" value="${escA(lastExport.batch)}" style="flex:0 0 160px;width:160px"><button class="btn btn-primary btn-sm" onclick="markSubmitted()">Mark as submitted</button><button class="btn btn-ghost btn-sm" onclick="lastExport=null;renderPublishing()">Not yet</button></div></div>`:''}
     <div class="toolbar"><label class="sub" style="display:flex;gap:6px;align-items:center"><input type="checkbox" ${pubShowAll?'checked':''} onchange="pubShowAll=this.checked;renderPublishing()"> Include unreleased songs</label><span style="flex:1"></span><button class="btn btn-ghost btn-sm" onclick="selectAllReady()" ${ready.length?'':'disabled'}>Select all ready (${ready.length})</button><button class="btn btn-primary btn-sm" onclick="exportSony(Object.keys(pubSel).filter(k=>pubSel[k]))" ${sel.length&&!si.length?'':'disabled'}>Export Sony sheet (${sel.length})</button></div>
     <div class="card">${list.map(s=>{const iss=songIssues(s);const dup=dupIsrc(s);const d=songRelDate(s);return `<div class="pub-row"><input type="checkbox" data-id="${escA(s.id)}" ${pubSel[s.id]&&!iss.length?'checked':''} ${iss.length?'disabled':''} onchange="togglePubSel(this)"><div style="flex:1;cursor:pointer" onclick="openTrack('${escA(s.id)}')"><strong>${esc(s.title)}</strong> <span class="sub">· ${esc(s.performer||songRel(s)?.artist||s.artist||'')}${d?' · '+fmtD(d,{day:'numeric',month:'short',year:'numeric'}):' · no release date'}${(s.writers||[]).length?' · '+s.writers.length+' writer'+(s.writers.length===1?'':'s'):''}</span>
       ${iss.length?`<div class="miss">${iss.map(x=>`<span class="tag">${esc(x)}</span>`).join(' ')}</div>`:''}${dup?`<div class="sub late-t">Same ISRC already submitted as "${esc(dup.title)}"</div>`:''}</div><span class="${iss.length?'chip-warn':'chip-ok'}">${iss.length?'Fill in':'Ready'}</span></div>`;}).join('')||'<div class="muted-cell">Nothing waiting. Released songs that are not yet registered show here.</div>'}</div>
     <div class="field-hint">The export copies Sony's Non-Library Song Delivery Sheet: their header rows, one line per writer, Writer ctrl as Yes/No and the language filled in, as they asked after Q3.</div>`;
   }else if(pubTab==='done'){
-    const sub=db.songs.filter(s=>s.pubStatus==='submitted');const by={};sub.forEach(s=>{(by[s.pubBatch||'No batch']=by[s.pubBatch||'No batch']||[]).push(s);});
-    body=Object.entries(by).sort((a,b)=>b[0].localeCompare(a[0])).map(([b,l])=>`<div class="card"><div class="sec-head"><div class="sec-title">${esc(b)}</div><div class="sec-actions"><span class="sub">${l.length} song${l.length===1?'':'s'}</span><button class="btn btn-ghost btn-sm" data-b="${escA(b)}" onclick="reexportBatch(this)">Export corrected sheet</button></div></div>${l.map(s=>`<div class="pub-row"><div style="flex:1;cursor:pointer" onclick="openTrack('${escA(s.id)}')"><strong>${esc(s.title)}</strong> <span class="sub">· ${esc(s.isrc||'no ISRC')} · ${(s.writers||[]).map(x=>esc(wName(writerById(x.wid)))+' '+x.share+'%').join(', ')}</span></div><button class="btn btn-ghost btn-sm" onclick="unsubmit('${escA(s.id)}')">Undo</button></div>`).join('')}</div>`).join('')||emptyState('📄','Nothing submitted yet','Export a sheet from To submit, or import your past Sony sheets in Setup');
+    const dl=curDeal();const st=db.pubSettings;const by={};
+    db.songs.forEach(x=>(x.regs||[]).forEach(r=>{if(dl&&r.deal===dl.id&&!r.ended){(by[r.batch||'No batch']=by[r.batch||'No batch']||{songs:[],sub:r.submitted,conf:r.confirmed}).songs.push(x);}}));
+    const dIn=(b,k,v)=>`<input type="date" data-b="${escA(b)}" data-k="${k}" value="${escA(v||'')}" onchange="setBatchField(this)" style="width:150px">`;
+    const head=`<div class="card"><div class="sub">Owner and publisher on record</div><div class="sec-title" style="margin:2px 0 8px">${esc(st.publisher||'Not set')}</div><div class="sub">Registered and collected by <strong>${esc(dl?.name||'nobody yet')}</strong>${dl?.start?' since '+fmtD(dl.start,{day:'numeric',month:'short',year:'numeric'}):''} · ${Object.values(by).reduce((a,g)=>a+g.songs.length,0)} songs registered · <a class="lnk" onclick="setPubTab('setup')">change</a></div></div>`;
+    const cards=Object.entries(by).sort((a,b)=>String(b[1].sub||'').localeCompare(String(a[1].sub||''))).map(([b,g])=>`<div class="card"><div class="sec-head"><input type="text" class="batch-t" data-b="${escA(b)}" data-k="batch" value="${escA(b)}" onchange="setBatchField(this)"><div class="sec-actions"><span class="sub">${g.songs.length} song${g.songs.length===1?'':'s'}</span><button class="btn btn-ghost btn-sm" data-b="${escA(b)}" onclick="reexportBatch(this)">Export corrected sheet</button></div></div>
+      <div class="form-grid3" style="margin-bottom:6px"><div><label>Sent to ${esc(dl.name)}</label>${dIn(b,'submitted',g.sub)}</div><div><label>Confirmed registered by ${esc(dl.name)}</label>${dIn(b,'confirmed',g.conf)}</div><div><label>Status</label><div style="padding-top:8px">${g.conf?'<span class="chip-ok">Registered</span>':'<span class="chip-warn">Waiting for confirmation</span>'}</div></div></div>
+      ${g.songs.map(x=>`<div class="pub-row"><div style="flex:1;cursor:pointer" onclick="openTrack('${escA(x.id)}')"><strong>${esc(x.title)}</strong> <span class="sub">· ${esc(x.isrc||'no ISRC')} · ${(x.writers||[]).map(w=>esc(wName(writerById(w.wid)))+' '+w.share+'%').join(', ')}</span>${(x.regs||[]).length>1?`<div class="sub">${x.regs.map(regLine).join('<br>')}</div>`:''}</div><button class="lnk-mute" title="Only if this was marked by mistake. Moves it back to To submit; nothing is sent to Sony." onclick="unsubmit('${escA(x.id)}')">Mark not sent</button></div>`).join('')}</div>`).join('');
+    const past=(db.deals||[]).filter(d=>d.end).map(d=>{const l=db.songs.filter(x=>(x.regs||[]).some(r=>r.deal===d.id));return `<div class="card"><div class="sec-head"><div class="sec-title">${esc(d.name)}</div><span class="sub">${d.start?fmtD(d.start,{day:'numeric',month:'short',year:'numeric'}):'?'} to ${fmtD(d.end,{day:'numeric',month:'short',year:'numeric'})} · ${l.length} songs</span></div>${l.map(x=>`<div class="pub-row"><div style="flex:1;cursor:pointer" onclick="openTrack('${escA(x.id)}')"><strong>${esc(x.title)}</strong><div class="sub">${x.regs.filter(r=>r.deal===d.id).map(regLine).join('<br>')}</div></div></div>`).join('')}</div>`;}).join('');
+    const yrs=catYears();const nDl=dlSongs().length;
+    const dlCard=`<div class="card"><div class="sec-head"><div class="sec-title">Download</div><span class="sub">${nDl} song${nDl===1?'':'s'} in this window</span></div>
+      <div class="dl-grid"><div><label>Year</label><select data-k="year" onchange="setDl(this)"><option value="">All years</option>${yrs.map(y=>`<option ${dlF.from===y+'-01-01'&&dlF.to===y+'-12-31'?'selected':''}>${y}</option>`).join('')}</select></div>
+      <div><label>From</label><input type="date" data-k="from" value="${escA(dlF.from)}" onchange="setDl(this)"></div><div><label>To</label><input type="date" data-k="to" value="${escA(dlF.to)}" onchange="setDl(this)"></div>
+      <div><label>Dates based on</label><select data-k="basis" onchange="setDl(this)"><option value="reg" ${dlF.basis==='reg'?'selected':''}>Registration date</option><option value="rel" ${dlF.basis==='rel'?'selected':''}>Release date</option></select></div>
+      <div><label>Format</label><select data-k="fmt" onchange="setDl(this)"><option value="summary" ${dlF.fmt==='summary'?'selected':''}>Catalogue workbook</option><option value="sony" ${dlF.fmt==='sony'?'selected':''}>Sony delivery sheet</option></select></div>
+      <div><label>&nbsp;</label><button class="btn btn-primary btn-sm" onclick="downloadCatalogue()" ${nDl?'':'disabled'}>Download</button></div></div>
+      <div class="field-hint">The catalogue workbook has 5 tabs: songs, writers and splits, registration history, publishers and the change log. The Sony format only includes songs with every required field filled.</div></div>`;
+    body=head+dlCard+(cards||emptyState('📄','Nothing registered yet','Export a sheet from To submit, or import a past delivery sheet in Setup'))+(past?`<div class="sec-head" style="margin:22px 0 10px"><div class="sec-title">Earlier administrators</div></div>`+past:'');
   }else if(pubTab==='writers'){
     const cnt=id=>db.songs.filter(s=>(s.writers||[]).some(x=>x.wid===id)).length;
     body=`<div class="toolbar"><span class="sub">Saved once, picked from a list on every song.</span><span style="flex:1"></span><button class="btn btn-primary btn-sm" onclick="openWriter(null)">+ Add writer</button></div><div class="card"><table class="edit-table"><thead><tr><th>Writer</th><th>Society</th><th>IPI</th><th>Writer ctrl</th><th>AKA</th><th>Songs</th><th></th></tr></thead><tbody>
     ${[...db.writers].sort((a,b)=>wName(a).localeCompare(wName(b))).map(w=>`<tr><td><strong>${esc(wName(w))}</strong></td><td>${esc(w.society||'—')}</td><td>${esc(w.ipi||(['NS','UNS'].includes(w.society)?'not needed':'missing'))}</td><td>${w.signed==='Yes'?'Yes':'No'}</td><td>${esc(w.aka||'')}</td><td>${cnt(w.id)}</td><td><button class="btn btn-ghost btn-sm" onclick="openWriter('${escA(w.id)}')">Edit</button></td></tr>`).join('')||'<tr><td colspan="7" class="muted-cell">No writers yet. Import a past Sony sheet in Setup to fill this list.</td></tr>'}</tbody></table></div>`;
   }else{
     const st=db.pubSettings;const f=(k,l,ph='')=>`<div><label>${l}</label><input type="text" data-k="${k}" value="${escA(st[k]||'')}" placeholder="${escA(ph)}" onchange="setPubSetting(this)"></div>`;
-    body=`<div class="card"><div class="sec-head"><div class="sec-title">Import past Sony sheets</div><label class="btn btn-ai btn-sm" style="cursor:pointer">Choose .xlsx files<input type="file" accept=".xlsx,.xls" multiple hidden onchange="importSonySheet(this)"></label></div>
-     <div class="field-hint" style="margin:0">Pick the delivery sheets you've sent before (like Song_Delivery_ASR_2026Q1 and New_Q3_2026_Submission). The app saves every writer with society and IPI, fills the codes below, and marks those songs as already submitted so they don't get sent twice. Nothing is uploaded anywhere except your own Google Drive. Your publisher and label names stay as set below.</div></div>
+    body=`<div class="card"><div class="sec-head"><div class="sec-title">Import past delivery sheets</div><label class="btn btn-ai btn-sm" style="cursor:pointer">Choose .xlsx files<input type="file" accept=".xlsx,.xls" multiple hidden onchange="importSonySheet(this)"></label></div>
+     <div class="field-hint" style="margin:0">Pick delivery sheets you've sent before, or the Song Interested Parties export from Sony's SCORE dashboard. The app saves every writer with society and IPI, fills the codes below, and marks those songs as already submitted so they don't get sent twice. Nothing is uploaded anywhere except your own Google Drive. Your publisher and label names stay as set below.</div></div>
      ${(db.pubConflicts||[]).length?`<div class="card warn-c"><div class="sec-title" style="margin:0 0 8px">Fix these before the next sheet</div>${db.pubConflicts.map((c,i)=>`<div class="pub-row"><span style="flex:1">${esc(c)}</span><button class="x-btn" onclick="dismissConflict(${i})" title="Done">×</button></div>`).join('')}</div>`:''}
-     <div class="card"><div class="sec-title">Your Sony codes and names</div><div class="form-grid3">
+     <div class="card"><div class="sec-title">Who registers and collects for you</div>
+      <table class="edit-table"><thead><tr><th>Company</th><th>From</th><th>To</th><th>Notes</th></tr></thead><tbody>${(db.deals||[]).map(d=>`<tr><td><input type="text" data-id="${escA(d.id)}" data-k="name" value="${escA(d.name)}" onchange="setDeal(this)"></td><td><input type="date" data-id="${escA(d.id)}" data-k="start" value="${escA(d.start||'')}" onchange="setDeal(this)"></td><td>${d.end?`<input type="date" data-id="${escA(d.id)}" data-k="end" value="${escA(d.end)}" onchange="setDeal(this)">`:'<span class="chip-ok">Current</span>'}</td><td><input type="text" data-id="${escA(d.id)}" data-k="notes" value="${escA(d.notes||'')}" placeholder="Contract ref, contacts" onchange="setDeal(this)"></td></tr>`).join('')}</tbody></table>
+      <details class="more"><summary>Moving to a new company?</summary><div class="form-grid3" style="margin-top:10px"><div><label>New company</label><input type="text" id="nd-name" placeholder="e.g. Kobalt"></div><div><label>Switch date</label><input type="date" id="nd-date"></div><div><label>&nbsp;</label><button class="btn btn-primary btn-sm" onclick="switchDeal()">Switch</button></div></div>
+      <div class="field-hint">Ends the current company on that date. Every song keeps its history (who registered it, when, and when it moved), and all songs go back to To submit so you can register them with the new company. Check the new company's sheet format first; exports use Sony's format today.</div></details></div>
+     <div class="card"><div class="sec-head"><div class="sec-title">History of changes</div><span class="sub">${(db.pubLog||[]).length} entries</span></div>${(db.pubLog||[]).slice(0,pubLogAll?500:8).map(l=>`<div class="log-row"><span class="log-d">${new Date(l.at).toLocaleString('en-GB',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'})}</span><span>${esc(l.t)}</span></div>`).join('')||'<div class="sub">Changes to publishers, codes, imports and submissions are recorded here from now on.</div>'}${(db.pubLog||[]).length>8?`<button class="lnk-mute" onclick="pubLogAll=!pubLogAll;renderPublishing()">${pubLogAll?'Show less':'Show all'}</button>`:''}</div>
+     <div class="card"><div class="sec-title">Codes and names on every sheet</div><div class="form-grid3">
       ${f('client','Client code (A)')}${f('contract','Contract code (B)')}${f('sub','Subcontract # (C)','1')}${f('pClient','Participant client code (D)')}${f('pContract','Participant contract code (E)')}${f('pSub','Participant subcontract # (F)','2')}
       ${f('publisher','Publisher name, exactly as in the agreement')}${f('pubIpi','Publisher IPI')}${f('pubSociety','Publisher society')}${f('label','Label (AY)')}${f('office','Co-originating office','INDIA')}${f('territory','Territory controlled','WW')}</div>
       <div class="field-hint">These go on every row of every sheet you export.</div></div>`;
   }
-  el.innerHTML=`<div class="eyebrow">Publishing</div><div class="page-title">Sony Music Publishing</div><div class="page-sub">Register released songs with Sony in their delivery sheet format</div><div class="pitch-tabs" style="margin-bottom:16px">${tabs}</div>${body}`;
+  el.innerHTML=`<div class="eyebrow">Publishing</div><div class="page-title">Publishing</div><div class="page-sub">${esc(db.pubSettings.publisher||'Your')} catalogue · registered and collected by ${esc(adminName())}</div><div class="pitch-tabs" style="margin-bottom:16px">${tabs}</div>${body}`;
 }
 
 </script>
